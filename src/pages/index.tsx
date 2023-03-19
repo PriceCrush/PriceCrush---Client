@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { AiFillAccountBook } from 'react-icons/ai';
 
 const TempCon = styled.div`
   width: 100%;
@@ -10,7 +11,9 @@ const TempCon = styled.div`
 export default function Home() {
   return (
     <main>
-      <TempCon>프리텐다드</TempCon>
+      <TempCon>
+        PriceCrush 프로젝트 Client <AiFillAccountBook />
+      </TempCon>
     </main>
   );
 }
