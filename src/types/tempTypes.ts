@@ -1,1 +1,1 @@
-const temp: number = 1;
+export const temp: number = 1;
