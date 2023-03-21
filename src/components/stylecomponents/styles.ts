@@ -30,7 +30,9 @@ export const ButtonBase = styled.button<ButtonBaseOptionalProps>`
 
   user-select: none;
 
-  transition: background-color 0.1s ease;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 
   ${buttonRoleStyle}
   ${sizeStyle}
