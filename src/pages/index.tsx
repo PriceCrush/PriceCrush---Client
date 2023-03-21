@@ -7,7 +7,6 @@ const TempCon = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
   background: ${COLOR.GRAY};
   font-size: 3rem;
 `;
@@ -20,9 +19,7 @@ export default function Home() {
           PriceCrush 프로젝트 Client <AiFillAccountBook />
         </span>
         <div>
-          <S.ButtonBase fullWidth size="md">
-            wow
-          </S.ButtonBase>
+          <S.ButtonBase size="xl">wow</S.ButtonBase>
         </div>
       </TempCon>
     </main>

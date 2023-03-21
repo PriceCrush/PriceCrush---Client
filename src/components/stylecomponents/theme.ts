@@ -13,9 +13,18 @@ interface colorProp {
   ORANGE: string;
 }
 
+interface heightProp {
+  header: string;
+}
+
+interface paddingProps {
+  baseX: string;
+}
 export interface themeProp {
   fontSize: fontSizeProp;
   color: colorProp;
+  height: heightProp;
+  padding: paddingProps;
 }
 
 const fontSize: fontSizeProp = {
@@ -23,6 +32,14 @@ const fontSize: fontSizeProp = {
   md: '1.6rem',
   lg: '1.8rem',
   xl: '2.2rem',
+};
+
+const height: heightProp = {
+  header: '8vh',
+};
+
+const padding: paddingProps = {
+  baseX: '5vw',
 };
 
 const color: colorProp = {
@@ -36,6 +53,8 @@ const color: colorProp = {
 const theme: themeProp = {
   fontSize,
   color,
+  height,
+  padding,
 };
 
 export default theme;
