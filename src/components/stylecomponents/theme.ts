@@ -28,10 +28,10 @@ export interface themeProp {
 }
 
 const fontSize: fontSizeProp = {
-  sm: '1.4rem',
+  sm: '1.2rem',
   md: '1.6rem',
-  lg: '1.8rem',
-  xl: '2.2rem',
+  lg: '2rem',
+  xl: '2.4rem',
 };
 
 const height: heightProp = {

@@ -95,10 +95,6 @@ export const buttonRoleStyle = css<ButtonBaseOptionalProps>`
     background-color: ${getBgColor(variant)};
     color: ${getTextColor(variant)};
 
-    &:hover {
-      background-color: teal;
-    }
-
     &:disabled {
       background-color: ${getBgColor('disabled')};
       color: ${COLOR.BLACK};

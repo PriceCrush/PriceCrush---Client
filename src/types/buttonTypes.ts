@@ -1,13 +1,7 @@
 import { themeProp } from '@/components/stylecomponents/theme';
 import { ButtonHTMLAttributes } from 'react';
 
-export type Variant =
-  | 'default'
-  | 'primary'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'disabled';
+export type Variant = 'default' | 'success' | 'warning' | 'error' | 'disabled';
 type Size = 'sm' | 'md' | 'lg' | 'xl';
 
 /**

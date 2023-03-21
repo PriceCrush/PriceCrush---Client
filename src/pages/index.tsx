@@ -19,7 +19,9 @@ export default function Home() {
           PriceCrush 프로젝트 Client <AiFillAccountBook />
         </span>
         <div>
-          <S.ButtonBase size="xl">wow</S.ButtonBase>
+          <S.ButtonBase variant="warning" size="xl">
+            wow
+          </S.ButtonBase>
         </div>
       </TempCon>
     </main>
