@@ -86,3 +86,21 @@ export const LogoTitle = styled.h1`
   font-size: 3rem;
   font-family: 'Ubuntu', sans-serif;
 `;
+
+/**
+ * /products/[productid] 페이지에서 사용되는 최상위 컴포넌트입니다.
+ */
+export const DetailPageLayout = styled.div`
+  display: 100%;
+  display: flex;
+  padding: ${({ theme }) => `${theme.padding.baseY} ${theme.padding.baseX}`};
+  font-size: ${({ theme }) => theme.fontSize.md};
+  justify-content: space-between;
+`;
+
+export const DetailImageSection = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const DetailDescSection = styled.div``;

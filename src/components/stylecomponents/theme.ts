@@ -19,6 +19,7 @@ interface heightProp {
 
 interface paddingProps {
   baseX: string;
+  baseY: string;
 }
 export interface themeProp {
   fontSize: fontSizeProp;
@@ -30,8 +31,8 @@ export interface themeProp {
 const fontSize: fontSizeProp = {
   sm: '1.2rem',
   md: '1.6rem',
-  lg: '2rem',
-  xl: '2.4rem',
+  lg: '22rem',
+  xl: '2.6rem',
 };
 
 const height: heightProp = {
@@ -40,6 +41,7 @@ const height: heightProp = {
 
 const padding: paddingProps = {
   baseX: '5vw',
+  baseY: '3vh',
 };
 
 const color: colorProp = {

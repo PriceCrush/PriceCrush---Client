@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { AiFillAccountBook } from 'react-icons/ai';
 import * as S from '@/components/stylecomponents/styles';
 import COLOR from '@/colors/color';
+import Link from 'next/link';
 
 const TempCon = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ export default function Home() {
         <span>
           PriceCrush 프로젝트 Client <AiFillAccountBook />
         </span>
+        <Link href={'/products/123'}>디테일 페이지로</Link>
         <div>
           <S.ButtonBase variant="warning" size="xl">
             wow
