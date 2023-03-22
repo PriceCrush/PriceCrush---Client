@@ -40,7 +40,7 @@ const height: heightProp = {
 };
 
 const padding: paddingProps = {
-  baseX: '5vw',
+  baseX: '18vw',
   baseY: '3vh',
 };
 

@@ -96,11 +96,29 @@ export const DetailPageLayout = styled.div`
   padding: ${({ theme }) => `${theme.padding.baseY} ${theme.padding.baseX}`};
   font-size: ${({ theme }) => theme.fontSize.md};
   justify-content: space-between;
+  column-gap: 3.125vw;
+
+  section:nth-child(1) {
+    background-color: bisque;
+  }
+
+  section:nth-child(2) {
+    background-color: burlywood;
+  }
 `;
 
-export const DetailImageSection = styled.div`
+export const DetailLeftSection = styled.section`
   display: flex;
   flex-direction: column;
+  width: 50%;
 `;
 
-export const DetailDescSection = styled.div``;
+export const ImageBox = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+`;
+
+export const DetailPageImageBox = styled.div``;
+
+export const DetailRightSection = styled(DetailLeftSection)``;
