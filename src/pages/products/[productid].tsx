@@ -5,37 +5,31 @@ import { tempFetch } from '@/utils/apis';
 import useSWR from 'swr';
 import { productsDetailsProps } from '@/types/productsDetailType';
 import Image from 'next/image';
-import axios from 'axios';
-import { GetStaticProps, GetStaticPropsContext } from 'next';
 import { getPlaiceholder } from 'plaiceholder';
+import { GetServerSideProps } from 'next';
 
-interface staticProps {
-  props: {
-    imageProps: {
-      blurDataURL: string;
-    };
-  };
+interface ServerSideReturn {
+  blurDataURL: string;
 }
 
-export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query,
+}) => {
+  console.log(params);
+  console.log(query);
   const { base64 } = await getPlaiceholder(
     'https://images.unsplash.com/photo-1611510338559-2f463335092c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
   );
 
   return {
     props: {
-      imageProps: {
-        blurDataURL: base64,
-      },
+      blurDataURL: base64,
     },
   };
 };
 
-const ProductDetail = ({
-  props: {
-    imageProps: { blurDataURL },
-  },
-}: staticProps) => {
+const ProductDetail = ({ blurDataURL }: ServerSideReturn) => {
   const router = useRouter();
   const { data: productData } = useSWR<productsDetailsProps>(
     'http://localhost:4000/products',

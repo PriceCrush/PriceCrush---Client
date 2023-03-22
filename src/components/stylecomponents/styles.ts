@@ -99,7 +99,6 @@ export const DetailPageLayout = styled.div`
   column-gap: 3.125vw;
 
   section:nth-child(1) {
-    background-color: bisque;
   }
 
   section:nth-child(2) {
