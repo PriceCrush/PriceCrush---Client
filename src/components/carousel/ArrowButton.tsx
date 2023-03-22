@@ -32,9 +32,9 @@ const ArrowButton = ({
       onClick={onClick}
     >
       {direction === 'next' ? (
-        <NextArrow size={size} />
+        <NextArrow size={size} color={color} />
       ) : (
-        <PrevArrow size={size} />
+        <PrevArrow size={size} color={color} />
       )}
     </ArrowBaseButton>
   );

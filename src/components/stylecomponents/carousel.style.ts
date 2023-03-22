@@ -49,13 +49,15 @@ export const ArrowBaseButton = styled.button<ArrowBaseButtonProps>`
 `;
 
 export const NextArrow = styled(IoIosArrowForward)<
-  Pick<ArrowBaseButtonProps, 'size'>
+  Pick<ArrowBaseButtonProps, 'size' | 'color'>
 >`
   height: ${({ size }) => getSize(size)};
+  color: ${({ color }) => color};
 `;
 
 export const PrevArrow = styled(IoIosArrowBack)<
-  Pick<ArrowBaseButtonProps, 'size'>
+  Pick<ArrowBaseButtonProps, 'size' | 'color'>
 >`
   height: ${({ size }) => getSize(size)};
+  color: ${({ color }) => color};
 `;
