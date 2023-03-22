@@ -6,6 +6,8 @@ import { getPlaiceholder } from 'plaiceholder';
 import { GetServerSideProps } from 'next';
 import { productsDetailsProps } from '@/types/productsDetailType';
 import { AiOutlineHeart, AiOutlineShareAlt } from 'react-icons/ai';
+import ButtonBase from '@/components/buttons/ButtonBase';
+import InputBase from '@/components/inputs/InputBase';
 
 interface ServerSideReturn {
   blurDataURL: string;
@@ -75,14 +77,17 @@ const ProductDetail = ({ blurDataURL, query }: ServerSideReturn) => {
          * 판매가, 입찰 영역
          */}
         <S.PriceBox>
+          <S.PriceText>
+            {currentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+          </S.PriceText>
           <div>
-            <input />
-            <S.ButtonBase variant="warning" size="lg">
+            <InputBase fullWidth placeholder="입찰 금액을 입력하세요." />
+            <ButtonBase variant="warning" size="lg">
               입찰
-            </S.ButtonBase>
-            <S.ButtonBase variant="error" size="lg">
+            </ButtonBase>
+            <ButtonBase variant="error" size="lg">
               +{minimumBidPrice}
-            </S.ButtonBase>
+            </ButtonBase>
           </div>
         </S.PriceBox>
         <S.DetailDescBox>

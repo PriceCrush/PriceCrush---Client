@@ -20,6 +20,8 @@ interface heightProp {
 interface paddingProps {
   baseX: string;
   baseY: string;
+  inputX: string;
+  inputY: string;
 }
 
 interface zindexProps {
@@ -47,6 +49,8 @@ const height: heightProp = {
 const padding: paddingProps = {
   baseX: '18vw',
   baseY: '3vh',
+  inputX: '10px',
+  inputY: '10px',
 };
 
 const color: colorProp = {

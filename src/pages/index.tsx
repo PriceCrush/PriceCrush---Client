@@ -5,6 +5,7 @@ import Link from 'next/link';
 import useSWR from 'swr';
 import { tempFetch } from '@/utils/apis';
 import { productsDetailsProps } from '@/types/productsDetailType';
+import ButtonBase from '@/components/buttons/ButtonBase';
 
 const TempCon = styled.div`
   display: flex;
@@ -43,9 +44,9 @@ export default function Home() {
           ))}
 
         <div>
-          <S.ButtonBase variant="warning" size="xl">
+          <ButtonBase variant="warning" size="xl">
             wow
-          </S.ButtonBase>
+          </ButtonBase>
         </div>
       </TempCon>
     </main>
