@@ -9,5 +9,5 @@ export const api = axios.create({
 
 export const tempFetch = async (url: string) => {
   const { data } = await axios.get(url);
-  return data[0];
+  return data;
 };

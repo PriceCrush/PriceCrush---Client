@@ -4,7 +4,7 @@ export interface productsDetailsProps {
   desc: string;
   auctionEndDate: string;
   currentPrice: string;
-  minumumBidPrice: string;
+  minimumBidPrice: string;
   ownerName: string;
   imageUrl: string;
 }

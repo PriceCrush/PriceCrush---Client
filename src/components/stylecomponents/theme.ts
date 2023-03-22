@@ -21,17 +21,22 @@ interface paddingProps {
   baseX: string;
   baseY: string;
 }
+
+interface zindexProps {
+  header: string;
+}
 export interface themeProp {
   fontSize: fontSizeProp;
   color: colorProp;
   height: heightProp;
   padding: paddingProps;
+  zindex: zindexProps;
 }
 
 const fontSize: fontSizeProp = {
   sm: '1.2rem',
   md: '1.6rem',
-  lg: '22rem',
+  lg: '2.2rem',
   xl: '2.6rem',
 };
 
@@ -52,11 +57,16 @@ const color: colorProp = {
   ORANGE: '#D68558',
 };
 
+const zindex: zindexProps = {
+  header: '50',
+};
+
 const theme: themeProp = {
   fontSize,
   color,
   height,
   padding,
+  zindex,
 };
 
 export default theme;
