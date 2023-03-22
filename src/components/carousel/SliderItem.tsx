@@ -10,7 +10,15 @@ const Div = styled.div`
   margin: 0 auto;
 `;
 
-const SliderItem = ({ test }: { test: string }) => {
-  return <Div>{test}</Div>;
+const SliderItem = ({
+  test,
+  centerIdx,
+  curIdx,
+}: {
+  test: string;
+  centerIdx: number;
+  curIdx: number;
+}) => {
+  return <Div className={curIdx === centerIdx ? 'center' : 'side'}>{test}</Div>;
 };
 export default SliderItem;

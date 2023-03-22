@@ -1,23 +1,29 @@
 import styled from 'styled-components';
-import { AiFillAccountBook } from 'react-icons/ai';
-import * as S from '@/components/stylecomponents/styles';
-import COLOR from '@/colors/color';
 import Slider from 'react-slick';
 import SliderItem from '@/components/carousel/SliderItem';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-const TempCon = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  background: ${COLOR.GRAY};
-  font-size: 3rem;
-`;
+import { useState } from 'react';
+import ArrowButton from '../components/carousel/ArrowButton';
 
 const CustomSlider = styled(Slider)`
   .slick-slide {
     text-align: center;
+  }
+  .center {
+    transform: scale(1);
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+  }
+  .side {
+    transform: scale(0.7);
+    opacity: 0.7;
+    transition: all 0.3s ease-in-out;
+  }
+  .slick-prev::before,
+  .slick-next::before {
+    opacity: 0;
+    display: none;
   }
 `;
 
@@ -37,29 +43,29 @@ export default function Home() {
     arrows: true,
     autoplay: true,
     autoplaySpeed: 3000,
+    prevArrow: <ArrowButton direction="prev" size="lg" color="black" />,
+    nextArrow: <ArrowButton direction="next" size="lg" color="black" />,
+    beforeChange: (prev: number, center: number) => {
+      setCenterSlideIndex(center);
+    },
   };
+
+  const [centerSlideIndex, setCenterSlideIndex] = useState(0);
+
+  const testArr = ['test0', 'test1', 'test2', 'test3'];
 
   return (
     <main>
-      <TempCon>
-        <span>
-          PriceCrush 프로젝트 Client <AiFillAccountBook />
-        </span>
-        <div>
-          <S.ButtonBase variant="warning" size="xl">
-            wow
-          </S.ButtonBase>
-          <S.ButtonBase size="lg" variant="error">
-            wow
-          </S.ButtonBase>
-        </div>
-      </TempCon>
       <Div>
         <CustomSlider {...settings}>
-          <SliderItem test="test1" />
-          <SliderItem test="test2" />
-          <SliderItem test="test3" />
-          <SliderItem test="test3" />
+          {testArr.map((test, index) => (
+            <SliderItem
+              key={test}
+              test={test}
+              curIdx={index}
+              centerIdx={centerSlideIndex}
+            />
+          ))}
         </CustomSlider>
       </Div>
     </main>
