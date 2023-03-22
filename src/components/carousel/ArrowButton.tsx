@@ -1,13 +1,8 @@
-import {
-  ArrowBaseButton,
-  ArrowBaseButtonProps,
-  NextArrow,
-  PrevArrow,
-} from '../stylecomponents/carousel.style';
+import * as S from '../stylecomponents/carousel.style';
 import { CSSProperties } from 'styled-components';
 import { MouseEventHandler } from 'react';
 
-interface ArrowButtonProps extends ArrowBaseButtonProps {
+interface ArrowButtonProps extends S.ArrowBaseButtonProps {
   className?: string;
   style?: CSSProperties;
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -22,7 +17,7 @@ const ArrowButton = ({
   size,
 }: ArrowButtonProps) => {
   return (
-    <ArrowBaseButton
+    <S.ArrowBaseButton
       size={size}
       color={color}
       direction={direction}
@@ -32,11 +27,11 @@ const ArrowButton = ({
       onClick={onClick}
     >
       {direction === 'next' ? (
-        <NextArrow size={size} color={color} />
+        <S.NextArrow size={size} color={color} />
       ) : (
-        <PrevArrow size={size} color={color} />
+        <S.PrevArrow size={size} color={color} />
       )}
-    </ArrowBaseButton>
+    </S.ArrowBaseButton>
   );
 };
 export default ArrowButton;
