@@ -8,7 +8,18 @@
       "currentPrice": "19900",
       "minimumBidPrice": "3000",
       "ownerName": "Nike.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1611510338559-2f463335092c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1611510338559-2f463335092c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      },
+      "currentBidCount": 12
     },
     {
       "id": 2,
@@ -18,7 +29,17 @@
       "currentPrice": "1000000",
       "minimumBidPrice": "50000",
       "ownerName": "Samsung.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1611510338559-2f463335092c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 3,
@@ -28,7 +49,17 @@
       "currentPrice": "100000000",
       "minimumBidPrice": "10000000",
       "ownerName": "Google.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1655720828018-edd2daec9349?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1655720828018-edd2daec9349?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 4,
@@ -38,7 +69,17 @@
       "currentPrice": "10000000",
       "minimumBidPrice": "1000000",
       "ownerName": "Korea.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1540483761890-a1f7be05d99f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1540483761890-a1f7be05d99f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 5,
@@ -48,7 +89,17 @@
       "currentPrice": "2500000",
       "minimumBidPrice": "100000",
       "ownerName": "Taylor.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1654124803023-7267d9a926fd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1654124803023-7267d9a926fd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 6,
@@ -58,7 +109,17 @@
       "currentPrice": "200000",
       "minimumBidPrice": "20000",
       "ownerName": "Adidas.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1059&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1059&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 7,
@@ -68,7 +129,17 @@
       "currentPrice": "200000",
       "minimumBidPrice": "20000",
       "ownerName": "Microsoft.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 8,
@@ -78,7 +149,17 @@
       "currentPrice": "300000",
       "minimumBidPrice": "10000",
       "ownerName": "Sony.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1577174881658-0f30ed549adc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1577174881658-0f30ed549adc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 9,
@@ -88,7 +169,17 @@
       "currentPrice": "400000",
       "minimumBidPrice": "20000",
       "ownerName": "Water.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1517594422361-5eeb8ae275a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1517594422361-5eeb8ae275a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 10,
@@ -98,7 +189,17 @@
       "currentPrice": "200000",
       "minimumBidPrice": "20000",
       "ownerName": "Shure.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1648522168443-101452948e76?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1648522168443-101452948e76?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 11,
@@ -108,7 +209,17 @@
       "currentPrice": "5000000",
       "minimumBidPrice": "100000",
       "ownerName": "Npm.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1570126618953-d437176e8c79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=794&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1570126618953-d437176e8c79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=794&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 12,
@@ -118,7 +229,17 @@
       "currentPrice": "30000000",
       "minimumBidPrice": "1000000",
       "ownerName": "Lg.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1512428813834-c702c7702b78?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 13,
@@ -128,7 +249,17 @@
       "currentPrice": "1000000",
       "minimumBidPrice": "50000",
       "ownerName": "Apple.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1537589376225-5405c60a5bd8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1537589376225-5405c60a5bd8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 14,
@@ -138,7 +269,17 @@
       "currentPrice": "2000000",
       "minimumBidPrice": "50000",
       "ownerName": "Fender.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1520166012956-add9ba0835cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1520166012956-add9ba0835cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     },
     {
       "id": 15,
@@ -148,7 +289,17 @@
       "currentPrice": "3000000",
       "minimumBidPrice": "100000",
       "ownerName": "Gibson.inc",
-      "imageUrl": "https://images.unsplash.com/photo-1565829577241-474d81bf757c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+      "images": {
+        "main": "https://images.unsplash.com/photo-1565829577241-474d81bf757c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+        "details": [
+          { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 2, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 3, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 4, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 5, "url": "https://source.unsplash.com/random?q=60" },
+          { "id": 6, "url": "https://source.unsplash.com/random?q=60" }
+        ]
+      }
     }
   ]
 }
