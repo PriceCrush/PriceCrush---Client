@@ -4,11 +4,14 @@ import styled from 'styled-components';
  * Button Styled Components
  */
 
-interface Test {
+interface HeaderProps {
   isScrollDown: boolean;
 }
-
-export const Header = styled.div<Test>`
+/**
+ * @property isScrollDown - 스크롤이 아래로 내려가는지 판별한 값
+ * @description 스크롤 다운이 생기면 top이 위로 올라가서 인풋부분만 보입니다. 스크롤 올리면 다시 보입니다.
+ */
+export const Header = styled.div<HeaderProps>`
   position: fixed;
   top: ${({ theme, isScrollDown }) =>
     isScrollDown ? theme.top.topScrollDown : theme.top.topZero};
@@ -50,7 +53,7 @@ export const Header = styled.div<Test>`
   }
 `;
 
-export const Test = styled.div`
+export const InputBox = styled.div`
   position: relative;
   margin-left: auto;
 

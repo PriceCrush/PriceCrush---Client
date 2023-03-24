@@ -22,10 +22,10 @@ const Header = () => {
             <div>로그인</div>
           </div>
         </div>
-        <S.Test>
+        <S.InputBox>
           <input type="text" placeholder="상품명 검색" />
           <BsSearch className="search-icon" />
-        </S.Test>
+        </S.InputBox>
       </S.Header>
       <HeaderGuard />
     </>
