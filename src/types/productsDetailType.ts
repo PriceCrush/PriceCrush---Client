@@ -6,5 +6,8 @@ export interface productsDetailsProps {
   currentPrice: string;
   minimumBidPrice: string;
   ownerName: string;
-  imageUrl: string;
+  images: {
+    main: string;
+    details: { id: number; url: string }[];
+  };
 }
