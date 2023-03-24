@@ -4,14 +4,21 @@ import styled from 'styled-components';
  * Button Styled Components
  */
 
-export const Header = styled.div`
+interface Test {
+  isScrollDown: boolean;
+}
+
+export const Header = styled.div<Test>`
   position: fixed;
+  top: ${({ theme, isScrollDown }) =>
+    isScrollDown ? theme.top.topScrollDown : theme.top.topZero};
   width: 100%;
   height: ${({ theme }) => theme.height.header};
+  transition: top 0.3s ease-in-out;
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
   background-color: ${({ theme }) => theme.color.BLACK};
   color: ${({ theme }) => theme.color.WHITE};
   padding-left: ${({ theme }) => theme.padding.baseX};
@@ -20,9 +27,9 @@ export const Header = styled.div`
 
   div:nth-child(1) {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-
+    width: 100%;
     a {
       color: white;
       text-decoration: none;
@@ -40,6 +47,27 @@ export const Header = styled.div`
     div {
       cursor: pointer;
     }
+  }
+`;
+
+export const Test = styled.div`
+  position: relative;
+  margin-left: auto;
+
+  input {
+    padding: 8px 10px;
+    font-size: 1.6rem;
+    border-radius: 4px;
+  }
+
+  .search-icon {
+    position: absolute;
+    font-size: 1.6rem;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    color: black;
+    cursor: pointer;
   }
 `;
 
