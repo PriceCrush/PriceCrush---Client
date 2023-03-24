@@ -27,12 +27,19 @@ interface paddingProps {
 interface zindexProps {
   header: string;
 }
+
+interface topProps {
+  topZero: number;
+  topScrollDown: string;
+}
+
 export interface themeProp {
   fontSize: fontSizeProp;
   color: colorProp;
   height: heightProp;
   padding: paddingProps;
   zindex: zindexProps;
+  top: topProps;
 }
 
 const fontSize: fontSizeProp = {
@@ -42,8 +49,13 @@ const fontSize: fontSizeProp = {
   xl: '2.6rem',
 };
 
+const top: topProps = {
+  topZero: 0,
+  topScrollDown: '-47px',
+};
+
 const height: heightProp = {
-  header: '8vh',
+  header: '14vh',
 };
 
 const padding: paddingProps = {
@@ -71,6 +83,7 @@ const theme: themeProp = {
   height,
   padding,
   zindex,
+  top,
 };
 
 export default theme;
