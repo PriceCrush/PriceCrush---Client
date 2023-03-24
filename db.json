@@ -30,7 +30,7 @@
       "minimumBidPrice": "50000",
       "ownerName": "Samsung.inc",
       "images": {
-        "main": "https://images.unsplash.com/photo-1611510338559-2f463335092c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+        "main": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
         "details": [
           { "id": 1, "url": "https://source.unsplash.com/random?q=60" },
           { "id": 2, "url": "https://source.unsplash.com/random?q=60" },

@@ -69,8 +69,6 @@ export default function Home({ data }: HomeProps) {
 
   const [centerSlideIndex, setCenterSlideIndex] = useState(0);
 
-  const testArr = ['test0', 'test1', 'test2', 'test3'];
-
   useEffect(() => {
     console.log(data);
   }, [data]);
@@ -79,12 +77,13 @@ export default function Home({ data }: HomeProps) {
     <main>
       <Div>
         <CustomSlider {...settings}>
-          {testArr.map((test, index) => (
+          {data.map((item, index) => (
             <SliderItem
-              key={test}
-              test={test}
+              key={index}
+              test={String(item.id)}
               curIdx={index}
               centerIdx={centerSlideIndex}
+              thumbnail={item.images.main}
             />
           ))}
         </CustomSlider>
