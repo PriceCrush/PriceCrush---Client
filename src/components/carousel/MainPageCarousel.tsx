@@ -37,6 +37,7 @@ const MainPageCarousel = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     speed: 500,
+    dots: true,
     arrows: true,
     autoplay: true,
     autoplaySpeed: 3000,

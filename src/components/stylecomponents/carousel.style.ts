@@ -79,6 +79,9 @@ export const MainPageSlider = styled(Slider)`
     opacity: 0;
     display: none;
   }
+  .slick-dots {
+    position: static;
+  }
 `;
 
 export const SliderItemContainer = styled.div`
