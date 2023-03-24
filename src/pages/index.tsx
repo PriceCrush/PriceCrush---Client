@@ -3,8 +3,15 @@ import Slider from 'react-slick';
 import SliderItem from '@/components/carousel/SliderItem';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArrowButton from '../components/carousel/ArrowButton';
+import { GetServerSideProps } from 'next';
+import { get } from '@/utils/commnApi';
+import { TempDataProps } from '@/types/productsDetailType';
+
+interface HomeProps {
+  data: TempDataProps[];
+}
 
 const CustomSlider = styled(Slider)`
   .slick-slide {
@@ -31,7 +38,17 @@ const Div = styled.div`
   overflow: hidden;
 `;
 
-export default function Home() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const data = await get('products');
+
+  return {
+    props: {
+      data,
+    },
+  };
+};
+
+export default function Home({ data }: HomeProps) {
   const settings = {
     className: 'center',
     centerMode: true,
@@ -53,6 +70,10 @@ export default function Home() {
   const [centerSlideIndex, setCenterSlideIndex] = useState(0);
 
   const testArr = ['test0', 'test1', 'test2', 'test3'];
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <main>

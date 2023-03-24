@@ -1,4 +1,4 @@
-export interface productsDetailsProps {
+export interface TempDataProps {
   id: number;
   productName: string;
   desc: string;
