@@ -19,19 +19,27 @@ interface heightProp {
 
 interface paddingProps {
   baseX: string;
+  baseY: string;
+  inputX: string;
+  inputY: string;
+}
+
+interface zindexProps {
+  header: string;
 }
 export interface themeProp {
   fontSize: fontSizeProp;
   color: colorProp;
   height: heightProp;
   padding: paddingProps;
+  zindex: zindexProps;
 }
 
 const fontSize: fontSizeProp = {
   sm: '1.2rem',
   md: '1.6rem',
-  lg: '2rem',
-  xl: '2.4rem',
+  lg: '2.2rem',
+  xl: '2.6rem',
 };
 
 const height: heightProp = {
@@ -39,7 +47,10 @@ const height: heightProp = {
 };
 
 const padding: paddingProps = {
-  baseX: '5vw',
+  baseX: '18vw',
+  baseY: '3vh',
+  inputX: '10px',
+  inputY: '10px',
 };
 
 const color: colorProp = {
@@ -50,11 +61,16 @@ const color: colorProp = {
   ORANGE: '#D68558',
 };
 
+const zindex: zindexProps = {
+  header: '50',
+};
+
 const theme: themeProp = {
   fontSize,
   color,
   height,
   padding,
+  zindex,
 };
 
 export default theme;
