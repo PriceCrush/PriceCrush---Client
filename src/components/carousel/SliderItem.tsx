@@ -1,43 +1,26 @@
-import styled from 'styled-components';
-import COLOR from '@/colors/color';
-import { SliderItemProps } from '@/types/sliderItemTypes';
-import Image from 'next/image';
+import * as S from '@/components/stylecomponents/carousel.style';
+import { Product } from './MainPageCarousel';
 
-const Div = styled.div`
-  width: 300px;
-  height: 300px;
-  text-align: center;
-  background-color: ${COLOR.ORANGE};
-  display: inline-block;
-  margin: 0 auto;
-  position: relative;
-`;
-
-const InfoBox = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  font-size: ${({ theme }) => theme.fontSize.xl};
-`;
-
-const SliderItem = ({ thumbnail, centerIdx, curIdx }: SliderItemProps) => {
+const SliderItem = ({
+  product,
+  centerIdx,
+  curIdx,
+}: {
+  product: Product;
+  centerIdx: number;
+  curIdx: number;
+}) => {
   return (
-    <Div className={curIdx === centerIdx ? 'center' : 'side'}>
-      <Image
-        alt=""
-        width={300}
-        height={300}
-        src={thumbnail!}
-        loading="eager"
-        priority
-        sizes="300px"
-        placeholder="blur"
-        blurDataURL={thumbnail}
-      />
-      <InfoBox>{curIdx}</InfoBox>
-    </Div>
+    <S.SliderItemContainer className={curIdx === centerIdx ? 'center' : 'side'}>
+      <S.SliderImageWrapper>
+        <img src={product.images.main} alt={product.productName} />
+      </S.SliderImageWrapper>
+      <S.DetailBox>
+        <p>{product.ownerName}</p>
+        <p>{product.productName}</p>
+        <p>{`${Number(product.currentPrice).toLocaleString()} 원`}</p>
+      </S.DetailBox>
+    </S.SliderItemContainer>
   );
 };
 export default SliderItem;

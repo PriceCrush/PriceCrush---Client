@@ -1,93 +1,28 @@
-import styled from 'styled-components';
-import Slider from 'react-slick';
-import SliderItem from '@/components/carousel/SliderItem';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { useEffect, useState } from 'react';
-import ArrowButton from '../components/carousel/ArrowButton';
-import { GetServerSideProps } from 'next';
-import { get } from '@/utils/commnApi';
-import { TempDataProps } from '@/types/productsDetailType';
+import MainPageCarousel from '@/components/carousel/MainPageCarousel';
+import CategoryList from '@/components/mainPage/CategoryList';
+import * as S from '@/components/stylecomponents/mainPage.style';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import * as Api from '@/utils/commnApi';
+import { Product } from './../components/carousel/MainPageCarousel';
 
-interface HomeProps {
-  data: TempDataProps[];
+export default function Home({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  return (
+    <main>
+      <S.MainPageLayout>
+        <MainPageCarousel popularProducts={data} />
+        <CategoryList rows={2} />
+      </S.MainPageLayout>
+    </main>
+  );
 }
 
-const CustomSlider = styled(Slider)`
-  .slick-slide {
-    text-align: center;
-  }
-  .center {
-    transform: scale(1);
-    opacity: 1;
-    transition: all 0.3s ease-in-out;
-  }
-  .side {
-    transform: scale(0.7);
-    opacity: 0.7;
-    transition: all 0.3s ease-in-out;
-  }
-  .slick-prev::before,
-  .slick-next::before {
-    opacity: 0;
-    display: none;
-  }
-`;
-
-const Div = styled.div`
-  overflow: hidden;
-`;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const data = await get('products');
-
+export const getServerSideProps: GetServerSideProps = async () => {
+  const data = await Api.get<Product[]>('/products');
   return {
     props: {
       data,
     },
   };
 };
-
-export default function Home({ data }: HomeProps) {
-  const settings = {
-    className: 'center',
-    centerMode: true,
-    infinite: true,
-    centerPadding: '0',
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    speed: 500,
-    arrows: true,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    prevArrow: <ArrowButton direction="prev" size="lg" color="black" />,
-    nextArrow: <ArrowButton direction="next" size="lg" color="black" />,
-    beforeChange: (prev: number, center: number) => {
-      setCenterSlideIndex(center);
-    },
-  };
-
-  const [centerSlideIndex, setCenterSlideIndex] = useState(0);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  return (
-    <main>
-      <Div>
-        <CustomSlider {...settings}>
-          {data.map((item, index) => (
-            <SliderItem
-              key={index}
-              test={String(item.id)}
-              curIdx={index}
-              centerIdx={centerSlideIndex}
-              thumbnail={item.images.main}
-            />
-          ))}
-        </CustomSlider>
-      </Div>
-    </main>
-  );
-}
