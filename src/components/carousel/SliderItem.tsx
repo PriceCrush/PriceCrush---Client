@@ -1,24 +1,26 @@
-import styled from 'styled-components';
-import COLOR from '@/colors/color';
-
-const Div = styled.div`
-  width: 300px;
-  height: 300px;
-  text-align: center;
-  background-color: ${COLOR.ORANGE};
-  display: inline-block;
-  margin: 0 auto;
-`;
+import * as S from '@/components/stylecomponents/carousel.style';
+import { Product } from './MainPageCarousel';
 
 const SliderItem = ({
-  test,
+  product,
   centerIdx,
   curIdx,
 }: {
-  test: string;
+  product: Product;
   centerIdx: number;
   curIdx: number;
 }) => {
-  return <Div className={curIdx === centerIdx ? 'center' : 'side'}>{test}</Div>;
+  return (
+    <S.SliderItemContainer className={curIdx === centerIdx ? 'center' : 'side'}>
+      <S.SliderImageWrapper>
+        <img src={product.images.main} alt={product.productName} />
+      </S.SliderImageWrapper>
+      <S.DetailBox>
+        <p>{product.ownerName}</p>
+        <p>{product.productName}</p>
+        <p>{`${Number(product.currentPrice).toLocaleString()} 원`}</p>
+      </S.DetailBox>
+    </S.SliderItemContainer>
+  );
 };
 export default SliderItem;
