@@ -1,5 +1,5 @@
 import React from 'react';
-import { ServerStyleSheet } from 'styled-components';
+import { ServerStyleSheet, ThemeProvider } from 'styled-components';
 import Document, {
   Html,
   Head,
@@ -7,6 +7,7 @@ import Document, {
   NextScript,
   DocumentContext,
 } from 'next/document';
+import theme from '@/components/stylecomponents/theme';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -34,21 +35,34 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
-        <Head>
-          <link rel="icon" href="/favicon.ico" />
-          <link
-            rel="stylesheet"
-            as="style"
-            crossOrigin=""
-            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css"
-          />
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
+      <ThemeProvider theme={theme}>
+        <Html>
+          <Head>
+            <link rel="icon" href="/favicon.ico" />
+            <link
+              rel="stylesheet"
+              as="style"
+              crossOrigin=""
+              href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css"
+            />
+
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link
+              rel="preconnect"
+              href="https://fonts.gstatic.com"
+              crossOrigin=""
+            />
+            <link
+              href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap"
+              rel="stylesheet"
+            />
+          </Head>
+          <body>
+            <Main />
+            <NextScript />
+          </body>
+        </Html>
+      </ThemeProvider>
     );
   }
 }

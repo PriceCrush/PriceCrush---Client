@@ -1,160 +1,164 @@
-import { ButtonHTMLAttributes } from 'react';
-import styled, { css } from 'styled-components';
-import COLOR from '@/colors/color';
-import { themeProp } from './theme';
-
-type Variant =
-  | 'default'
-  | 'primary'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'disabled';
-type Size = 'sm' | 'md' | 'lg' | 'xl';
+import styled from 'styled-components';
 
 /**
- * ButtonBase 컴포넌트 Props, HTMLButton 의 Props 를 상속받음
- * @type variant {string} - 버튼의 종류를 결정
- * @type size {string} - 크기를 결정
- * @type fullWidth {boolean} 버튼이 100% width 를 가질지 결정
+ * Button Styled Components
  */
-interface ButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: Variant;
-  size: Size;
-  fullWidth: boolean;
+
+interface HeaderProps {
+  isScrollDown: boolean;
 }
-
 /**
- * ButtonBaseProps interface 의 모든 Props 들을 optional 로 바꾼 type
+ * @property isScrollDown - 스크롤이 아래로 내려가는지 판별한 값
+ * @description 스크롤 다운이 생기면 top이 위로 올라가서 인풋부분만 보입니다. 스크롤 올리면 다시 보입니다.
  */
-export type Props = Partial<ButtonBaseProps>;
+export const Header = styled.div<HeaderProps>`
+  position: fixed;
+  top: ${({ theme, isScrollDown }) =>
+    isScrollDown ? theme.top.topScrollDown : theme.top.topZero};
+  width: 100%;
+  height: ${({ theme }) => theme.height.header};
+  transition: top 0.3s ease-in-out;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: ${({ theme }) => theme.color.BLACK};
+  color: ${({ theme }) => theme.color.WHITE};
+  padding-left: ${({ theme }) => theme.padding.baseX};
+  padding-right: ${({ theme }) => theme.padding.baseX};
+  z-index: ${({ theme }) => theme.zindex.header};
 
-/**
- * variant에 따라 버튼의 배경색을 리턴하는 함수
- * @param variant {string} - variant type 변수
- * @returns - COLOR 에 담긴 컬러 string 값을 리턴
- */
-const getBgColor = (variant: Variant) => {
-  switch (variant) {
-    case 'default':
-      return COLOR.BLACK;
-    case 'error':
-      return COLOR.DEEP_ORANGE;
-    case 'warning':
-      return COLOR.DEEP_ORANGE;
-    case 'disabled':
-      return COLOR.GRAY;
-    default:
-      return COLOR.BLACK;
+  div:nth-child(1) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    a {
+      color: white;
+      text-decoration: none;
+    }
   }
-};
 
-/**
- * variant에 따라 버튼의 글씨색을 리턴하는 함수
- * @param variant {string}
- * @returns
- */
-const getTextColor = (variant: Variant) => {
-  switch (variant) {
-    default:
-      return COLOR.WHITE;
+  div:nth-child(2) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 3vw;
+    font-size: 2.4rem;
+    line-height: 3.2rem;
+
+    div {
+      cursor: pointer;
+    }
   }
-};
-
-/**
- * size props 에 따라 css 를 리턴해 버튼의 크기를 결정
- * @param size {string}
- */
-const sizeStyle = css<Props>`
-  ${({ size = 'md', theme }) => {
-    const { fontSize } = theme;
-    if (size === 'sm') {
-      return css`
-        padding: 8px 10px;
-        font-size: 1.6rem;
-      `;
-    }
-
-    if (size === 'lg') {
-      return css`
-        padding: 14px 18px;
-        font-size: 1.8rem;
-      `;
-    }
-
-    if (size === 'xl') {
-      return css`
-        padding: 14px 18px;
-        font-size: 2rem;
-      `;
-    }
-
-    return css`
-      padding: 10px 12px;
-      font-size: ${fontSize.md};
-    `;
-  }}
 `;
 
-/**
- * fullWidth Prop 에 따라 버튼의 크기를 결정하는 css를 리턴
- * @param fullWidth {boolean}
- */
-const blockStyle = css<Props>`
-  ${({ fullWidth }) => {
-    if (fullWidth) {
-      return css`
-        width: 100%;
-      `;
-    }
-
-    return css``;
-  }}
-`;
-
-/**
- * variant Prop 에 따라 버튼의 디자인을 결정하는 css를 리턴
- * @param fullWidth {boolean}
- */
-const buttonRoleStyle = css<Props>`
-  ${({ variant = 'default' }) => css`
-    background-color: ${getBgColor(variant)};
-    color: ${getTextColor(variant)};
-
-    &:hover {
-      background-color: teal;
-    }
-
-    &:disabled {
-      background-color: ${getBgColor('disabled')};
-      color: ${COLOR.BLACK};
-    }
-  `}
-`;
-
-export const ButtonBase = styled.button<Props>`
-  display: inline-flex;
-  gap: 4px;
-  justify-content: center;
-  align-items: center;
-  vertical-align: center;
+export const InputBox = styled.div`
   position: relative;
-  min-width: 64px;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 12px;
-  cursor: pointer;
+  margin-left: auto;
 
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  input {
+    padding: 8px 10px;
+    font-size: 1.6rem;
+    border-radius: 4px;
+  }
 
-  user-select: none;
-
-  transition: background-color 0.1s ease;
-
-  ${buttonRoleStyle}
-  ${sizeStyle}
-  ${blockStyle}
+  .search-icon {
+    position: absolute;
+    font-size: 1.6rem;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    color: black;
+    cursor: pointer;
+  }
 `;
+
+export const HeaderGuard = styled.div`
+  width: 0;
+  height: ${({ theme }) => theme.height.header};
+`;
+
+/**
+ * 텍스트 Components들
+ */
+export const LogoTitle = styled.h1`
+  font-size: 3rem;
+  font-family: 'Ubuntu', sans-serif;
+`;
+
+export const NameText = styled.h3`
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: 700;
+`;
+
+export const PriceText = styled.h4`
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: 700;
+`;
+/**
+ * /products/[productid] 페이지에서 사용되는 최상위 컴포넌트입니다.
+ */
+export const DetailPageLayout = styled.div`
+  display: 100%;
+  display: flex;
+  padding: ${({ theme }) => `${theme.padding.baseY} ${theme.padding.baseX}`};
+  font-size: ${({ theme }) => theme.fontSize.md};
+  justify-content: space-between;
+  column-gap: 3.125vw;
+`;
+
+export const DetailLeftSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+`;
+
+export const DetailPageImageBox = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+`;
+
+export const DetailRightSection = styled(DetailLeftSection)`
+  gap: 20px;
+`;
+
+export const DetailNameBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  row-gap: 1.5vh;
+`;
+
+export const NameBoxRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const NameBoxIconBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 1vw;
+`;
+
+export const PriceBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 12px;
+    align-items: center;
+  }
+`;
+
+export const DetailDescBox = styled(PriceBox)``;

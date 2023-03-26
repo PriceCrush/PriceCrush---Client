@@ -1,30 +1,28 @@
-import styled from 'styled-components';
-import { AiFillAccountBook } from 'react-icons/ai';
-import * as S from '@/components/stylecomponents/styles';
-import COLOR from '@/colors/color';
+import MainPageCarousel from '@/components/carousel/MainPageCarousel';
+import CategoryList from '@/components/mainPage/CategoryList';
+import * as S from '@/components/stylecomponents/mainPage.style';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import * as Api from '@/utils/commnApi';
+import { Product } from './../components/carousel/MainPageCarousel';
 
-const TempCon = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-  background: ${COLOR.GRAY};
-  font-size: 3rem;
-`;
-
-export default function Home() {
+export default function Home({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <main>
-      <TempCon>
-        <span>
-          PriceCrush 프로젝트 Client <AiFillAccountBook />
-        </span>
-        <div>
-          <S.ButtonBase fullWidth size="md">
-            wow
-          </S.ButtonBase>
-        </div>
-      </TempCon>
+      <S.MainPageLayout>
+        <MainPageCarousel popularProducts={data} />
+        <CategoryList rows={2} />
+      </S.MainPageLayout>
     </main>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const data = await Api.get<Product[]>('/products');
+  return {
+    props: {
+      data,
+    },
+  };
+};
