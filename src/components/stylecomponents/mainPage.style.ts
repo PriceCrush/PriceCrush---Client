@@ -14,7 +14,6 @@ export const CategoryContainer = styled.div`
 
 export const CategoryRow = styled.div`
   display: flex;
-  /* justify-content: space-around; */
   margin: 20px auto 0 auto;
   div + div {
     margin-left: 10px;

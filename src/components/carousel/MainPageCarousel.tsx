@@ -1,7 +1,7 @@
 import SliderItem from '@/components/carousel/SliderItem';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ArrowButton from '@/components/carousel/ArrowButton';
 import * as S from '@/components/stylecomponents/carousel.style';
 import * as Api from '@/utils/commnApi';
@@ -26,9 +26,13 @@ export interface Product {
   currentBidCount: number;
 }
 
-const MainPageCarousel = () => {
+interface MainPageCarouselProps {
+  popularProducts: Product[];
+}
+
+const MainPageCarousel = ({ popularProducts }: MainPageCarouselProps) => {
   const [centerSlideIndex, setCenterSlideIndex] = useState(0);
-  const [popularProducts, setPopularProducts] = useState<Product[]>();
+  // const [popularProducts, setPopularProducts] = useState<Product[]>();
   const settings = {
     className: 'center',
     centerMode: true,
@@ -52,12 +56,12 @@ const MainPageCarousel = () => {
     return data;
   };
 
-  useEffect(() => {
-    (async () => {
-      const newData = await getData();
-      setPopularProducts(newData);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const newData = await getData();
+  //     setPopularProducts(newData);
+  //   })();
+  // }, []);
 
   return (
     <S.MainPageSlider {...settings}>

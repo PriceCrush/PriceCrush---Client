@@ -10,8 +10,6 @@ interface CategoryRowProps {
  * @returns
  */
 const CategoryRow = ({ categories }: CategoryRowProps) => {
-  console.log(categories);
-
   return (
     <S.CategoryRow>
       {categories.map((category) => (
