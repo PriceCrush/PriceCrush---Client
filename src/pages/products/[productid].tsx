@@ -3,14 +3,14 @@ import * as S from '@/components/stylecomponents/styles';
 import Image from 'next/image';
 import { getPlaiceholder } from 'plaiceholder';
 import { GetServerSideProps } from 'next';
-import { productsDetailsProps } from '@/types/productsDetailType';
+import { TempDataProps } from '@/types/productsDetailType';
 import { AiOutlineHeart, AiOutlineShareAlt } from 'react-icons/ai';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
 
 interface ServerSideReturn {
   blurDataURL: string;
-  query: productsDetailsProps;
+  query: TempDataProps;
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
