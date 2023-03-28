@@ -15,6 +15,10 @@ interface colorProp {
 
 interface heightProp {
   header: string;
+  vh100: string;
+}
+interface widthProp {
+  widthFull: string;
 }
 
 interface paddingProps {
@@ -22,6 +26,10 @@ interface paddingProps {
   baseY: string;
   inputX: string;
   inputY: string;
+}
+interface marginProps {
+  center: string;
+  baseMargin: string;
 }
 
 interface zindexProps {
@@ -40,6 +48,8 @@ export interface themeProp {
   padding: paddingProps;
   zindex: zindexProps;
   top: topProps;
+  width: widthProp;
+  margin: marginProps;
 }
 
 const fontSize: fontSizeProp = {
@@ -56,6 +66,10 @@ const top: topProps = {
 
 const height: heightProp = {
   header: '14vh',
+  vh100: '100vh',
+};
+const width: widthProp = {
+  widthFull: '100%',
 };
 
 const padding: paddingProps = {
@@ -63,6 +77,11 @@ const padding: paddingProps = {
   baseY: '3vh',
   inputX: '10px',
   inputY: '10px',
+};
+
+const margin: marginProps = {
+  center: '0 auto',
+  baseMargin: '10px',
 };
 
 const color: colorProp = {
@@ -81,9 +100,11 @@ const theme: themeProp = {
   fontSize,
   color,
   height,
+  width,
   padding,
   zindex,
   top,
+  margin,
 };
 
 export default theme;
