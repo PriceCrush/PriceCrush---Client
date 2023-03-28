@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import Slider from 'react-slick';
-import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import ArrowButton from './../components/carousel/ArrowButton';
+import ArrowButton from '@/components/carousel/ArrowButton';
+
+import Image from 'next/image';
+import styled from 'styled-components';
 
 type Category = {
   category: string;
@@ -50,17 +53,7 @@ const sampleCategoryImgs: Category[] = [
   },
 ];
 
-const Item = (props: any) => {
-  const { img, category } = props;
-  return (
-    <Box>
-      <img src={img} alt="img" />
-      <p> {category}</p>
-    </Box>
-  );
-};
-
-const listPage = () => {
+const Searchslider = () => {
   const settings = {
     dots: true,
     infinite: true,
@@ -72,34 +65,37 @@ const listPage = () => {
     prevArrow: <ArrowButton direction="prev" size="md" color="black" />,
     nextArrow: <ArrowButton direction="next" size="md" color="black" />,
   };
+
   return (
-    <Menu>
-      <SliderContainer>
-        <Tabs>
-          <ul>
-            <li>지갑</li>
-            <li>지갑</li>
-            <li>지갑</li>
-            <li>지갑</li>
-            <li>지갑</li>
-          </ul>
-        </Tabs>
-        <StyledSlider {...settings}>
-          {sampleCategoryImgs.map((sample) => {
-            return (
-              <Item
-                key={sample.category}
-                img={sample.img}
-                category={sample.category}
-              />
-            );
-          })}
-        </StyledSlider>
-      </SliderContainer>
-    </Menu>
+    <div>
+      <StyledSlider {...settings}>
+        {sampleCategoryImgs.map((sample) => {
+          return (
+            <Item
+              key={sample.category}
+              img={sample.img}
+              category={sample.category}
+            ></Item>
+          );
+        })}
+      </StyledSlider>
+    </div>
   );
 };
 
+const Item = (props: any) => {
+  const { img, category } = props;
+  return (
+    <Box>
+      <Image src={img} alt="sample" width={100} height={100} />
+      <p> {category}</p>
+    </Box>
+  );
+};
+
+//폰트
+
+// 캐러셀
 const StyledSlider = styled(Slider)`
   border-top: 1px solid ${({ theme }) => theme.color.GRAY};
   max-width: 1280px;
@@ -139,20 +135,4 @@ const Box = styled.div`
   }
 `;
 
-const SliderContainer = styled.div`
-  margin-top: 50px;
-`;
-
-const Menu = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Tabs = styled.div`
-  display: flex;
-  > ul {
-    display: flex;
-  }
-`;
-export default listPage;
+export default Searchslider;
