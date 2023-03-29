@@ -3,5 +3,49 @@
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "es5",
-  "printWidth": 80
+  "printWidth": 80,
+  "overrides": [
+    {
+      "files": "*.ts",
+      "options": {
+        "parser": "typescript"
+      }
+    },
+    {
+      "files": "*.tsx",
+      "options": {
+        "parser": "typescript"
+      }
+    },
+    {
+      "files": "*.style.ts",
+      "options": {
+        "singleQuote": true,
+        "tabWidth": 2,
+        "printWidth": 80,
+        "trailingComma": "es5",
+        "semi": true,
+        "quoteProps": "as-needed",
+        "bracketSpacing": true,
+        "arrowParens": "avoid",
+        "sortProps": true,
+        "order": [
+          "width",
+          "height",
+          "display",
+          "margin",
+          "padding",
+          "border",
+          "top",
+          "right",
+          "bottom",
+          "left",
+          "position",
+          "font",
+          "background",
+          "color"
+        ]
+      }
+    }
+  ]
 }
