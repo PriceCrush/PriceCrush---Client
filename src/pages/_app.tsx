@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import theme from '@/components/stylecomponents/theme';
 import Header from '@/components/header/Header';
+import Fab from '@/components/floatingactionbutton/Fab';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -12,6 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <GlobalStyle />
         <Header />
         <Component {...pageProps} />
+        <Fab />
       </ThemeProvider>
     </>
   );
