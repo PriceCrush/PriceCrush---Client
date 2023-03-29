@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const Img = styled.img`
+const Img = styled.img<{ isMain: boolean }>`
   width: 100px;
   height: 100px;
 `;
 
 const Create = () => {
   const [imgUrl, setImgUrl] = useState<string[]>([]);
-  const [mainImg, setMainImg] = useState<Blob>();
+  const [mainImgIndex, setMainImgIndex] = useState(0);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,12 +17,13 @@ const Create = () => {
   const onChangeFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = Array.from(event.target.files as FileList);
     const imgArr = fileList.map((file, index) => {
-      if (index === 0) {
-        setMainImg(file);
-      }
       return URL.createObjectURL(file);
     });
     setImgUrl(imgArr);
+  };
+
+  const onClickImg = (index: number) => {
+    setMainImgIndex(index);
   };
 
   useEffect(() => {
@@ -39,8 +40,13 @@ const Create = () => {
       <form onSubmit={onSubmit}>
         <div>
           <input type="file" multiple onChange={onChangeFileInput} />
-          {imgUrl.map((img) => (
-            <Img key={img} src={img} />
+          {imgUrl.map((img, index) => (
+            <Img
+              key={img}
+              src={img}
+              onClick={() => onClickImg(index)}
+              isMain={index === mainImgIndex}
+            />
           ))}
         </div>
         <div>
