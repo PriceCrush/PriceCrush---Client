@@ -3,6 +3,7 @@ interface fontSizeProp {
   md: string;
   lg: string;
   xl: string;
+  pageTitle: string;
 }
 
 interface colorProp {
@@ -53,6 +54,7 @@ const fontSize: fontSizeProp = {
   md: '1.6rem',
   lg: '2.2rem',
   xl: '2.6rem',
+  pageTitle: '3rem',
 };
 
 const top: topProps = {
