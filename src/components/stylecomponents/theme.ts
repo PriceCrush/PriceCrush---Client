@@ -33,6 +33,11 @@ interface topProps {
   topScrollDown: string;
 }
 
+interface positionProps {
+  fabRight: string;
+  fabBottom: string;
+}
+
 export interface themeProp {
   fontSize: fontSizeProp;
   color: colorProp;
@@ -40,6 +45,7 @@ export interface themeProp {
   padding: paddingProps;
   zindex: zindexProps;
   top: topProps;
+  position: positionProps;
 }
 
 const fontSize: fontSizeProp = {
@@ -73,6 +79,11 @@ const color: colorProp = {
   ORANGE: '#D68558',
 };
 
+const position: positionProps = {
+  fabRight: '10vw',
+  fabBottom: '10vh',
+};
+
 const zindex: zindexProps = {
   header: '50',
 };
@@ -84,6 +95,7 @@ const theme: themeProp = {
   padding,
   zindex,
   top,
+  position,
 };
 
 export default theme;
