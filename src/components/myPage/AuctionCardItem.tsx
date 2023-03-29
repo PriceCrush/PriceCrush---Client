@@ -1,6 +1,7 @@
 import React from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
 import Image from 'next/image';
+import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 
 interface AuctionCardItemProps {
   title?: string;
@@ -32,7 +33,7 @@ const AuctionCardItem = ({
           <S.CardTitle>{title}</S.CardTitle>
         </S.CardInfoRow>
         <S.CardInfoRow>
-          <S.CardPrice>{price}원</S.CardPrice>
+          <S.CardPrice>{translatePriceToKoreanWon(price)}</S.CardPrice>
           <S.CardDate>{date}</S.CardDate>
         </S.CardInfoRow>
       </S.CardInfoBox>

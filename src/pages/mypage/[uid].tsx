@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
 import AuctionCardItem from '@/components/myPage/AuctionCardItem';
+import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 
 const MyPage = () => {
   return (
