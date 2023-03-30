@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useState } from 'react';
 import ArrowButton from '@/components/carousel/ArrowButton';
 import * as S from '@/components/stylecomponents/carousel.style';
-import * as Api from '@/utils/commnApi';
+import * as Api from '@/utils/commonApi';
 
 interface Images {
   main: string;
