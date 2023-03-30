@@ -3,6 +3,7 @@ interface fontSizeProp {
   md: string;
   lg: string;
   xl: string;
+  pageTitle: string;
 }
 
 interface colorProp {
@@ -41,6 +42,11 @@ interface topProps {
   topScrollDown: string;
 }
 
+interface positionProps {
+  fabRight: string;
+  fabBottom: string;
+}
+
 export interface themeProp {
   fontSize: fontSizeProp;
   color: colorProp;
@@ -50,6 +56,7 @@ export interface themeProp {
   top: topProps;
   width: widthProp;
   margin: marginProps;
+  position: positionProps;
 }
 
 const fontSize: fontSizeProp = {
@@ -57,6 +64,7 @@ const fontSize: fontSizeProp = {
   md: '1.6rem',
   lg: '2.2rem',
   xl: '2.6rem',
+  pageTitle: '3rem',
 };
 
 const top: topProps = {
@@ -92,6 +100,11 @@ const color: colorProp = {
   ORANGE: '#D68558',
 };
 
+const position: positionProps = {
+  fabRight: '10vw',
+  fabBottom: '10vh',
+};
+
 const zindex: zindexProps = {
   header: '50',
 };
@@ -105,6 +118,7 @@ const theme: themeProp = {
   zindex,
   top,
   margin,
+  position,
 };
 
 export default theme;

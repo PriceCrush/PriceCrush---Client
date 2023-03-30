@@ -18,6 +18,9 @@ const Header = () => {
             </Link>
           </div>
           <div>
+            <div>
+              <Link href={'/mypage/132'}>마이(임시)</Link>
+            </div>
             <div>SHOP</div>
             <div>로그인</div>
           </div>

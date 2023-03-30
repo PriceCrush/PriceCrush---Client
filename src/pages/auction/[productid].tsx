@@ -43,7 +43,7 @@ const ProductDetail = ({ blurDataURL, query }: ServerSideReturn) => {
         <S.DetailPageImageBox>
           <Image
             alt=""
-            src={String(query.imageUrl)}
+            src={String(query.images.details[0].url)}
             fill
             style={{ objectFit: 'cover' }}
             priority
