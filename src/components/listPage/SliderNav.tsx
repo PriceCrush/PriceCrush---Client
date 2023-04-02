@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+// 1. 타입
 type SliderNavProps = {
   tab: string | undefined;
   data: Category[];
@@ -19,6 +20,7 @@ type TabItemProps = {
   tab: number | string | undefined;
 };
 
+// 2. styledComponent
 const StyledTabItem = styled.li<{ active: boolean }>`
   padding-right: 27px;
   font-weight: ${({ active }) => (active ? '700' : '400')};
@@ -39,6 +41,8 @@ const SliderNav = ({ tab, data }: SliderNavProps) => {
   // listid에서  router로 params를 받음
   // const { tab, data } = props;
   //all일경우 전체부분이 굵은 글씨가 되도록 해야함
+
+  //3. function
   const checkCurrentPage = (id: number) => {
     let check = false;
     if (Number(tab) === id) {
@@ -46,6 +50,10 @@ const SliderNav = ({ tab, data }: SliderNavProps) => {
     }
     return check;
   };
+
+  // nav클릭 -> 데이터 전송 -> 받은 데이터 -> 화면출력
+  // 2번째를 axios를 이용해서 정보를 보내고
+  //
 
   return (
     <SliderNavLayOut>
@@ -80,7 +88,7 @@ const SliderNavLayOut = styled.div`
   }
 `;
 
-const TabLink = styled.a`
+const TabLink = styled(Link)`
   color: #222;
   cursor: pointer;
   display: flex;
