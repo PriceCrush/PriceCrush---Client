@@ -7,16 +7,18 @@ import ArrowButton from '@/components/carousel/ArrowButton';
 
 import Image from 'next/image';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 type Category = {
+  tab: number;
   category: string;
   img: string;
 };
 interface SearchSliderProps {
-  data: Category[];
+  category: Category[];
 }
 
-const Searchslider = ({ data }: SearchSliderProps) => {
+const Searchslider = ({ category }: SearchSliderProps) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -32,13 +34,14 @@ const Searchslider = ({ data }: SearchSliderProps) => {
   return (
     <div>
       <StyledSlider {...settings}>
-        {data.map((sample) => {
+        {category.map((sample) => {
           return (
             <Item
               key={sample.category}
               img={sample.img}
               category={sample.category}
-            ></Item>
+              tab={sample.tab}
+            />
           );
         })}
       </StyledSlider>
@@ -47,9 +50,14 @@ const Searchslider = ({ data }: SearchSliderProps) => {
 };
 
 const Item = (props: any) => {
-  const { img, category } = props;
+  const { img, category, tab } = props;
+  const router = useRouter();
+  const goRouter = () => {
+    router.push(`/search/${tab}`);
+  };
+
   return (
-    <Box>
+    <Box onClick={goRouter}>
       <Image src={img} alt="sample" width={100} height={100} />
       <span> {category}</span>
     </Box>
@@ -85,6 +93,7 @@ const Box = styled.div`
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  cursor: pointer;
 
   > span {
     font-size: ${({ theme }) => theme.fontSize.md};

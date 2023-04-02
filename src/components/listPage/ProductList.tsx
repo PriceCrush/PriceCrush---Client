@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import * as S from '@/components/stylecomponents/styles';
 
@@ -11,6 +11,7 @@ type Category = {
 
 interface ProductListProps {
   column: number;
+  category: Category[];
   data: Category[];
 }
 
@@ -21,30 +22,49 @@ type ProductListLayOutProps = {
 //nav에서 누른거 연결
 // ex-> 가방이면 가방 9개 나오도록
 
-const ProductList = ({ column, data }: ProductListProps) => {
+const ProductList = ({ column, data, category }: ProductListProps) => {
   //예비
   const Price = 10000000;
-
-  // const HandleDataLength(()=>{
-
+  const DetailPageURL = '/';
+  const categoryName = '시계';
   //페이지 네이션을 누를경우 여기 부분만 바뀌도록
-
   // column에 따라 grid-template-colmn과 slice의 숫자가 바뀌도록
+
+  //카테고리별 나오게하는거
+  // 데이터 필터링 -> nav바에 따라서
+  const [filtedData, setFiltedData] = useState([]);
+
+  type handleDataProps = {
+    data: Category[];
+    categoryName: string;
+  };
+
+  const handleData = useCallback(({ data, categoryName }: handleDataProps) => {
+    let filtedData = [];
+    filtedData = data.filter((el) => el.category === categoryName);
+    return filtedData;
+  }, []);
+
+  useEffect(() => {
+    setFiltedData(handleData({ data, categoryName }));
+  }, [data, handleData, categoryName]);
+
+  //데이터 -> 그냥 db에 있는걸로 하자
 
   return (
     <ProductListLayOut column={column}>
       {/* 0~8 이부분 수정이 가능하도록  */}
-      {data.slice(0, 8).map((item, idx) => {
+      {filtedData.slice(0, 8).map((item, idx) => {
         return (
           <ProductListBox key={idx}>
             <ProductBox>
               {/* 차후 link는 디테일로 가도록  */}
-              <ProductInner href="/">
+              <ProductInner href={DetailPageURL}>
                 <Product>
                   <Image src={item.img} alt="sample" width={230} height={230} />
                 </Product>
 
-                <p>{item.category}</p>
+                <p>{item.id}</p>
                 <S.NameText>상품명(제목)</S.NameText>
 
                 <PriceBox>

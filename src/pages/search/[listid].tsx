@@ -1,9 +1,11 @@
 import ProductList from '@/components/listPage/ProductList';
-import SearchSlider from '@/components/listPage/Searchslider';
-import SliderNav from '@/components/listPage/sliderNav';
+
+import SearchSlider from '@/components/listPage/SearchSlider';
+import SliderNav from '@/components/listPage/SliderNav';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import PaginationComponent from '@/components/listPage/PaginationComponent';
 
 //이 타입은 추후 api가 들어올때 확정나기 때문에 우선보류
 type Category = {
@@ -12,12 +14,13 @@ type Category = {
   img: string;
 };
 
-const samples: Category[] = [
+const sampleCategory: Category[] = [
   {
     tab: 1,
     category: '여성지갑',
     img: 'https://img.soldout.co.kr/items/2022/01/18/4914e863-485c-4ec3-8902-cce9a23c42a5.png/soldout/resize/564x564/optimize',
   },
+
   {
     tab: 2,
     category: '게임',
@@ -27,11 +30,6 @@ const samples: Category[] = [
     tab: 3,
     category: '테크',
     img: 'https://img.soldout.co.kr/items/2022/10/04/aaf8cf47-44a3-4cbb-a551-bd41fe703c1c.png/soldout/resize/564x564/optimize',
-  },
-  {
-    tab: 4,
-    category: '신발',
-    img: 'https://img.soldout.co.kr/items/2023/03/14/d6bb4a91-2a64-42d0-a202-6460d93821f6.png/soldout/resize/564x564/optimize',
   },
   {
     tab: 5,
@@ -61,10 +59,12 @@ const samples: Category[] = [
   },
 ];
 
-const listPage = () => {
+const ListPage = () => {
   // nav바
   const router = useRouter();
+
   const { listid } = router.query;
+
   //nav바
 
   // 이 페이지에서 주소와 주소에 맞는 데이터 정제해서 보내줌
@@ -72,16 +72,27 @@ const listPage = () => {
   return (
     <ListPageWapper>
       <SliderSection>
-        <SliderNav tab={listid} data={samples} />
-        <SearchSlider data={samples} />
+        <SliderNav
+          tab={listid}
+          category={sampleCategory}
+          data={sampleCategory}
+        />
+        <SearchSlider category={sampleCategory} />
       </SliderSection>
       <ProductSection>
-        <ProductList column={4} data={samples} />
+        <ProductList
+          column={4}
+          data={sampleCategory}
+          category={sampleCategory}
+        />
       </ProductSection>
       <PageButtonSection>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        <PaginationComponent
+          activePage
+          itemsCountPerPage={5}
+          totalItemsCount={10}
+          pageRangeDisplayed={5}
+        />
       </PageButtonSection>
     </ListPageWapper>
   );
@@ -108,18 +119,6 @@ const ProductSection = styled.section`
   max-width: 1280px;
 `;
 //
-const ListPageWapper = styled.div`
-  /* width: 100vh; */
-  /* header을 뺀값 */
-  /* height: 86vh; */
-  /* display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-areas:
-    'slider slider  slider slider'
-    'product product product product'
-    'product  product product product'
-    'pagebutton pagebutton pagebutton pagebutton'; */
-`;
+const ListPageWapper = styled.div``;
 
-export default listPage;
+export default ListPage;
