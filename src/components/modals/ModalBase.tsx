@@ -16,7 +16,6 @@ const ModalBackground = styled.div`
 const ModalContent = styled.div`
   height: 50%;
   width: 75%;
-  overflow: auto;
   border-radius: 1.5rem;
   background-color: white;
   padding: 3rem;
@@ -53,6 +52,11 @@ const CloseButton = styled.button`
   }
 `;
 
+const ModalRealContent = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
 const ModalBase = () => {
   const {
     modalDataState: { isOpen, title, content },
@@ -86,7 +90,7 @@ const ModalBase = () => {
             <CgClose />
           </CloseButton>
         </ModalHeader>
-        <div>{content}</div>
+        <ModalRealContent>{content}</ModalRealContent>
       </ModalContent>
     </ModalBackground>
   );

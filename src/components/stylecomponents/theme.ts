@@ -40,6 +40,13 @@ interface positionProps {
   fabBottom: string;
 }
 
+interface deviceSizeProp {
+  mobile: string;
+  tablet: string;
+  laptop: string;
+  desktop: string;
+}
+
 export interface themeProp {
   fontSize: fontSizeProp;
   color: colorProp;
@@ -48,6 +55,7 @@ export interface themeProp {
   zindex: zindexProps;
   top: topProps;
   position: positionProps;
+  deviceSize: deviceSizeProp;
 }
 
 const fontSize: fontSizeProp = {
@@ -92,6 +100,13 @@ const zindex: zindexProps = {
   header: '50',
 };
 
+const deviceSize: deviceSizeProp = {
+  mobile: '320px',
+  tablet: '768px',
+  laptop: '1024px',
+  desktop: '1440px',
+};
+
 const theme: themeProp = {
   fontSize,
   color,
@@ -100,6 +115,7 @@ const theme: themeProp = {
   zindex,
   top,
   position,
+  deviceSize,
 };
 
 export default theme;
