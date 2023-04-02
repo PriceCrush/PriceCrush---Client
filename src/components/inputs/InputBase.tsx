@@ -1,10 +1,10 @@
 import { InputBaseProps } from '@/types/inputTypes';
+import { forwardRef } from 'react';
 import { inputStyle } from '@/utils/getInputStyle';
 import styled from 'styled-components';
 
 const InputBaseS = styled.input<InputBaseProps>`
   border-radius: 12px;
-  height: 100%;
   box-sizing: border-box;
   font-size: ${({ theme }) => theme.fontSize.md};
   padding: ${({ theme }) => `${theme.padding.inputY} ${theme.padding.inputX}`};
@@ -22,8 +22,8 @@ const InputBaseS = styled.input<InputBaseProps>`
   ${inputStyle};
 `;
 
-const InputBase = (props: InputBaseProps) => {
-  return <InputBaseS {...props} />;
-};
+const InputBase = forwardRef<HTMLInputElement, InputBaseProps>((props, ref) => {
+  return <InputBaseS {...props} ref={ref} />;
+});
 
 export default InputBase;

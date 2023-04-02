@@ -23,13 +23,14 @@ const CategoryList = ({ rows }: CategoryListProps) => {
   ];
   const count = Math.ceil(arr.length / rows);
 
+  const rowArray = Array.from(Array(rows).keys()).map((rowNumber) =>
+    arr.slice(rowNumber * count, (rowNumber + 1) * count)
+  );
+
   return (
     <>
-      {Array.from(Array(rows).keys()).map((rowNumber) => (
-        <CategoryRow
-          key={rowNumber}
-          categories={arr.slice(rowNumber * count, (rowNumber + 1) * count)}
-        />
+      {rowArray.map((categoryRow, index) => (
+        <CategoryRow key={index} categories={categoryRow} />
       ))}
     </>
   );
