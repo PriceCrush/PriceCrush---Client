@@ -11,7 +11,7 @@ export const modalState = atom<ModalStateProps>({
   key: 'modalState',
   default: {
     isOpen: false,
-    title: ' ',
+    title: '',
     content: '',
   },
 });
