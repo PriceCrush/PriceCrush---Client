@@ -10,6 +10,7 @@ interface colorProp {
   BLACK: string;
   WHITE: string;
   GRAY: string;
+  LIGHT_GRAY: string;
   DEEP_ORANGE: string;
   ORANGE: string;
 }
@@ -96,6 +97,7 @@ const color: colorProp = {
   BLACK: '#000000',
   WHITE: '#FFFFFF',
   GRAY: '#d4d4d4',
+  LIGHT_GRAY: '#f4f4f4',
   DEEP_ORANGE: '#FF5C00',
   ORANGE: '#D68558',
 };

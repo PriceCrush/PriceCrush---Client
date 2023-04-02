@@ -11,6 +11,11 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.soldout.co.kr',
+        port: '',
+      },
     ],
   },
 };
