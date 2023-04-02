@@ -10,7 +10,12 @@ const Fab = () => {
    * @description /auth 경로에서는 FAB 버튼을 렌더링하지 않는다. (로그인, 회원가입 페이지)
    * @description /auction/create 경로에서는 FAB 버튼을 렌더링하지 않는다. (경매물품 등록 페이지)
    */
-  if (pathname.startsWith('/auth') || pathname.startsWith('/auction/create')) {
+  if (
+    pathname.startsWith('/auth') ||
+    pathname.startsWith('/auction/create') ||
+    pathname.startsWith('/member/login') ||
+    pathname.startsWith('/member/siginup')
+  ) {
     return null;
   }
 

@@ -21,8 +21,12 @@ const Header = () => {
             <div>
               <Link href={'/mypage/132'}>마이(임시)</Link>
             </div>
-            <div>SHOP</div>
-            <div>로그인</div>
+            <div>
+              <Link href={'/search/all'}>SHOP</Link>
+            </div>
+            <div>
+              <Link href={'/member/login'}>로그인</Link>
+            </div>
           </div>
         </div>
         <S.InputBox>
