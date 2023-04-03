@@ -1,12 +1,64 @@
 import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
 import AuctionCardItem from '@/components/myPage/AuctionCardItem';
-import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
+import { GetServerSidePropsContext } from 'next';
 
-const MyPage = () => {
+interface TempServerSideProps {
+  tempData: {
+    id: number;
+    title: string;
+    price: number;
+    date: string;
+    isSelling: boolean;
+    status: string;
+  }[];
+}
+
+/**
+ * @description 클라이언트에서 tempDate를 생섬하고 처리하면 Hydration Mismatch 에러가 발생함
+ * @description 임시로 서버에서 데이터를 받아서 처리해야함
+ * @param context
+ * @returns
+ */
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  console.log(context.params);
+
+  /**
+   * @description 임시 데이터 나중에 지워짐
+   * @description 입찰 상품 / 판매 상품 동작 확인을 위함
+   */
+  const tempData = Array.from({ length: 15 }, (v, i) => {
+    const title = '테스트 경매 상품';
+    const price = Math.floor(Math.random() * 1000000) + 10000;
+    const date = `2021.08.01 ~ 2021.08.31`;
+    const isSelling = Math.random() > 0.5;
+    const status = Math.random() > 0.5 ? '진행중' : '종료됨';
+    return {
+      id: i + 1,
+      title,
+      price,
+      date,
+      isSelling,
+      status,
+    };
+  });
+
+  return {
+    props: {
+      tempData,
+    },
+  };
+};
+
+const MyPage = ({ tempData }: TempServerSideProps) => {
   const [progressFilterValue, setProgressFilterValue] = useState('진행중');
   const [sellingBiddingFilterValue, setSellingBiddingFilterValue] =
     useState('입찰 상품');
+  const [myAuctionItems, setMyAuctionItems] = useState(tempData);
+  const [filteredMyAuctionItems, setFilteredMyAuctionItems] =
+    useState(tempData);
 
   const handleSellingBiddingFilter = (
     e: React.MouseEvent<HTMLHeadingElement>
@@ -31,6 +83,16 @@ const MyPage = () => {
       setProgressFilterValue(currentClickedProgressFilterTitle);
     }
   };
+
+  useEffect(() => {
+    const updatedFilteredMyAuctionItems = myAuctionItems.filter(
+      (item) =>
+        item.status === progressFilterValue &&
+        ((sellingBiddingFilterValue === '입찰 상품' && !item.isSelling) ||
+          (sellingBiddingFilterValue === '판매 상품' && item.isSelling))
+    );
+    setFilteredMyAuctionItems(updatedFilteredMyAuctionItems);
+  }, [progressFilterValue, sellingBiddingFilterValue]);
 
   return (
     <S.MyPageLayout>
@@ -73,9 +135,17 @@ const MyPage = () => {
        * @description 경매 상품 리스트 카드 영역
        */}
       <S.CardWrapper>
-        <AuctionCardItem />
-        <AuctionCardItem />
-        <AuctionCardItem status="종료됨" />
+        {filteredMyAuctionItems.map((item, index) => (
+          <AuctionCardItem
+            id={item.id}
+            key={index}
+            title={item.title}
+            price={item.price}
+            date={item.date}
+            isSelling={item.isSelling}
+            status={item.status}
+          />
+        ))}
       </S.CardWrapper>
     </S.MyPageLayout>
   );
