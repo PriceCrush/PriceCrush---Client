@@ -8,14 +8,16 @@ import EndAuction from '../modals/mypage/EndAuction';
 import CancelAuction from '../modals/mypage/CancelAuction';
 
 interface AuctionCardItemProps {
+  id?: number;
   title?: string;
   price?: number;
   date?: string;
   isSelling?: boolean;
-  status?: '진행중' | '종료됨';
+  status?: string;
 }
 
 const AuctionCardItem = ({
+  id,
   title = '테스트 경매 상품',
   price = 1000000,
   date = '2021.08.01 ~ 2021.08.31',
@@ -60,7 +62,7 @@ const AuctionCardItem = ({
         </S.CardInfoRow>
       </S.CardInfoBox>
       <S.CardStatusBox>
-        {isSelling ? (
+        {isSelling && status === '진행중' ? (
           <>
             <ButtonBase
               variant="endAuction"
