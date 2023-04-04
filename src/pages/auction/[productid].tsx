@@ -86,6 +86,9 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
             // blurDataURL={blurDataURL}
           />
         </S.DetailPageImageBox>
+        <S.TimeDiffBox>
+          <span>{timeDiff}</span>
+        </S.TimeDiffBox>
       </S.DetailLeftSection>
       {/**
        * 오른쪽 섹션
@@ -126,7 +129,6 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
         <S.DetailDescBox>
           <S.PriceText>상품 설명</S.PriceText>
           <span>{tempData.description}</span>
-          <span>{timeDiff}</span>
         </S.DetailDescBox>
       </S.DetailRightSection>
     </S.DetailPageLayout>

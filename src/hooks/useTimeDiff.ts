@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * @description 기준시간으로부터 현재시간까지의 차이를 구해 리턴
+ * @param referenceTime 현재로부터 차이를 구할 시간
+ * @returns timeDiff 현재로부터 차이를 구한 시간
+ */
 export const useTimeDiff = (referenceTime: string): string => {
   const [timeDiff, setTimeDiff] = useState('');
 
@@ -12,11 +17,11 @@ export const useTimeDiff = (referenceTime: string): string => {
       const seconds = Math.floor((diff / 1000) % 60);
 
       setTimeDiff(
-        `${days.toString().padStart(2, '0')}:${hours
+        `${days.toString().padStart(2, '0')}일 ${hours
           .toString()
-          .padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+          .padStart(2, '0')}시 ${minutes
           .toString()
-          .padStart(2, '0')}`
+          .padStart(2, '0')}분 ${seconds.toString().padStart(2, '0')}초`
       );
     }, 1000);
 

@@ -79,3 +79,8 @@ export const PriceText = styled.h4`
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: 700;
 `;
+
+export const TimeDiffBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
