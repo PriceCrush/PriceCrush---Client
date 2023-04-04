@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import * as S from '@/components/stylecomponents/styles';
+import * as S from '@/components/stylecomponents/productDetail.style';
 import Image from 'next/image';
 import { getPlaiceholder } from 'plaiceholder';
 import { GetServerSideProps } from 'next';
