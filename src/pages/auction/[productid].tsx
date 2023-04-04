@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import Image from 'next/image';
 import { getPlaiceholder } from 'plaiceholder';
@@ -14,6 +14,8 @@ import InputBase from '@/components/inputs/InputBase';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 import { useTimeDiff } from '@/hooks/useTimeDiff';
 import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
+import { useModal } from '@/hooks/useModal';
+import BidConfirm from '@/components/modals/productPage/BidConfirm';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -68,6 +70,34 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
 const ProductDetail = ({ tempData }: ServerSideReturn) => {
   const timeDiff = useTimeDiff(String(tempData.end_date));
+  const { openModal } = useModal();
+  const [inputBidPrice, setInputBidPrice] = useState(tempData.start_price);
+
+  const handleCustomBidPriceInput = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    e.preventDefault();
+    setInputBidPrice(Number(e.target.value));
+  };
+
+  const handleBidButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    type Name = 'customPriceBid' | 'staticPriceBid';
+    const name = e.currentTarget.name as Name;
+    if (name === 'customPriceBid') {
+      openModal({
+        title: '입찰 확인',
+        content: <BidConfirm bidPrice={inputBidPrice} />,
+      });
+    } else if (name === 'staticPriceBid') {
+      openModal({
+        title: '입찰 확인',
+        content: <BidConfirm bidPrice={inputBidPrice + 1000} />,
+      });
+    } else {
+      throw new Error('버튼 이름이 잘못되었습니다.');
+    }
+  };
 
   return (
     <S.DetailPageLayout>
@@ -112,11 +142,26 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
             {translatePriceToKoreanWon(tempData.start_price, true)}~
           </S.PriceText>
           <div>
-            <InputBase fullWidth placeholder="입찰 금액을 입력하세요." />
-            <ButtonBase variant="warning" size="lg">
+            <InputBase
+              fullWidth
+              placeholder="입찰 금액을 입력하세요."
+              onChange={handleCustomBidPriceInput}
+              value={inputBidPrice}
+            />
+            <ButtonBase
+              variant="warning"
+              size="lg"
+              onClick={handleBidButtonClick}
+              name="customPriceBid"
+            >
               입찰
             </ButtonBase>
-            <ButtonBase variant="error" size="lg">
+            <ButtonBase
+              variant="error"
+              size="lg"
+              onClick={handleBidButtonClick}
+              name="staticPriceBid"
+            >
               +최소입찰가격
             </ButtonBase>
           </div>

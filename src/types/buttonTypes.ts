@@ -8,7 +8,9 @@ export type Variant =
   | 'error'
   | 'disabled'
   | 'cancelAuction'
-  | 'endAuction';
+  | 'endAuction'
+  | 'positive'
+  | 'negative';
 export type Size = 'sm' | 'md' | 'lg' | 'xl';
 
 /**
