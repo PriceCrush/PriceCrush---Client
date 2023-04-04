@@ -17,7 +17,7 @@ export const DetailPageLayout = styled.div`
 export const DetailLeftSection = styled.section`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 40%;
 `;
 
 export const DetailPageImageBox = styled.div`
@@ -29,6 +29,7 @@ export const DetailPageImageBox = styled.div`
 `;
 
 export const DetailRightSection = styled(DetailLeftSection)`
+  width: 60%;
   gap: 20px;
 `;
 
