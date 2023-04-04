@@ -82,5 +82,8 @@ export const PriceText = styled.h4`
 
 export const TimeDiffBox = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 `;
+
+export const CurrentPriceBox = styled(TimeDiffBox)``;

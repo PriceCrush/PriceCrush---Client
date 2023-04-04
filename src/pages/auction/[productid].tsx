@@ -13,6 +13,7 @@ import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 import { useTimeDiff } from '@/hooks/useTimeDiff';
+import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -74,19 +75,13 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
        * 왼쪽 섹션
        */}
       <S.DetailLeftSection>
-        <S.DetailPageImageBox>
-          <Image
-            alt=""
-            src="/images/temp.jpeg"
-            fill
-            style={{ objectFit: 'cover' }}
-            priority
-            sizes="50vw"
-            // placeholder="blur"
-            // blurDataURL={blurDataURL}
-          />
-        </S.DetailPageImageBox>
+        <AuctionDetailCarousel images={tempData.images} />
+        <S.CurrentPriceBox>
+          <h3>최고 입찰 가격</h3>
+          <span>최고 입찰 가격 : 현재 가격</span>
+        </S.CurrentPriceBox>
         <S.TimeDiffBox>
+          <h3>남은 시간</h3>
           <span>{timeDiff}</span>
         </S.TimeDiffBox>
       </S.DetailLeftSection>
@@ -114,7 +109,7 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
          */}
         <S.PriceBox>
           <S.PriceText>
-            {translatePriceToKoreanWon(tempData.start_price, true)}
+            {translatePriceToKoreanWon(tempData.start_price, true)}~
           </S.PriceText>
           <div>
             <InputBase fullWidth placeholder="입찰 금액을 입력하세요." />
