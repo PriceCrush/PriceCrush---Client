@@ -29,7 +29,7 @@ export const DescriptionBox = styled.div`
 export const ButtonBox = styled.div`
   width: 100%;
   display: flex;
-  alint-items: center;
+  align-items: center;
   justify-content: center;
   margin-top: 5%;
   gap: 10%;

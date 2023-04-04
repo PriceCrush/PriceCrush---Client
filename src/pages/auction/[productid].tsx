@@ -1,57 +1,89 @@
 import React, { useEffect, useState } from 'react';
-import * as S from '@/components/stylecomponents/styles';
+import * as S from '@/components/stylecomponents/productDetail.style';
 import Image from 'next/image';
 import { getPlaiceholder } from 'plaiceholder';
 import { GetServerSideProps } from 'next';
-import { TempDataProps } from '@/types/productsDetailType';
+import {
+  FixedLengthString,
+  ProductDetailsProps,
+  TempDataProps,
+} from '@/types/productsDetailType';
 import { AiOutlineHeart, AiOutlineShareAlt } from 'react-icons/ai';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
+import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
+import { useTimeDiff } from '@/hooks/useTimeDiff';
+import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
 
 interface ServerSideReturn {
-  blurDataURL: string;
-  query: TempDataProps;
+  // blurDataURL: string;
+  tempData: ProductDetailsProps;
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   console.log(query);
-  const { base64 } = await getPlaiceholder(String(query.imageUrl));
+  // const { base64 } = await getPlaiceholder(String(query.imageUrl));
+
+  /**
+   * @description 임시 데이터 10개 생성
+   */
+  const tempData: ProductDetailsProps = {
+    productId: '1234',
+    productName: `엄청난 상품`,
+    category: '카테고리',
+    start_price: 100000,
+    description: '상품 설명 상품 설명 상품 설명 상품 설명',
+    start_date: new Date().toISOString(), // start_date를 문자열로 변경
+    end_date: new Date('2023-06-10').toISOString(), // end_date를 문자열로 변경
+    status: '상태',
+    images: [
+      {
+        imageId: '12345',
+        imageUrl: '/images/temp.jpeg',
+        isMain: 'Y',
+        productId: '1234',
+      },
+      {
+        imageId: '23456',
+        imageUrl: '/images/temp.jpeg',
+        isMain: 'N',
+        productId: '1234',
+      },
+      {
+        imageId: '34567',
+        imageUrl: '/images/temp.jpeg',
+        isMain: 'N',
+        productId: '1234',
+      },
+    ],
+  };
 
   return {
     props: {
-      blurDataURL: base64,
-      query,
+      // blurDataURL: base64,
+      tempData,
     },
   };
 };
 
-const ProductDetail = ({ blurDataURL, query }: ServerSideReturn) => {
-  const {
-    productName,
-    ownerName,
-    desc,
-    currentPrice,
-    auctionEndDate,
-    minimumBidPrice,
-  } = query;
+const ProductDetail = ({ tempData }: ServerSideReturn) => {
+  const timeDiff = useTimeDiff(String(tempData.end_date));
+
   return (
     <S.DetailPageLayout>
       {/**
        * 왼쪽 섹션
        */}
       <S.DetailLeftSection>
-        <S.DetailPageImageBox>
-          <Image
-            alt=""
-            src={String(query.images.details[0].url)}
-            fill
-            style={{ objectFit: 'cover' }}
-            priority
-            sizes="50vw"
-            placeholder="blur"
-            blurDataURL={blurDataURL}
-          />
-        </S.DetailPageImageBox>
+        <AuctionDetailCarousel images={tempData.images} />
+        <S.CurrentPriceBox>
+          <h3>최고 입찰 가격</h3>
+          <span>최고 입찰 가격 : 현재 가격</span>
+        </S.CurrentPriceBox>
+        <S.TimeDiffBox>
+          <h3>남은 시간</h3>
+          <span>{timeDiff}</span>
+        </S.TimeDiffBox>
       </S.DetailLeftSection>
       {/**
        * 오른쪽 섹션
@@ -62,14 +94,14 @@ const ProductDetail = ({ blurDataURL, query }: ServerSideReturn) => {
          */}
         <S.DetailNameBox>
           <S.NameBoxRow>
-            <S.NameText>{ownerName}</S.NameText>
+            <S.NameText>상품</S.NameText>
             <S.NameBoxIconBox>
               <AiOutlineHeart size={28} />
               <AiOutlineShareAlt size={28} />
             </S.NameBoxIconBox>
           </S.NameBoxRow>
           <S.NameBoxRow>
-            <S.NameText>{productName}</S.NameText>
+            <S.NameText>{tempData.productName}</S.NameText>
           </S.NameBoxRow>
         </S.DetailNameBox>
         {/**
@@ -77,7 +109,7 @@ const ProductDetail = ({ blurDataURL, query }: ServerSideReturn) => {
          */}
         <S.PriceBox>
           <S.PriceText>
-            {currentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+            {translatePriceToKoreanWon(tempData.start_price, true)}~
           </S.PriceText>
           <div>
             <InputBase fullWidth placeholder="입찰 금액을 입력하세요." />
@@ -85,13 +117,13 @@ const ProductDetail = ({ blurDataURL, query }: ServerSideReturn) => {
               입찰
             </ButtonBase>
             <ButtonBase variant="error" size="lg">
-              +{minimumBidPrice}
+              +최소입찰가격
             </ButtonBase>
           </div>
         </S.PriceBox>
         <S.DetailDescBox>
           <S.PriceText>상품 설명</S.PriceText>
-          <span>{desc && desc}</span>
+          <span>{tempData.description}</span>
         </S.DetailDescBox>
       </S.DetailRightSection>
     </S.DetailPageLayout>
