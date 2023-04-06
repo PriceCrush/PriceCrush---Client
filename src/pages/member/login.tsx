@@ -1,21 +1,27 @@
 import LoginForm from '@/components/loginpage/LoginForm';
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const Login = () => {
   return (
     <LoginLayOut>
+      <LogoTitle>PriceCrush</LogoTitle>
       <LoginForm />
     </LoginLayOut>
   );
 };
+const LogoTitle = styled.h2`
+  font-size: 4rem;
+  font-family: 'Ubuntu', sans-serif;
+`;
 
 const LoginLayOut = styled.div`
-  width: 100vw;
-  height: 86vh;
+  margin: 100px auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  text-align: center;
+  align-items: center;
 `;
 
 export default Login;
