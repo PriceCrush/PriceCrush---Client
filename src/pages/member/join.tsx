@@ -1,7 +1,7 @@
 import React from 'react';
 
-const siginup = () => {
+const Join = () => {
   return <div>localhost:3000/member/signup</div>;
 };
 
-export default siginup;
+export default Join;
