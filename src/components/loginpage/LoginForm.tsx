@@ -3,7 +3,7 @@ import Router from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import ButtonBase from '@/components/buttons/ButtonBase';
-import { errorColorStyle } from '../stylecomponents/errorColor.style';
+import * as S from '@/components/stylecomponents/loginForm.styles';
 import useValidation from '@/hooks/useValidation';
 
 //LoinForm type
@@ -29,6 +29,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(`id : ${id}, password : ${passWord} `);
     //rewrite에 적던가 env에 넣던가 그때가서 해결
 
     // try {
@@ -71,86 +72,48 @@ const LoginForm = () => {
     showErrorMessage();
   }, [showErrorMessage, passwordMessage]);
   useEffect(() => {
-    console.log(isPassWord);
-  }, [isPassWord]);
+    console.log(id);
+  }, [id]);
 
   return (
-    <LoginFormLayOut method="post" onSubmit={handleSubmit}>
-      <FormItemBox>
-        <FormItemIdTitle>로그인</FormItemIdTitle>
-        <FormItem
+    <S.LoginFormLayOut method="post" onSubmit={handleSubmit}>
+      <S.FormItemBox>
+        <S.FormItemIdTitle>로그인</S.FormItemIdTitle>
+        <S.FormItem
           type="text"
           name="id"
           value={id}
           onChange={(e) => setId(e.target.value)}
           required
-        ></FormItem>
-      </FormItemBox>
-      <FormItemBox errorCheck={isPassWord}>
-        <FormItemTitle errorCheck={isPassWord}>비밀번호</FormItemTitle>
-        <FormItem
+        ></S.FormItem>
+      </S.FormItemBox>
+      <S.FormItemBox errorCheck={isPassWord}>
+        <S.FormItemTitle errorCheck={isPassWord} textLength={passWord.length}>
+          비밀번호
+        </S.FormItemTitle>
+        <S.FormItem
           type="password"
           name="password"
           value={passWord}
           onChange={(e) => setPassWord(e.target.value)}
           required
           errorCheck={isPassWord}
-        ></FormItem>
-
+          textLength={passWord.length}
+        ></S.FormItem>
         {passWord.length > 0 && <span>{passwordMessage}</span>}
-      </FormItemBox>
+      </S.FormItemBox>
 
-      <LoginButton type="submit">로그인</LoginButton>
-    </LoginFormLayOut>
+      <S.LoginButton type="submit" disabled={!id || isPassWord}>
+        로그인
+      </S.LoginButton>
+
+      <S.MemberNavList>
+        <S.Item>이메일 가입</S.Item>
+        <S.Item>이메일 찿기</S.Item>
+        <S.Item>비밀번호 찾기</S.Item>
+      </S.MemberNavList>
+    </S.LoginFormLayOut>
   );
 };
-
-const LoginFormLayOut = styled.form`
-  width: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  margin: 0 auto;
-`;
-
-const FormItemTitle = styled.h3<{ errorCheck?: boolean }>`
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: 450;
-  color: ${errorColorStyle};
-`;
-
-const FormItemIdTitle = styled(FormItemTitle)`
-  color: ${({ theme }) => theme.color.BLACK};
-`;
-
-const FormItemBox = styled.div<{ errorCheck?: boolean }>`
-  height: 80px;
-  margin: ${({ theme }) => theme.margin.baseMargin};
-  padding: ${({ theme }) => theme.padding.inputY};
-  > span {
-    display: ${(props) => (props.errorCheck ? '' : 'none')};
-    color: ${({ theme }) => theme.color.DEEP_ORANGE};
-  }
-  //form조건이 안맞을 경우 빨간색
-`;
-
-const FormItem = styled.input<{ errorCheck?: boolean }>`
-  width: 100%;
-  height: 38px;
-  margin: 10px 0;
-  border: 0px solid;
-  outline: none;
-  border-bottom: 1px solid ${({ theme }) => theme.color.GRAY};
-  /* ${({ theme, errorCheck }) =>
-    errorCheck ? theme.color.GRAY : theme.color.DEEP_ORANGE}; */
-  :focus {
-    border-bottom: 1px solid ${errorColorStyle};
-  }
-`;
-
-const LoginButton = styled(ButtonBase)`
-  margin-top: 20px;
-`;
 
 export default LoginForm;
