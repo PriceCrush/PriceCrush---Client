@@ -2,50 +2,49 @@ import styled from 'styled-components';
 
 /**
  * @description Layout 영역
+ * @description Layout 영역
  */
 
-export const CancelAuctionLayout = styled.div`
-  width: 100%;
+export const BidConfirmLayout = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 0 10% 0;
+  justify-content: space-evenly;
 `;
 
 /**
  * @description Box 영역
+ * @description Box 영역
  */
-
-export const DescriptionBox = styled.div`
-  width: 100%;
+export const TextBox = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
-  gap: 5px;
 `;
 
 export const ButtonBox = styled.div`
-  width: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
-  margin-top: 5%;
-  gap: 10%;
+  align-items: center;
+  gap: 15px;
 `;
 
 /**
  * @description Text 영역
+ * @description Text 영역
  */
 
-export const DescriptionText = styled.span`
-  color: black;
+export const Title = styled.h3`
   font-size: ${({ theme }) => theme.fontSize.lg};
-  font-weight: 700;
 `;
 
-export const PriceText = styled(DescriptionText)`
-  font-style: italic;
-  text-decoration: underline;
+export const Price = styled.h3`
+  font-size: ${({ theme }) => theme.fontSize.xl};
+
+  strong {
+    font-weight: bold;
+  }
 `;
