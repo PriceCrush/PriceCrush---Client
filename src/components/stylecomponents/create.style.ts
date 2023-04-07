@@ -24,35 +24,6 @@ export const CreateFormContainer = styled.div`
     font-size: 1.6rem;
     margin-bottom: 10px;
   }
-  input {
-    width: 100%;
-    height: 50px;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    padding: 0 10px;
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-
-    &:focus {
-      outline: none;
-      border: 1px solid #000;
-    }
-    & + label {
-      color: #000;
-    }
-    &::after {
-      width: 100%;
-      transition: all 0.2s ease-in-out;
-      background-color: #000;
-      opacity: 1;
-      transform: translateX(0);
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      height: 2px;
-    }
-  }
   textarea {
     width: 100%;
     height: 200px;

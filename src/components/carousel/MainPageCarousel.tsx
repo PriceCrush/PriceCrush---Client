@@ -38,7 +38,7 @@ const MainPageCarousel = ({ popularProducts }: MainPageCarouselProps) => {
     centerMode: true,
     infinite: true,
     centerPadding: '0',
-    slidesToShow: 3,
+    slidesToShow: 5,
     slidesToScroll: 1,
     speed: 500,
     dots: true,
