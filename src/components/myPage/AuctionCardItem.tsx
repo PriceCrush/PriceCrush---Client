@@ -29,7 +29,7 @@ const AuctionCardItem = ({
   const handleEndAuction = () => {
     openModal({
       title: '',
-      content: <EndAuction />,
+      content: <EndAuction productId={String(id)} />,
     });
   };
 
