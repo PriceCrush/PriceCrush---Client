@@ -7,7 +7,7 @@ import {
   FixedLengthString,
   ProductDetailsProps,
   TempDataProps,
-} from '@/types/productsDetailType';
+} from '@/types/productsTypes';
 import { AiOutlineHeart, AiOutlineShareAlt } from 'react-icons/ai';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';

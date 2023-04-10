@@ -3,7 +3,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowButton from './ArrowButton';
 import * as S from '@/components/stylecomponents/auctionDetailCarousel.style';
-import { ProductImageProps } from '@/types/productsDetailType';
+import { ProductImageProps } from '@/types/productsTypes';
 import Image from 'next/image';
 
 interface AuctionDetailCarouselProps {
