@@ -6,13 +6,14 @@ import ButtonBase from '@/components/buttons/ButtonBase';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import useValidation from '@/hooks/useValidation';
 import Link from 'next/link';
+import MemberInputForm from '../inputs/memberInputForm';
 
 //LoinForm type
 interface LoginResponse {
   token: string;
 }
 
-const LoginForm = () => {
+const JoinForm = () => {
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
 
@@ -76,18 +77,22 @@ const LoginForm = () => {
     console.log(id);
   }, [id]);
 
+  // submit 안에
+  // inputForm 3개 넣고
+  // 종류(id, password, email) , 길이 정도, 기타등등
+
   return (
     <S.LoginFormLayOut method="post" onSubmit={handleSubmit}>
-      <S.FormItemBox>
-        <S.FormItemIdTitle>로그인</S.FormItemIdTitle>
-        <S.FormItem
-          type="text"
-          name="id"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-          required
-        ></S.FormItem>
-      </S.FormItemBox>
+      <MemberInputForm
+        type="email"
+        errorCheck={isPassWord}
+        textLenth={passWord.length}
+        value={passWord}
+        onChange={(e) => setPassWord(e)}
+        errorMessage={'잘못됌'}
+      >
+        이메일
+      </MemberInputForm>
       <S.FormItemBox errorCheck={isPassWord}>
         <S.FormItemTitle errorCheck={isPassWord} textLength={passWord.length}>
           비밀번호
@@ -103,24 +108,26 @@ const LoginForm = () => {
         ></S.FormItem>
         {passWord.length > 0 && <span>{passwordMessage}</span>}
       </S.FormItemBox>
+      <S.FormItemBox errorCheck={isPassWord}>
+        <S.FormItemTitle errorCheck={isPassWord} textLength={passWord.length}>
+          이메일
+        </S.FormItemTitle>
+        <S.FormItem
+          type="password"
+          name="password"
+          value={passWord}
+          onChange={(e) => setPassWord(e.target.value)}
+          required
+          errorCheck={isPassWord}
+          textLength={passWord.length}
+        ></S.FormItem>
+        {passWord.length > 0 && <span>{passwordMessage}</span>}
+      </S.FormItemBox>
       <S.LoginButton type="submit" disabled={!id || isPassWord}>
-        로그인
+        동의하고 가입하기
       </S.LoginButton>
-
-      <S.MemberNavList>
-        <S.Item>
-          {' '}
-          <Link href={'/member/join'}>이메일 가입</Link>
-        </S.Item>
-        <S.Item>
-          <Link href={'/member/findEmail'}>이메일 찿기</Link>
-        </S.Item>
-        <S.Item>
-          <Link href={'/member/findPassword'}>비밀번호 찾기</Link>
-        </S.Item>
-      </S.MemberNavList>
     </S.LoginFormLayOut>
   );
 };
 
-export default LoginForm;
+export default JoinForm;
