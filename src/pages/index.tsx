@@ -1,4 +1,6 @@
-import MainPageCarousel from '@/components/carousel/MainPageCarousel';
+import MainPageCarousel, {
+  Product,
+} from '@/components/carousel/MainPageCarousel';
 import CategoryList from '@/components/mainPage/CategoryList';
 import * as S from '@/components/stylecomponents/mainPage.style';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -6,7 +8,8 @@ import * as Api from '@/utils/commonApi';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { categoriesState as categoriesAtom } from '@/atoms/categoriesState';
-import { productCategoriesType } from '@/types/productTypes';
+import { productCategoriesType } from '@/types/productsTypes';
+import axios from 'axios';
 
 interface ServerSideProps {
   categories: productCategoriesType;
@@ -36,11 +39,12 @@ export default function Home({ categories, data }: ServerSideProps) {
 export const getServerSideProps: GetServerSideProps = async () => {
   const categories = await Api.get('product-category');
   //FIXME: JSON-SERVER 데이터를 서버 데이터로 교체해야함
-  // const data = await Api.get<Product[]>('/products');
+  const response = await axios<Product[]>(`http://localhost:3001/products`);
 
   return {
     props: {
       categories,
+      data: response.data,
     },
   };
 };
