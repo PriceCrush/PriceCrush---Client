@@ -3,29 +3,44 @@ import CategoryList from '@/components/mainPage/CategoryList';
 import * as S from '@/components/stylecomponents/mainPage.style';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import * as Api from '@/utils/commonApi';
-import { Product } from './../components/carousel/MainPageCarousel';
-import { useModal } from '@/hooks/useModal';
-import styled from 'styled-components';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { categoriesState as categoriesAtom } from '@/atoms/categoriesState';
+import { productCategoriesType } from '@/types/productTypes';
 
-export default function Home({
-  data,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+interface ServerSideProps {
+  categories: productCategoriesType;
+  data?: any;
+}
+
+export default function Home({ categories, data }: ServerSideProps) {
+  const [categoriesState, setCategoriesState] = useRecoilState(categoriesAtom);
+
+  useEffect(() => {
+    if (categories && categories.length > 0) {
+      setCategoriesState(categories);
+      //TODO: Recoil 과 LocalStorage 동기화
+    }
+  }, [categories, setCategoriesState]);
+
   return (
     <main>
       <S.MainPageLayout>
         <MainPageCarousel popularProducts={data} />
-        <CategoryList rows={2} />
+        <CategoryList categories={categories} rows={2} />
       </S.MainPageLayout>
     </main>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const data = await Api.get<Product[]>('/products');
+  const categories = await Api.get('product-category');
+  //FIXME: JSON-SERVER 데이터를 서버 데이터로 교체해야함
+  // const data = await Api.get<Product[]>('/products');
+
   return {
     props: {
-      data,
+      categories,
     },
   };
 };

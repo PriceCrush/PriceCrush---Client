@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const LOCALHOST = 'http://localhost:3001';
+const LOCALHOST = process.env.NEXT_PUBLIC_BASEURL;
 
 /**
  * @description baseURL localhost:3001번으로 설정되어 있습니다.
