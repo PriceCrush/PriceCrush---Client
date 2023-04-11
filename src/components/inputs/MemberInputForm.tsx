@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 
 //오류 유무
@@ -10,9 +10,10 @@ interface MemberInputFormProps {
   errorCheck: boolean;
   textLenth: number;
   value: string;
-  onChange: Function;
+  inputData: Function;
   errorMessage: string;
   children: string;
+  name: string;
 }
 
 const MemberInputForm = (
@@ -23,10 +24,19 @@ const MemberInputForm = (
     errorCheck,
     textLenth,
     value,
-    onChange,
+    inputData,
     errorMessage,
     children,
+    name,
   } = props;
+
+  // useEffect(() => {
+  //   inputData((prev) => ({ ...prev, [name]: userInfo }));
+  // }, []);
+
+  const handleUserInfo = (e) => {
+    inputData((prev) => ({ ...prev, [name]: e.target.value }));
+  };
 
   return (
     <S.FormItemBox errorCheck={errorCheck}>
@@ -37,7 +47,7 @@ const MemberInputForm = (
         type={type}
         name={type}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleUserInfo}
         required
         errorCheck={errorCheck}
         textLength={textLenth}

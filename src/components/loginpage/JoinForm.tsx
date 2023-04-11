@@ -14,6 +14,34 @@ interface LoginResponse {
 }
 
 const JoinForm = () => {
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    password: '',
+    phone: '',
+    nickname: '',
+    address: '',
+    agreement_use: '',
+    agreement_mkt: '',
+    favorites: [],
+  });
+  const [passedInfo, setPassedInfo] = useState({
+    email: false,
+    password: false,
+    phone: false,
+    nickname: false,
+    address: false,
+    agreement_use: false,
+    agreement_mkt: false,
+  });
+
+  const [statusMessage, setStatusMessage] = useState({
+    email: '',
+    password: '',
+    phone: '',
+    nickname: '',
+    address: '',
+  });
+
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
 
@@ -31,7 +59,7 @@ const JoinForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`id : ${id}, password : ${passWord} `);
+    console.log(userInfo);
     //rewrite에 적던가 env에 넣던가 그때가서 해결
 
     // try {
@@ -73,23 +101,24 @@ const JoinForm = () => {
   useEffect(() => {
     showErrorMessage();
   }, [showErrorMessage, passwordMessage]);
-  useEffect(() => {
-    console.log(id);
-  }, [id]);
 
-  // submit 안에
-  // inputForm 3개 넣고
-  // 종류(id, password, email) , 길이 정도, 기타등등
+  const inputData = (e) => {
+    setUserInfo(e);
+  };
+
+  const ts = (e) =>
+    setUserInfo((prev) => ({ ...prev, password: e.target.value }));
 
   return (
     <S.LoginFormLayOut method="post" onSubmit={handleSubmit}>
       <MemberInputForm
         type="email"
-        errorCheck={isPassWord}
-        textLenth={passWord.length}
-        value={passWord}
-        onChange={(e) => setPassWord(e)}
-        errorMessage={'잘못됌'}
+        name="email"
+        value={userInfo.email}
+        errorCheck={passedInfo.email}
+        textLenth={userInfo.email.length}
+        inputData={inputData}
+        errorMessage={'something Wrong'}
       >
         이메일
       </MemberInputForm>
@@ -100,32 +129,19 @@ const JoinForm = () => {
         <S.FormItem
           type="password"
           name="password"
-          value={passWord}
-          onChange={(e) => setPassWord(e.target.value)}
+          value={userInfo.password}
+          onChange={ts}
           required
-          errorCheck={isPassWord}
-          textLength={passWord.length}
+          errorCheck={passedInfo.password}
+          textLength={userInfo.password.length}
         ></S.FormItem>
         {passWord.length > 0 && <span>{passwordMessage}</span>}
       </S.FormItemBox>
-      <S.FormItemBox errorCheck={isPassWord}>
-        <S.FormItemTitle errorCheck={isPassWord} textLength={passWord.length}>
-          이메일
-        </S.FormItemTitle>
-        <S.FormItem
-          type="password"
-          name="password"
-          value={passWord}
-          onChange={(e) => setPassWord(e.target.value)}
-          required
-          errorCheck={isPassWord}
-          textLength={passWord.length}
-        ></S.FormItem>
-        {passWord.length > 0 && <span>{passwordMessage}</span>}
-      </S.FormItemBox>
-      <S.LoginButton type="submit" disabled={!id || isPassWord}>
+
+      <S.LoginButton type="submit">동의하고 가입하기</S.LoginButton>
+      {/* <S.LoginButton type="submit" disabled={!id || isPassWord}>
         동의하고 가입하기
-      </S.LoginButton>
+      </S.LoginButton> */}
     </S.LoginFormLayOut>
   );
 };
