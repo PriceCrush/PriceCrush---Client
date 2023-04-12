@@ -80,11 +80,11 @@ const ListPage = () => {
         <SearchSlider category={sampleCategory} />
       </SliderSection>
       <ProductSection>
-        <ProductList
+        {/* <ProductList
           column={4}
           data={sampleCategory}
           category={sampleCategory}
-        />
+        /> */}
       </ProductSection>
       <PageButtonSection>
         <PaginationComponent

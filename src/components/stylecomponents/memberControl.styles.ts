@@ -59,6 +59,12 @@ export const FormItem = styled.input<checkvalidationProps>`
   outline: none;
   border-bottom: 1px solid ${({ theme }) => theme.color.GRAY};
 
+  ::placeholder {
+    padding: 3px;
+    color: ${({ theme }) => theme.color.GRAY};
+    font-weight: 500;
+  }
+
   :focus {
     border-bottom: 1px solid
       ${({ theme, errorCheck, textLength }) =>
