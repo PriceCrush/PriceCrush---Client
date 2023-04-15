@@ -17,7 +17,7 @@ interface IStyledComponentProps {
 
 export const errorColorStyle = css<IStyledComponentProps>`
   ${({ theme, errorCheck }) =>
-    errorCheck ? theme.color.DEEP_ORANGE : theme.color.BLACK};
+    errorCheck ? theme.color.BLACK : theme.color.DEEP_ORANGE};
 `;
 
 export const LoginFormLayOut = styled.form`
@@ -32,7 +32,7 @@ export const LoginFormLayOut = styled.form`
 export const FormItemTitle = styled.h3<checkvalidationProps>`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: 450;
-  color: ${({ theme, errorCheck, textLength }) =>
+  color: ${({ theme, textLength }) =>
     textLength ? errorColorStyle : theme.color.BLACK};
 `;
 
@@ -45,7 +45,7 @@ export const FormItemBox = styled.div<FormItemBoxProps>`
   margin: ${({ theme }) => theme.margin.baseMargin};
   padding: ${({ theme }) => theme.padding.inputY};
   > span {
-    display: ${(props) => (props.errorCheck ? '' : 'none')};
+    display: ${(props) => (props.errorCheck ? 'none' : '')};
     color: ${({ theme }) => theme.color.DEEP_ORANGE};
   }
   //form조건이 안맞을 경우 빨간색
@@ -67,7 +67,7 @@ export const FormItem = styled.input<checkvalidationProps>`
 
   :focus {
     border-bottom: 1px solid
-      ${({ theme, errorCheck, textLength }) =>
+      ${({ theme, textLength }) =>
         textLength ? errorColorStyle : theme.color.BLACK};
   }
 `;
@@ -82,6 +82,7 @@ export const LoginButton = styled(ButtonBase)<checkvalidationProps>`
   border-radius: 15px;
   :disabled {
     color: ${({ theme }) => theme.color.WHITE};
+    cursor: auto;
   }
 `;
 

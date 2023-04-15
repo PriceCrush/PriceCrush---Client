@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import useValidation from '@/hooks/useValidation';
+import ShowErrorMessage from '../memberpage/ShowErrorMessage';
+
+// 지금 에러 부분을 표현하는 로직이 이상함 그거만 수정하면 될듯함
 
 interface MemberInputFormProps {
   type: string;
-  inputData: Function;
+  handleUserInfo: Function;
+  passOrNot: Function;
   children: string;
   name: string;
 }
@@ -12,23 +16,16 @@ interface MemberInputFormProps {
 const MemberInputForm = (
   props: React.PropsWithChildren<MemberInputFormProps>
 ) => {
-  const { type, inputData, children, name } = props;
+  const { type, handleUserInfo, passOrNot, children, name } = props;
 
   const [writtenData, setWrittenData] = useState('');
-  const [testCheck, setTestCheck] = useState(false);
-  const [testMessage, setTestMessage] = useState('');
-  const writtenDataStatus = useValidation(writtenData);
-  // 오류 메세지 검증은 다른에서
-  //오류 메세지를 띄워주는건 다른데에서 받아오는걸로
+  const [passedInfo, setPassedInfo] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  interface solidTextPorps {
-    email: string;
-    password: string;
-    address: string;
-    name: string;
-    phone: string;
-    nickname: string;
-  }
+  /**
+   * @description condition : 양식에 맞는 내용인지 점검, warningMessage : 그에 맞춘 경고메세지 전달
+   */
+  const { condition, warningMessage } = ShowErrorMessage(writtenData, name);
 
   const placeHolderCollection = useMemo(() => {
     return {
@@ -40,70 +37,33 @@ const MemberInputForm = (
       nickname: '영문,숫자 조합 (4~20자) ',
     };
   }, []);
-  //여기부분 분리가능할듯?
+
+  //Lodash thorattle을 쓸지 생각중
   const showErrorMessage = useCallback(() => {
-    const {
-      textlength,
-      specialCharacters,
-      includingCharacters,
-      continuity,
-      emailForm,
-      phoneNumForm,
-    } = writtenDataStatus;
-
-    const errorCheckList = {
-      email: {
-        condition: !emailForm,
-        errorMessage: '이메일 주소를 정확히 입력해주세요',
-      },
-      password: {
-        condition:
-          !textlength ||
-          !specialCharacters ||
-          !includingCharacters ||
-          continuity,
-        errorMessage: '영문, 숫자, 특수문자를 조합하여 입력해주세요(4~16자)',
-      },
-      name: {
-        condition: !true,
-        errorMessage: '이름은 필수사항입니다.',
-      },
-      phone: {
-        condition: !phoneNumForm,
-        errorMessage: '핸드폰번호를 정확히 입력해주세요',
-      },
-      address: {
-        condition: !true,
-        errorMessage:
-          '(우편번호) (도/시) (구/군/시) (동/읍/면) (상세주소)순으로 입력해주세요 ',
-      },
-      nickname: {
-        condition: !textlength,
-        errorMessage: '최소4 ~ 최대16자까지 가능합니다.',
-      },
-    };
-    const { condition, errorMessage } = errorCheckList[name];
-
     if (condition) {
-      setTestMessage(errorMessage);
-      setTestCheck(true);
+      setErrorMessage(warningMessage);
+      setPassedInfo(false);
     } else {
-      setTestMessage('');
-      setTestCheck(false);
+      setErrorMessage('');
+      setPassedInfo(true);
     }
-  }, [name, writtenDataStatus]);
+  }, [condition, warningMessage]);
 
   useEffect(() => {
     showErrorMessage();
   }, [showErrorMessage]);
 
   useEffect(() => {
-    inputData((prev) => ({ ...prev, [name]: writtenData }));
+    handleUserInfo((prev) => ({ ...prev, [name]: writtenData }));
   }, [writtenData]);
 
+  useEffect(() => {
+    passOrNot((prev) => ({ ...prev, [name]: passedInfo }));
+  }, [passedInfo]);
+
   return (
-    <S.FormItemBox errorCheck={testCheck}>
-      <S.FormItemTitle errorCheck={testCheck} textLength={writtenData.length}>
+    <S.FormItemBox errorCheck={passedInfo}>
+      <S.FormItemTitle errorCheck={passedInfo} textLength={writtenData.length}>
         {children}
       </S.FormItemTitle>
       <S.FormItem
@@ -112,10 +72,11 @@ const MemberInputForm = (
         value={writtenData}
         onChange={(e) => setWrittenData(e.target.value)}
         placeholder={placeHolderCollection[`${name}`]}
-        errorCheck={testCheck}
+        errorCheck={passedInfo}
         textLength={writtenData.length}
       ></S.FormItem>
-      {writtenData.length > 0 && <span>{testMessage}</span>}
+      {/* {!passedInfo && <span>{errorMessage}</span>} */}
+      {writtenData.length > 0 && <span>{errorMessage}</span>}
     </S.FormItemBox>
   );
 };

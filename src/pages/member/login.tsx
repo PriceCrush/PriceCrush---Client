@@ -1,5 +1,4 @@
-import LoginForm from '@/components/loginpage/LoginForm';
-
+import LoginForm from '@/components/memberpage/LoginForm';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
