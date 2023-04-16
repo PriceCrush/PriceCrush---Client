@@ -26,14 +26,7 @@ interface CommonInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const CommonInput = forwardRef<HTMLInputElement, CommonInputProps>(
-  (
-    {
-      feedback,
-      isValid = true,
-      ...props
-    },
-    ref
-  ) => {
+  ({ feedback, isValid = true, ...props }, ref) => {
     return (
       <>
         <p style={{ display: 'flex' }}>
@@ -49,4 +42,6 @@ const CommonInput = forwardRef<HTMLInputElement, CommonInputProps>(
     );
   }
 );
+
+CommonInput.displayName = 'CommonInput';
 export default CommonInput;
