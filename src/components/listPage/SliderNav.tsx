@@ -58,7 +58,7 @@ const SliderNav = ({ tab, data }: SliderNavProps) => {
   return (
     <SliderNavLayOut>
       <ul>
-        <TabItem active={checkCurrentPage(tab)} tab={tab}>
+        <TabItem active={checkCurrentPage(Number(tab))} tab={tab}>
           <TabLink href={`/search/all`}>
             <span>전체</span>
           </TabLink>
