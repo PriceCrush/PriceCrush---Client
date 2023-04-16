@@ -25,16 +25,6 @@ const Create = () => {
   const { changeModal, closeModal, openModal } = useModal();
   const minPriceRef = useRef<HTMLInputElement>(null);
 
-  const init = async () => {
-    try {
-      const res = await Api.get('/product-category');
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  init();
-
   const [state, setState] = useState<State>({
     initialPrice: {
       value: 0,
