@@ -27,7 +27,7 @@ const MemberInputForm = (
    */
   const { condition, warningMessage } = ShowErrorMessage(writtenData, name);
 
-  const placeHolderCollection = useMemo(() => {
+  const placeHolderCollection: Record<string, string> = useMemo(() => {
     return {
       email: 'email@priceCrush.co.kr',
       password: ' 영문,숫자,특수문자 조합 8~16자',
@@ -54,11 +54,11 @@ const MemberInputForm = (
   }, [showErrorMessage]);
 
   useEffect(() => {
-    handleUserInfo((prev) => ({ ...prev, [name]: writtenData }));
+    handleUserInfo((prev: any) => ({ ...prev, [name]: writtenData }));
   }, [writtenData]);
 
   useEffect(() => {
-    passOrNot((prev) => ({ ...prev, [name]: passedInfo }));
+    passOrNot((prev: any) => ({ ...prev, [name]: passedInfo }));
   }, [passedInfo]);
 
   return (
