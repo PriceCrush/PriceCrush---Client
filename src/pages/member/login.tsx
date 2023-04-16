@@ -1,43 +1,27 @@
+import LoginForm from '@/components/loginpage/LoginForm';
+
 import React, { useState } from 'react';
-import { type } from './../../types/buttonTypes';
+import styled from 'styled-components';
 
-const login = () => {
-  const [loginData, setLoginData] = useState({
-    id: '',
-    password: '',
-  });
-
-  const handleChange = (e) => {
-    setLoginData({ ...loginData, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(JSON.stringify(loginData, null, 2));
-  };
-
+const Login = () => {
   return (
-    <div>
-      <form method="post" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="id"
-          value={loginData.id}
-          placeholder="아이디"
-          onChange={handleChange}
-          required
-        ></input>
-        <input
-          type="password"
-          name="password"
-          value={loginData.password}
-          onChange={handleChange}
-          placeholder="비밀번호"
-          required
-        ></input>
-        <button type="submit">로그인</button>
-      </form>
-    </div>
+    <LoginLayOut>
+      <LogoTitle>PriceCrush</LogoTitle>
+      <LoginForm />
+    </LoginLayOut>
   );
 };
+const LogoTitle = styled.h2`
+  font-size: 4rem;
+  font-family: 'Ubuntu', sans-serif;
+`;
 
-export default login;
+const LoginLayOut = styled.div`
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export default Login;

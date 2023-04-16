@@ -44,4 +44,22 @@ export interface ProductDetailsProps {
   images: ProductImageProps[];
 }
 
-// ProductDetailsProps[] 타입의 임시데이터 10개 생성
+export type ProductFromApi = {
+  id: 'string';
+  name: 'string';
+  start_price: number;
+  desc: 'string';
+  start_date: string;
+  end_date: string;
+  status: number;
+  deletedAt: string;
+};
+
+export type PartialProductFromApi = Partial<ProductFromApi>;
+
+export type productCategoryType = {
+  id: string;
+  name: string;
+};
+
+export type productCategoriesType = productCategoryType[];
