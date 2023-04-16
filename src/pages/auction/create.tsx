@@ -2,35 +2,111 @@ import React, { useState, useRef, useEffect } from 'react';
 import * as S from '@/components/stylecomponents/create.style';
 import { FaCamera } from 'react-icons/fa';
 import { useModal } from '@/hooks/useModal';
-import InputBase from '@/components/inputs/InputBase';
+import CommonInput from '../../components/inputs/CommonInput';
+import produce from 'immer';
+import { Api } from '@/utils/commonApi';
+
+interface State {
+  initialPrice: {
+    value: number | undefined;
+    isValid: boolean;
+  };
+  minPrice: {
+    value: number | undefined;
+    isValid: boolean;
+  };
+  minPricePer: {
+    value: string;
+  };
+}
 
 const Create = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { changeModal, closeModal, openModal } = useModal();
-  const [initialPrice, setInitialPrice] = useState(0);
-  const [minPricePer, setMinPricePer] = useState('5%');
-  const [minPrice, setMinPrice] = useState(0);
   const minPriceRef = useRef<HTMLInputElement>(null);
+
+  const init = async () => {
+    try {
+      const res = await Api.get('/product-category');
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  init();
+
+  const [state, setState] = useState<State>({
+    initialPrice: {
+      value: 0,
+      isValid: true,
+    },
+    minPrice: {
+      value: 0,
+      isValid: true,
+    },
+    minPricePer: {
+      value: '0.05',
+    },
+  });
+
+  const numCheck = (str: string) => {
+    let check = /^\d*$/;
+    return check.test(str);
+  };
+
   const onChangeInitialPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInitialPrice(Number(e.target.value));
+    if (numCheck(e.target.value) === false) {
+      setState(
+        produce((draft) => {
+          draft.initialPrice.isValid = false;
+        })
+      );
+      return;
+    }
+    setState(
+      produce((draft) => {
+        draft.initialPrice.value = Number(e.target.value);
+        draft.initialPrice.isValid = true;
+      })
+    );
   };
 
   const onChangeMinPricePer = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMinPricePer(e.target.value);
+    setState(
+      produce((draft) => {
+        draft.minPricePer.value = e.target.value;
+      })
+    );
   };
 
   const onChangeMinPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMinPrice(Number(e.target.value));
+    if (numCheck(e.target.value) === false) {
+      setState(
+        produce((draft) => {
+          draft.minPrice.isValid = false;
+        })
+      );
+      return;
+    }
+    setState(
+      produce((draft) => {
+        draft.minPrice.value = Number(e.target.value);
+        draft.minPrice.isValid = true;
+      })
+    );
   };
 
   useEffect(() => {
     let newMinPrice = 0;
     let isDisabled = true;
 
-    if (minPricePer === '직접 입력') {
+    if (state.initialPrice.value === undefined) return;
+
+    if (state.minPricePer.value === '직접 입력') {
       isDisabled = false;
     } else {
-      newMinPrice = initialPrice * parseFloat(minPricePer);
+      newMinPrice =
+        state.initialPrice.value * parseFloat(state.minPricePer.value);
     }
 
     const input = minPriceRef.current;
@@ -38,8 +114,12 @@ const Create = () => {
       input.disabled = isDisabled;
     }
 
-    setMinPrice(newMinPrice);
-  }, [initialPrice, minPricePer]);
+    setState(
+      produce((draft) => {
+        draft.minPrice.value = newMinPrice;
+      })
+    );
+  }, [state.initialPrice.value, state.minPricePer.value]);
 
   const [imageFiles, setImageFiles] = useState<{
     main: File | null;
@@ -136,27 +216,29 @@ const Create = () => {
           </S.SubImageBox>
         </S.LeftSide>
         <S.RightSide>
-          <label htmlFor="name">상품명</label>
-          <InputBase type="text" id="name" name="name" />
+          <CommonInput type="text" id="name" name="name" label="상품명" />
           <label htmlFor="category">카테고리</label>
           <select name="category" id="category">
             <option value="신발">신발</option>
             <option value="의류">의류</option>
           </select>
-          <label htmlFor="price">시작 가격</label>
-          <InputBase
-            type="number"
+          <CommonInput
+            type="text"
             id="price"
             name="price"
-            value={initialPrice}
+            value={state.initialPrice.value}
+            placeholder="ex) 10000"
             onChange={onChangeInitialPrice}
+            isValid={state.initialPrice.isValid}
+            feedback="숫자만 입력 가능합니다."
+            label="시작 가격"
           />
           <label htmlFor="minPricePer">최소 입찰 단위</label>
           <S.InputBox>
             <select
-              name="최소 입찰 단위"
-              id="minPricePer"
-              value={minPricePer}
+              // name="minPricePer"
+              // id="minPricePer"
+              value={state.minPricePer.value}
               onChange={onChangeMinPricePer}
             >
               <option value="0.05">5%</option>
@@ -165,9 +247,11 @@ const Create = () => {
               <option value="0.2">20%</option>
               <option value="직접 입력">직접 입력</option>
             </select>
-            <InputBase
-              type="number"
-              value={minPrice}
+            <CommonInput
+              type="text"
+              name="minPrice"
+              id="minPrice"
+              value={state.minPrice.value}
               onChange={onChangeMinPrice}
               ref={minPriceRef}
               disabled

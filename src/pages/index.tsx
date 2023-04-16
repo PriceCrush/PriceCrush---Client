@@ -4,13 +4,12 @@ import MainPageCarousel, {
 import CategoryList from '@/components/mainPage/CategoryList';
 import * as S from '@/components/stylecomponents/mainPage.style';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import * as Api from '@/utils/commonApi';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { categoriesState as categoriesAtom } from '@/atoms/categoriesState';
 import { productCategoriesType } from '@/types/productsTypes';
 import axios from 'axios';
-
+import { Api } from '@/utils/commonApi';
 interface ServerSideProps {
   categories: productCategoriesType;
   data?: any;
