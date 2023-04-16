@@ -3,7 +3,7 @@ import * as S from '@/components/stylecomponents/modals/productDetails/bidConfir
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import { useModal } from '@/hooks/useModal';
-import TestApi from './testApi';
+// import TestApi from './testApi';
 import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
 
@@ -11,7 +11,7 @@ interface BidConfirmProps {
   bidPrice: number;
 }
 
-const handleAddress = (data) => {
+const handleAddress = (data: any) => {
   const { address, zonecode } = data;
   console.log(data);
   console.log(`우편 번호 : ${zonecode}`);

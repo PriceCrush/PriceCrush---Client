@@ -6,10 +6,10 @@ import { useModal } from '@/hooks/useModal';
 import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
 
-const TestApi = (props) => {
+const TestApi = (props: any) => {
   const { company, setcompany } = props;
 
-  const complete = (data) => {
+  const complete = (data: any) => {
     let fullAddress = data.address;
     let extraAddress = '';
 
