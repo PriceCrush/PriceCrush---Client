@@ -3,7 +3,7 @@ import * as S from '@/components/stylecomponents/memberControl.styles';
 import MemberInputForm from '@/components/inputs/MemberInputForm';
 import TermForm from './TermForm';
 import AddressForm from './AddressForm';
-import TestApi from '../modals/joinpage/testApi';
+// import TestApi from '../modals/joinpage/testApi';
 import TestButton from './../modals/joinpage/TestButton';
 
 //LoinForm type
@@ -37,16 +37,16 @@ const JoinForm = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_BASEURL;
   const LOGIN_URL = '/'; //성공할때의 주소
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log(userInfo);
     console.log(userInfoErr);
   };
 
-  const handleUserInfo = (e) => {
+  const handleUserInfo = (e: any) => {
     setUserInfo(e);
   };
-  const passOrNot = (e) => {
+  const passOrNot = (e: any) => {
     setUserInfoErr(e);
   };
   const showButton = useCallback(() => {

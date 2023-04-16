@@ -28,7 +28,7 @@ const LoginForm = () => {
   const BASE_URL = 'http://localhost:8080/';
   const LOGIN_URL = '/'; //성공할때의 주소
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log(`id : ${id}, password : ${passWord} `);
     //rewrite에 적던가 env에 넣던가 그때가서 해결
