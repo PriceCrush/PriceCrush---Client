@@ -36,7 +36,7 @@ export default function Home({ categories, data }: ServerSideProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const categories = await Api.get('product-category');
+  const categories = await Api.get('/product-category');
   //FIXME: JSON-SERVER 데이터를 서버 데이터로 교체해야함
   const response = await axios<Product[]>(`http://localhost:3001/products`);
 
