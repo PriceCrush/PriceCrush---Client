@@ -7,7 +7,7 @@ const LOCALHOST = 'http://localhost:3001';
  * timeout 5초로 설정되어 있습니다.
  */
 const commonInstance = axios.create({
-  baseURL: `${LOCALHOST}/`,
+  baseURL: `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}`,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

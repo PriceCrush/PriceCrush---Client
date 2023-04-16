@@ -17,6 +17,14 @@ export const getBgColor = (variant: Variant) => {
       return COLOR.DEEP_ORANGE;
     case 'disabled':
       return COLOR.GRAY;
+    case 'cancelAuction':
+      return COLOR.BLACK;
+    case 'endAuction':
+      return COLOR.DEEP_ORANGE;
+    case 'positive':
+      return COLOR.DEEP_ORANGE;
+    case 'negative':
+      return COLOR.BLACK;
     default:
       return COLOR.BLACK;
   }

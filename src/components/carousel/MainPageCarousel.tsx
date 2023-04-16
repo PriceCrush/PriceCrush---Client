@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useState } from 'react';
 import ArrowButton from '@/components/carousel/ArrowButton';
 import * as S from '@/components/stylecomponents/carousel.style';
-import * as Api from '@/utils/commnApi';
+import * as Api from '@/utils/commonApi';
 
 interface Images {
   main: string;
@@ -38,7 +38,7 @@ const MainPageCarousel = ({ popularProducts }: MainPageCarouselProps) => {
     centerMode: true,
     infinite: true,
     centerPadding: '0',
-    slidesToShow: 3,
+    slidesToShow: 5,
     slidesToScroll: 1,
     speed: 500,
     dots: true,

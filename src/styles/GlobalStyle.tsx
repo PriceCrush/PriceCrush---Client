@@ -10,6 +10,9 @@ const GlobalStyle = createGlobalStyle`
         word-break: keep-all;
         text-align:justify;
     }
+    * {
+    box-sizing: border-box;
+    }
 `;
 
 export default GlobalStyle;

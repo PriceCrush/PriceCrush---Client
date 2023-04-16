@@ -1,8 +1,17 @@
 import { themeProp } from '@/components/stylecomponents/theme';
 import { ButtonHTMLAttributes } from 'react';
 
-export type Variant = 'default' | 'success' | 'warning' | 'error' | 'disabled';
-type Size = 'sm' | 'md' | 'lg' | 'xl';
+export type Variant =
+  | 'default'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'disabled'
+  | 'cancelAuction'
+  | 'endAuction'
+  | 'positive'
+  | 'negative';
+export type Size = 'sm' | 'md' | 'lg' | 'xl';
 
 /**
  * ButtonBase 컴포넌트 Props, HTMLButton 의 Props 를 상속받음
@@ -22,3 +31,11 @@ export interface ButtonBaseProps
  * ButtonBaseProps interface 의 모든 Props 들을 optional 로 바꾼 type
  */
 export type ButtonBaseOptionalProps = Partial<ButtonBaseProps>;
+
+/**
+ * FloatingActionButton 에서 사용될 Props
+ * ButtonBaseProps 에서 size와 HTMLButtonElement 의 Props 만 상속받음
+ */
+
+export type FabProps = Pick<ButtonBaseProps, 'size'> &
+  ButtonHTMLAttributes<HTMLButtonElement>;
