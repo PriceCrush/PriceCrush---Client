@@ -2,11 +2,11 @@ import MainPageCarousel from '@/components/carousel/MainPageCarousel';
 import CategoryList from '@/components/mainPage/CategoryList';
 import * as S from '@/components/stylecomponents/mainPage.style';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import * as Api from '@/utils/commonApi';
 import { Product } from './../components/carousel/MainPageCarousel';
 import { useModal } from '@/hooks/useModal';
 import styled from 'styled-components';
 import { useEffect } from 'react';
+import { Api } from '@/utils/commonApi';
 
 export default function Home({
   data,

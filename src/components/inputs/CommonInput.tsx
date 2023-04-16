@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 
 const StyleInput = styled.input<CommonInputProps>`
@@ -22,27 +23,30 @@ interface CommonInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   isValid?: boolean;
   feedback?: string;
   label?: string;
-  inputRef?: React.ForwardedRef<HTMLInputElement>;
 }
 
-const CommonInput = ({
-  feedback,
-  isValid = true,
-  inputRef,
-  ...props
-}: CommonInputProps) => {
-  return (
-    <>
-      <p style={{ display: 'flex' }}>
-        <span>{props.label}</span>
-        {!isValid && (
-          <span style={!isValid && { color: 'red', fontSize: '1.2rem' }}>
-            {feedback}
-          </span>
-        )}
-      </p>
-      <StyleInput ref={inputRef} isValid={isValid} {...props} />
-    </>
-  );
-};
+const CommonInput = forwardRef<HTMLInputElement, CommonInputProps>(
+  (
+    {
+      feedback,
+      isValid = true,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <>
+        <p style={{ display: 'flex' }}>
+          <span>{props.label}</span>
+          {!isValid && (
+            <span style={!isValid && { color: 'red', fontSize: '1.2rem' }}>
+              {feedback}
+            </span>
+          )}
+        </p>
+        <StyleInput ref={ref} isValid={isValid} {...props} />
+      </>
+    );
+  }
+);
 export default CommonInput;

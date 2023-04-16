@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import * as S from '@/components/stylecomponents/create.style';
 import { FaCamera } from 'react-icons/fa';
 import { useModal } from '@/hooks/useModal';
-import InputBase from '@/components/inputs/InputBase';
 import CommonInput from '../../components/inputs/CommonInput';
 import produce from 'immer';
+import { Api } from '@/utils/commonApi';
 
 interface State {
   initialPrice: {
@@ -24,6 +24,16 @@ const Create = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { changeModal, closeModal, openModal } = useModal();
   const minPriceRef = useRef<HTMLInputElement>(null);
+
+  const init = async () => {
+    try {
+      const res = await Api.get('/product-category');
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  init();
 
   const [state, setState] = useState<State>({
     initialPrice: {
@@ -206,23 +216,12 @@ const Create = () => {
           </S.SubImageBox>
         </S.LeftSide>
         <S.RightSide>
-          {/* <label htmlFor="name">상품명</label>
-          <InputBase type="text" id="name" name="name" /> */}
           <CommonInput type="text" id="name" name="name" label="상품명" />
           <label htmlFor="category">카테고리</label>
           <select name="category" id="category">
             <option value="신발">신발</option>
             <option value="의류">의류</option>
           </select>
-          {/* <label htmlFor="price">시작 가격</label>
-          <InputBase
-            type="string"
-            id="price"
-            name="price"
-            value={state.initialPrice.value}
-            placeholder='ex) "10000"'
-            onChange={onChangeInitialPrice}
-          /> */}
           <CommonInput
             type="text"
             id="price"
@@ -237,8 +236,8 @@ const Create = () => {
           <label htmlFor="minPricePer">최소 입찰 단위</label>
           <S.InputBox>
             <select
-              name="최소 입찰 단위"
-              id="minPricePer"
+              // name="minPricePer"
+              // id="minPricePer"
               value={state.minPricePer.value}
               onChange={onChangeMinPricePer}
             >
@@ -248,18 +247,13 @@ const Create = () => {
               <option value="0.2">20%</option>
               <option value="직접 입력">직접 입력</option>
             </select>
-            {/* <InputBase
+            <CommonInput
               type="text"
+              name="minPrice"
+              id="minPrice"
               value={state.minPrice.value}
               onChange={onChangeMinPrice}
               ref={minPriceRef}
-              disabled
-            /> */}
-            <CommonInput
-              type="text"
-              value={state.minPrice.value}
-              onChange={onChangeMinPrice}
-              inputRef={minPriceRef}
               disabled
             />
           </S.InputBox>
