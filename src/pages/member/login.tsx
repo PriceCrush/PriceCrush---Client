@@ -1,7 +1,8 @@
-import LoginForm from '@/components/loginpage/LoginForm';
-
+import LoginForm from '@/components/memberpage/LoginForm';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
+//엑세스를 로컬 스토리지 담아서
 
 const Login = () => {
   return (

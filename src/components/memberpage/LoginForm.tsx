@@ -3,8 +3,9 @@ import Router from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import ButtonBase from '@/components/buttons/ButtonBase';
-import * as S from '@/components/stylecomponents/loginForm.styles';
+import * as S from '@/components/stylecomponents/memberControl.styles';
 import useValidation from '@/hooks/useValidation';
+import Link from 'next/link';
 
 //LoinForm type
 interface LoginResponse {
@@ -102,15 +103,21 @@ const LoginForm = () => {
         ></S.FormItem>
         {passWord.length > 0 && <span>{passwordMessage}</span>}
       </S.FormItemBox>
-
       <S.LoginButton type="submit" disabled={!id || isPassWord}>
         로그인
       </S.LoginButton>
 
       <S.MemberNavList>
-        <S.Item>이메일 가입</S.Item>
-        <S.Item>이메일 찿기</S.Item>
-        <S.Item>비밀번호 찾기</S.Item>
+        <S.Item>
+          {' '}
+          <Link href={'/member/join'}>이메일 가입</Link>
+        </S.Item>
+        <S.Item>
+          <Link href={'/member/findEmail'}>이메일 찿기</Link>
+        </S.Item>
+        <S.Item>
+          <Link href={'/member/findPassword'}>비밀번호 찾기</Link>
+        </S.Item>
       </S.MemberNavList>
     </S.LoginFormLayOut>
   );

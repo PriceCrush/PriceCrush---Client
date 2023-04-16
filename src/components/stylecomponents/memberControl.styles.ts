@@ -17,7 +17,7 @@ interface IStyledComponentProps {
 
 export const errorColorStyle = css<IStyledComponentProps>`
   ${({ theme, errorCheck }) =>
-    errorCheck ? theme.color.DEEP_ORANGE : theme.color.BLACK};
+    errorCheck ? theme.color.BLACK : theme.color.DEEP_ORANGE};
 `;
 
 export const LoginFormLayOut = styled.form`
@@ -32,7 +32,7 @@ export const LoginFormLayOut = styled.form`
 export const FormItemTitle = styled.h3<checkvalidationProps>`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: 450;
-  color: ${({ theme, errorCheck, textLength }) =>
+  color: ${({ theme, textLength }) =>
     textLength ? errorColorStyle : theme.color.BLACK};
 `;
 
@@ -41,11 +41,10 @@ export const FormItemIdTitle = styled(FormItemTitle)`
 `;
 
 export const FormItemBox = styled.div<FormItemBoxProps>`
-  height: 80px;
-  margin: ${({ theme }) => theme.margin.baseMargin};
+  margin: 10px 10px 5px 10px;
   padding: ${({ theme }) => theme.padding.inputY};
   > span {
-    display: ${(props) => (props.errorCheck ? '' : 'none')};
+    display: ${(props) => (props.errorCheck ? 'none' : '')};
     color: ${({ theme }) => theme.color.DEEP_ORANGE};
   }
   //form조건이 안맞을 경우 빨간색
@@ -54,14 +53,20 @@ export const FormItemBox = styled.div<FormItemBoxProps>`
 export const FormItem = styled.input<checkvalidationProps>`
   width: 100%;
   height: 38px;
-  margin: 10px 0;
+  margin-top: 5px;
   border: 0px solid;
   outline: none;
   border-bottom: 1px solid ${({ theme }) => theme.color.GRAY};
 
+  ::placeholder {
+    padding: 3px;
+    color: ${({ theme }) => theme.color.GRAY};
+    font-weight: 500;
+  }
+
   :focus {
     border-bottom: 1px solid
-      ${({ theme, errorCheck, textLength }) =>
+      ${({ theme, textLength }) =>
         textLength ? errorColorStyle : theme.color.BLACK};
   }
 `;
@@ -76,6 +81,7 @@ export const LoginButton = styled(ButtonBase)<checkvalidationProps>`
   border-radius: 15px;
   :disabled {
     color: ${({ theme }) => theme.color.WHITE};
+    cursor: auto;
   }
 `;
 
@@ -94,4 +100,9 @@ export const MemberNavList = styled.ul`
 export const Item = styled.li`
   font-size: ${({ theme }) => theme.fontSize.md};
   margin: 0 10px;
+  > a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
 `;
