@@ -26,4 +26,6 @@ const InputBase = forwardRef<HTMLInputElement, InputBaseProps>((props, ref) => {
   return <InputBaseS {...props} ref={ref} />;
 });
 
+InputBase.displayName = 'InputBase';
+
 export default InputBase;
