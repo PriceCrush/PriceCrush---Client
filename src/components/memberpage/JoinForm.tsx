@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import MemberInputForm from '@/components/inputs/MemberInputForm';
 import TermForm from './TermForm';
+import AddressForm from './AddressForm';
+import TestApi from '../modals/joinpage/testApi';
+import TestButton from './../modals/joinpage/TestButton';
 
 //LoinForm type
 interface UserInfoErrProps {
@@ -43,11 +46,9 @@ const JoinForm = () => {
   const handleUserInfo = (e) => {
     setUserInfo(e);
   };
-
   const passOrNot = (e) => {
     setUserInfoErr(e);
   };
-
   const showButton = useCallback(() => {
     for (let key in userInfoErr) {
       if (!userInfoErr[key as keyof UserInfoErrProps]) {
@@ -61,9 +62,9 @@ const JoinForm = () => {
     showButton();
   }, [showButton]);
 
-  // useEffect(() => {
-  //   console.log(userInfo);
-  // }, [userInfo]);
+  useEffect(() => {
+    console.log(userInfo);
+  }, [userInfo]);
 
   useEffect(() => {
     console.log(userInfoErr);
@@ -112,7 +113,10 @@ const JoinForm = () => {
         이메일
       </MemberInputForm>
 
-      {/* 체크박스, 위치 api */}
+      {/* 주소 */}
+      <AddressForm />
+
+      {/* 약관 */}
       <TermForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />
 
       <S.LoginButton type="submit" disabled={showButton()}>

@@ -41,8 +41,7 @@ export const FormItemIdTitle = styled(FormItemTitle)`
 `;
 
 export const FormItemBox = styled.div<FormItemBoxProps>`
-  height: 80px;
-  margin: ${({ theme }) => theme.margin.baseMargin};
+  margin: 10px 10px 5px 10px;
   padding: ${({ theme }) => theme.padding.inputY};
   > span {
     display: ${(props) => (props.errorCheck ? 'none' : '')};
@@ -54,7 +53,7 @@ export const FormItemBox = styled.div<FormItemBoxProps>`
 export const FormItem = styled.input<checkvalidationProps>`
   width: 100%;
   height: 38px;
-  margin: 10px 0;
+  margin-top: 5px;
   border: 0px solid;
   outline: none;
   border-bottom: 1px solid ${({ theme }) => theme.color.GRAY};
