@@ -1,6 +1,6 @@
 import ProductList from '@/components/listPage/ProductList';
 
-import SearchSlider from '@/components/listPage/SearchSlider';
+// import SearchSlider from '@/components/listPage/SearchSlider';
 import SliderNav from '@/components/listPage/SliderNav';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -72,12 +72,12 @@ const ListPage = () => {
   return (
     <ListPageWapper>
       <SliderSection>
-        <SliderNav
-          tab={listid}
+        {/* <SliderNav
+          tab={String(listid)}
           category={sampleCategory}
           data={sampleCategory}
-        />
-        <SearchSlider category={sampleCategory} />
+        /> */}
+        {/* <SearchSlider category={sampleCategory} /> */}
       </SliderSection>
       <ProductSection>
         {/* <ProductList
@@ -87,12 +87,12 @@ const ListPage = () => {
         /> */}
       </ProductSection>
       <PageButtonSection>
-        <PaginationComponent
+        {/* <PaginationComponent
           activePage
           itemsCountPerPage={5}
           totalItemsCount={10}
           pageRangeDisplayed={5}
-        />
+        /> */}
       </PageButtonSection>
     </ListPageWapper>
   );

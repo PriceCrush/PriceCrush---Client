@@ -1,4 +1,4 @@
-import { productCategoriesType } from '@/types/productTypes';
+import { productCategoriesType } from '@/types/productsTypes';
 import CategoryRow from './CategoryRow';
 
 interface CategoryListProps {

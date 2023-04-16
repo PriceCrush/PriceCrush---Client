@@ -4,18 +4,18 @@ import { FaMinus, FaPlus, FaRegCheckSquare, FaRegSquare } from 'react-icons/fa';
 import Link from 'next/link';
 
 //여기부분 연결하는거
-const Checkbox = ({ label, checked, onChange }) => {
+const Checkbox = ({ label, checked, onChange }: any) => {
   return (
     <>
       <TermCheckBox type="checkbox" checked={checked} onChange={onChange} />
-      <CheckLabel for="allChecked">
+      <CheckLabel htmlFor="allChecked">
         <span>전체동의</span>
       </CheckLabel>
     </>
   );
 };
 
-const TermForm = (props) => {
+const TermForm = (props: any) => {
   const { handleUserInfo, passOrNot } = props;
 
   const [allChecked, setAllChecked] = useState(false);
@@ -24,7 +24,7 @@ const TermForm = (props) => {
     agreement_mkt: false,
   });
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e: any) => {
     const { name, checked } = e.target;
     setCheckboxStates({
       ...checkboxStates,
@@ -32,7 +32,7 @@ const TermForm = (props) => {
     });
   };
 
-  const handleAllCheckboxChange = (e) => {
+  const handleAllCheckboxChange = (e: any) => {
     const { checked } = e.target;
     setAllChecked(checked);
     setCheckboxStates({
@@ -42,20 +42,20 @@ const TermForm = (props) => {
   };
 
   useEffect(() => {
-    handleUserInfo((prev) => ({
+    handleUserInfo((prev: any) => ({
       ...prev,
       agreement_use: checkboxStates.agreement_use,
     }));
   }, [checkboxStates.agreement_use]);
   useEffect(() => {
-    handleUserInfo((prev) => ({
+    handleUserInfo((prev: any) => ({
       ...prev,
       agreement_mkt: checkboxStates.agreement_mkt,
     }));
   }, [checkboxStates.agreement_mkt]);
 
   useEffect(() => {
-    passOrNot((prev) => ({
+    passOrNot((prev: any) => ({
       ...prev,
       agreement_use: checkboxStates.agreement_use,
     }));
@@ -72,7 +72,7 @@ const TermForm = (props) => {
             checked={allChecked}
             onChange={handleAllCheckboxChange}
           />
-          <CheckLabel for="allChecked">
+          <CheckLabel htmlFor="allChecked">
             <span>전체동의</span>
           </CheckLabel>
         </Allterm>
@@ -86,7 +86,7 @@ const TermForm = (props) => {
                 checked={checkboxStates.agreement_use}
                 onChange={handleCheckboxChange}
               />
-              <CheckLabel for="agreement_use">
+              <CheckLabel htmlFor="agreement_use">
                 <span>[필수] 개인정보 수집 및 이용에 동의</span>
               </CheckLabel>
             </TermItem>
@@ -98,7 +98,7 @@ const TermForm = (props) => {
                 checked={checkboxStates.agreement_mkt}
                 onChange={handleCheckboxChange}
               />
-              <CheckLabel for="agreement_mkt">
+              <CheckLabel htmlFor="agreement_mkt">
                 <span>[선택] 마케팅 정보 수신동의</span>
               </CheckLabel>
             </TermItem>
