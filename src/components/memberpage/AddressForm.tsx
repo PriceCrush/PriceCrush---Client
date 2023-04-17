@@ -11,7 +11,7 @@ import FindAddressConfirm from '@/components/modals/joinpage/FindAddressConfirm'
 
 const AddressForm = () => {
   const { openModal } = useModal();
-  const handleBidButtonClick = (e: any) => {
+  const handleBidButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     openModal({
       title: '주소검색',

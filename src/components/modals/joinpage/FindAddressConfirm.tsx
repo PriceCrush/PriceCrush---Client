@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import DaumPostcodeEmbed from 'react-daum-postcode';
-import DaumPostcode from 'react-daum-postcode';
 import { useModal } from '@/hooks/useModal';
 import styled from 'styled-components';
 
@@ -17,7 +16,7 @@ const handleAddress = (data: any) => {
 };
 
 const FindAddressConfirm = () => {
-  const { post, setPost } = useState<PostProps>({
+  const [post, setPost] = useState<PostProps>({
     address: '',
     zoneCode: '',
   });

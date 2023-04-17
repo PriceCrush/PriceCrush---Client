@@ -3,19 +3,12 @@ import styled from 'styled-components';
 import { FaMinus, FaPlus, FaRegCheckSquare, FaRegSquare } from 'react-icons/fa';
 import Link from 'next/link';
 
-//여기부분 연결하는거
-const Checkbox = ({ label, checked, onChange }: any) => {
-  return (
-    <>
-      <TermCheckBox type="checkbox" checked={checked} onChange={onChange} />
-      <CheckLabel htmlFor="allChecked">
-        <span>전체동의</span>
-      </CheckLabel>
-    </>
-  );
-};
+interface TermFormProps {
+  handleUserInfo: Function;
+  passOrNot: Function;
+}
 
-const TermForm = (props: any) => {
+const TermForm = (props: TermFormProps) => {
   const { handleUserInfo, passOrNot } = props;
 
   const [allChecked, setAllChecked] = useState(false);
@@ -24,7 +17,7 @@ const TermForm = (props: any) => {
     agreement_mkt: false,
   });
 
-  const handleCheckboxChange = (e: any) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setCheckboxStates({
       ...checkboxStates,
@@ -32,7 +25,7 @@ const TermForm = (props: any) => {
     });
   };
 
-  const handleAllCheckboxChange = (e: any) => {
+  const handleAllCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
     setAllChecked(checked);
     setCheckboxStates({
@@ -41,12 +34,14 @@ const TermForm = (props: any) => {
     });
   };
 
+  //의존성을 다 실행할 시 무한루프에 빠짐
   useEffect(() => {
     handleUserInfo((prev: any) => ({
       ...prev,
       agreement_use: checkboxStates.agreement_use,
     }));
   }, [checkboxStates.agreement_use]);
+
   useEffect(() => {
     handleUserInfo((prev: any) => ({
       ...prev,

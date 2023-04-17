@@ -39,9 +39,24 @@ const StyledPagination = styled.div<{ active: boolean }>`
     }
   }
 `;
+//react-js-pagination 사용
 
-const PaginationComponent = (props: any) => {
-  const { activePage, itemsCountPerPage, totalItemsCount, onChange } = props;
+interface PaginationComponentProps {
+  activePage: number;
+  totalItemsCount: number;
+  onChange: (pageNumber: number) => void;
+  itemsCountPerPage?: number | undefined;
+  pageRangeDisplayed: number;
+}
+
+const PaginationComponent = (props: PaginationComponentProps) => {
+  const {
+    activePage,
+    itemsCountPerPage,
+    totalItemsCount,
+    onChange,
+    pageRangeDisplayed,
+  } = props;
 
   return (
     <StyledPagination active={false}>

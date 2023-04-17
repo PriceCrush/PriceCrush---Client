@@ -68,7 +68,10 @@ const ListPage = () => {
 
   //nav바
 
-  // 이 페이지에서 주소와 주소에 맞는 데이터 정제해서 보내줌
+  // PaginationComponent onChange를 위한 임시
+  const handlePage = () => {
+    console.log('');
+  };
 
   return (
     <ListPageWapper>
@@ -89,7 +92,8 @@ const ListPage = () => {
       </ProductSection>
       <PageButtonSection>
         <PaginationComponent
-          activePage
+          activePage={5}
+          onChange={handlePage}
           itemsCountPerPage={5}
           totalItemsCount={10}
           pageRangeDisplayed={5}

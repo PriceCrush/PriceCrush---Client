@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import useValidation from '@/hooks/useValidation';
 import ShowErrorMessage from '../memberpage/ShowErrorMessage';
+import { UserInfoErrProps } from '@/types/joinFormTypes';
 
 // 지금 에러 부분을 표현하는 로직이 이상함 그거만 수정하면 될듯함
 
@@ -54,11 +55,14 @@ const MemberInputForm = (
   }, [showErrorMessage]);
 
   useEffect(() => {
-    handleUserInfo((prev: any) => ({ ...prev, [name]: writtenData }));
+    handleUserInfo((prev: UserInfoErrProps) => ({
+      ...prev,
+      [name]: writtenData,
+    }));
   }, [writtenData]);
 
   useEffect(() => {
-    passOrNot((prev: any) => ({ ...prev, [name]: passedInfo }));
+    passOrNot((prev: UserInfoErrProps) => ({ ...prev, [name]: passedInfo }));
   }, [passedInfo]);
 
   return (
