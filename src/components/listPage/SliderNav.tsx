@@ -6,6 +6,7 @@ import styled from 'styled-components';
 // 1. 타입
 type SliderNavProps = {
   tab: string | undefined;
+  category: Category[];
   data: Category[];
 };
 

@@ -14,7 +14,7 @@ const AddressForm = () => {
   const handleBidButtonClick = (e: any) => {
     e.preventDefault();
     openModal({
-      title: '',
+      title: '주소검색',
       content: <FindAddressConfirm />,
     });
   };

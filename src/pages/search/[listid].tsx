@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import PaginationComponent from '@/components/listPage/PaginationComponent';
+import Searchslider from '@/components/listPage/Searchslider';
 
 //이 타입은 추후 api가 들어올때 확정나기 때문에 우선보류
 type Category = {
@@ -72,27 +73,27 @@ const ListPage = () => {
   return (
     <ListPageWapper>
       <SliderSection>
-        {/* <SliderNav
+        <SliderNav
           tab={String(listid)}
           category={sampleCategory}
           data={sampleCategory}
-        /> */}
-        {/* <SearchSlider category={sampleCategory} /> */}
+        />
+        <Searchslider category={sampleCategory} />
       </SliderSection>
       <ProductSection>
-        {/* <ProductList
+        <ProductList
           column={4}
           data={sampleCategory}
           category={sampleCategory}
-        /> */}
+        />
       </ProductSection>
       <PageButtonSection>
-        {/* <PaginationComponent
+        <PaginationComponent
           activePage
           itemsCountPerPage={5}
           totalItemsCount={10}
           pageRangeDisplayed={5}
-        /> */}
+        />
       </PageButtonSection>
     </ListPageWapper>
   );

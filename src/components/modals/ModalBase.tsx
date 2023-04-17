@@ -14,7 +14,7 @@ const ModalBackground = styled.div`
 `;
 
 const ModalContent = styled.div`
-  height: 50%;
+  height: 65%;
   width: 75%;
   border-radius: 1.5rem;
   background-color: white;
