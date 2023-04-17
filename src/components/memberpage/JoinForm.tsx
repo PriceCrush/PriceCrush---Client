@@ -3,8 +3,6 @@ import * as S from '@/components/stylecomponents/memberControl.styles';
 import MemberInputForm from '@/components/inputs/MemberInputForm';
 import TermForm from './TermForm';
 import AddressForm from './AddressForm';
-// import TestApi from '../modals/joinpage/testApi';
-import TestButton from './../modals/joinpage/TestButton';
 
 //LoinForm type
 interface UserInfoErrProps {
@@ -37,15 +35,25 @@ const JoinForm = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_BASEURL;
   const LOGIN_URL = '/'; //성공할때의 주소
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(userInfo);
     console.log(userInfoErr);
   };
 
+  // 이와 같이 수정하고 MemberInputForm의 형식을 바꿀경우엔 어떤식으로 바뀌는지 확인필요
+  // const handleUserInfo = (e) => {
+  //   const { name, value } = e.target;
+  //   setUserInfo((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
+  //타입 잘 모르겠음
   const handleUserInfo = (e: any) => {
     setUserInfo(e);
   };
+  //타입 잘 모르겠음
   const passOrNot = (e: any) => {
     setUserInfoErr(e);
   };
