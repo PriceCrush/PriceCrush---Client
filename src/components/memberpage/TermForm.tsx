@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FaMinus, FaPlus, FaRegCheckSquare, FaRegSquare } from 'react-icons/fa';
-import Link from 'next/link';
+import { userInfoAndCheckProps } from '@/types/memberTypes';
 
-interface TermFormProps {
-  handleUserInfo: Function;
-  passOrNot: Function;
-}
-
-const TermForm = (props: TermFormProps) => {
+const TermForm = (props: userInfoAndCheckProps) => {
   const { handleUserInfo, passOrNot } = props;
 
   const [allChecked, setAllChecked] = useState(false);

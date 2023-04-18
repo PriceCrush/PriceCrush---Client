@@ -28,7 +28,7 @@ const JoinForm = () => {
     phone: false,
     name: false,
     nickname: false,
-    address: true,
+    address: false,
     agreement_use: false,
   });
 
@@ -122,7 +122,7 @@ const JoinForm = () => {
       </MemberInputForm>
 
       {/* 주소 */}
-      <AddressForm />
+      <AddressForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />
 
       {/* 약관 */}
       <TermForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />

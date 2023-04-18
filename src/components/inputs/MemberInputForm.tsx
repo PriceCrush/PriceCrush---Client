@@ -3,16 +3,9 @@ import * as S from '@/components/stylecomponents/memberControl.styles';
 import useValidation from '@/hooks/useValidation';
 import ShowErrorMessage from '../memberpage/ShowErrorMessage';
 import { UserInfoErrProps } from '@/types/joinFormTypes';
+import { MemberInputFormProps } from '@/types/memberTypes';
 
 // 지금 에러 부분을 표현하는 로직이 이상함 그거만 수정하면 될듯함
-
-interface MemberInputFormProps {
-  type: string;
-  handleUserInfo: Function;
-  passOrNot: Function;
-  children: string;
-  name: string;
-}
 
 const MemberInputForm = (
   props: React.PropsWithChildren<MemberInputFormProps>
