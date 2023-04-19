@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import { useModal } from '@/hooks/useModal';
 import styled from 'styled-components';
+/**
+ * @param handlepost 전해줄 주소넣을 함수
+ * @returns 카카오 api주소값
+ */
 
 const FindAddressConfirm = (props: any) => {
   const { handlepost } = props;

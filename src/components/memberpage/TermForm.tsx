@@ -10,7 +10,9 @@ const TermForm = (props: userInfoAndCheckProps) => {
     agreement_use: false,
     agreement_mkt: false,
   });
-
+  /**
+   * @description name이 일치하는 체크박스 체크
+   */
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setCheckboxStates({
@@ -18,7 +20,9 @@ const TermForm = (props: userInfoAndCheckProps) => {
       [name]: checked,
     });
   };
-
+  /**
+   * @description 체크박스 전체 체크
+   */
   const handleAllCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
     setAllChecked(checked);
@@ -28,7 +32,7 @@ const TermForm = (props: userInfoAndCheckProps) => {
     });
   };
 
-  //의존성을 다 실행할 시 무한루프에 빠짐
+  //모든 의존성 추가 시 무한루프
   useEffect(() => {
     handleUserInfo((prev: any) => ({
       ...prev,

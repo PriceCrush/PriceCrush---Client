@@ -18,6 +18,9 @@ const AddressForm = (props: userInfoAndCheckProps) => {
     zonecode: '',
     extraAddress: '',
   });
+  /**
+   *  @description joinForm의 address 형식을 맞추기 위해 모든 주소 정보 합친값
+   */
   const [fullAddress, setFullAddress] = useState('');
   const [inputChcek, setInputCheck] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -25,7 +28,9 @@ const AddressForm = (props: userInfoAndCheckProps) => {
     post.extraAddress,
     'address'
   );
-
+  /**
+   * @description 주소 api와 연결된 모달 open
+   */
   const handleBidButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     openModal({
       title: '주소검색',
@@ -37,7 +42,10 @@ const AddressForm = (props: userInfoAndCheckProps) => {
     setPost(e);
   };
 
-  //여기 lodash를 사용하는게 좋나?
+  //여기 lodash를 사용하는게 좋나? useEffect를 안써도 될것같아서 고민중
+  /**
+   * @description 우편번호, 주소, 상세주소를 합치기 위한 값
+   */
   useEffect(() => {
     const { address, zonecode, extraAddress } = post;
     let fullAddress = '';
@@ -46,7 +54,9 @@ const AddressForm = (props: userInfoAndCheckProps) => {
     }
     setFullAddress(fullAddress);
   }, [post]);
-
+  /**
+   * @description ShowErrorMessage를 통해  에러메시지와 오류여부 설정
+   */
   const showErrorMessage = useCallback(() => {
     if (condition) {
       setErrorMessage(warningMessage);
@@ -60,10 +70,6 @@ const AddressForm = (props: userInfoAndCheckProps) => {
   useEffect(() => {
     showErrorMessage();
   }, [showErrorMessage]);
-
-  useEffect(() => {
-    console.log(inputChcek);
-  }, [inputChcek]);
 
   useEffect(() => {
     handleUserInfo((prev: UserInfoErrProps) => ({

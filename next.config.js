@@ -1,3 +1,5 @@
+const BASE_URL = process.env.NEXT_PUBLIC_BASEURL;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -17,6 +19,18 @@ const nextConfig = {
         port: '',
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/member/users',
+        destination: `http://ec2-13-124-196-195.ap-northeast-2.compute.amazonaws.com:3000/users`,
+      },
+      {
+        source: '/api/member/login',
+        destination: `http://ec2-13-124-196-195.ap-northeast-2.compute.amazonaws.com:3000/auth`,
+      },
+    ];
   },
 };
 

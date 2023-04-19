@@ -49,9 +49,9 @@ const ProductList = ({ column, data, category }: ProductListProps) => {
     setFiltedData(handleData({ data, categoryName }));
   }, [data, handleData, categoryName]);
 
-  useEffect(() => {
-    console.log(filtedData);
-  }, [filtedData]);
+  // useEffect(() => {
+  //   console.log(filtedData);
+  // }, [filtedData]);
   //데이터 -> 그냥 db에 있는걸로 하자
 
   return (
