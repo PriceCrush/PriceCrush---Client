@@ -46,9 +46,8 @@ const ShowErrorMessage = (writtenData: string, name: string) => {
       warningMessage: '핸드폰번호를 정확히 입력해주세요',
     },
     address: {
-      condition: false,
-      warningMessage:
-        '(우편번호) (도/시) (구/군/시) (동/읍/면) (상세주소)순으로 입력해주세요 ',
+      condition: writtenData.length <= 0,
+      warningMessage: '주소는 필수사항입니다.',
     },
     nickname: {
       condition: !textlength,
