@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import * as S from '@/components/stylecomponents/create.style';
 import { FaCamera } from 'react-icons/fa';
 import { useModal } from '@/hooks/useModal';
-import CommonInput from '../../components/inputs/CommonInput';
+import CommonInput from '../../../components/inputs/CommonInput';
 import produce from 'immer';
 import { Api } from '@/utils/commonApi';
 
