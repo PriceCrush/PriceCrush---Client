@@ -1,30 +1,31 @@
-import React from 'react';
-import * as S from '@/components/stylecomponents/modals/productDetails/bidConfirm.style';
-import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
-import ButtonBase from '@/components/buttons/ButtonBase';
+import React, { useState } from 'react';
+import DaumPostcodeEmbed from 'react-daum-postcode';
 import { useModal } from '@/hooks/useModal';
-// import TestApi from './testApi';
-import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
+/**
+ * @param handlepost 전해줄 주소넣을 함수
+ * @returns 카카오 api주소값
+ */
 
-interface BidConfirmProps {
-  bidPrice: number;
-}
+const FindAddressConfirm = (props: any) => {
+  const { handlepost } = props;
+  const { closeModal } = useModal();
 
-const handleAddress = (data: any) => {
-  const { address, zonecode } = data;
-  console.log(data);
-  console.log(`우편 번호 : ${zonecode}`);
-  console.log(`도로명 주소 : ${address}`);
-};
+  const handleComplete = (data: any) => {
+    const { address, zonecode } = data;
+    handlepost((prev: any) => ({
+      ...prev,
+      address: address,
+      zonecode: zonecode,
+    })); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    closeModal();
+  };
 
-const FindAddressConfirm = () => {
   return (
     <PostcodeWrapper>
-      <DaumPostcode
-        onComplete={handleAddress}
-        className="postcode-iframe"
-        style={{ width: '100%', height: '450px' }}
+      <DaumPostcodeEmbed
+        onComplete={handleComplete}
+        style={{ width: '100%', height: '500px' }}
         autoClose
       />
     </PostcodeWrapper>
@@ -32,7 +33,8 @@ const FindAddressConfirm = () => {
 };
 
 const PostcodeWrapper = styled.div`
-  > div {
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 export default FindAddressConfirm;

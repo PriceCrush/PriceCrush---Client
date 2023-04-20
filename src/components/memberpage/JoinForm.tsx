@@ -3,8 +3,8 @@ import * as S from '@/components/stylecomponents/memberControl.styles';
 import MemberInputForm from '@/components/inputs/MemberInputForm';
 import TermForm from './TermForm';
 import AddressForm from './AddressForm';
-// import TestApi from '../modals/joinpage/testApi';
-import TestButton from './../modals/joinpage/TestButton';
+import CategorySelector from './CategorySelector';
+import axios from 'axios';
 
 //LoinForm type
 interface UserInfoErrProps {
@@ -30,25 +30,46 @@ const JoinForm = () => {
     phone: false,
     name: false,
     nickname: false,
-    address: true,
+    address: false,
     agreement_use: false,
   });
 
-  const BASE_URL = process.env.NEXT_PUBLIC_BASEURL;
-  const LOGIN_URL = '/'; //성공할때의 주소
-
-  const handleSubmit = async (e: any) => {
+  /**
+   *
+   * @description 회원가입 axios요청
+   */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(userInfo);
-    console.log(userInfoErr);
+    axios
+      .post('/api/member/users', userInfo)
+      .then(function (response) {
+        console.log(response);
+        //회원가입 완료 시 완료 메세지 보내고 로그인 화면으로 이동
+      })
+      .catch(function (error) {
+        console.log(error);
+        // 회원가입 안될시 에러 메세지
+        // 잘못된 요청?
+        // 이미 있을경우 그거만 표현
+      });
   };
 
+  /**
+   * @description input 정보
+   */
   const handleUserInfo = (e: any) => {
     setUserInfo(e);
   };
+  /**
+   * @description input 오류여부
+   */
   const passOrNot = (e: any) => {
     setUserInfoErr(e);
   };
+  /**
+   * @description 버튼 활성화
+   * @description userInfoErr의 하나의 값이라도 false가 나올시 false리턴
+   */
   const showButton = useCallback(() => {
     for (let key in userInfoErr) {
       if (!userInfoErr[key as keyof UserInfoErrProps]) {
@@ -61,14 +82,6 @@ const JoinForm = () => {
   useEffect(() => {
     showButton();
   }, [showButton]);
-
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
-
-  useEffect(() => {
-    console.log(userInfoErr);
-  }, [userInfoErr]);
 
   return (
     <S.LoginFormLayOut method="post" onSubmit={handleSubmit}>
@@ -114,10 +127,12 @@ const JoinForm = () => {
       </MemberInputForm>
 
       {/* 주소 */}
-      <AddressForm />
+      <AddressForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />
 
       {/* 약관 */}
       <TermForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />
+
+      <CategorySelector handleUserInfo={handleUserInfo} />
 
       <S.LoginButton type="submit" disabled={showButton()}>
         동의하고 가입하기

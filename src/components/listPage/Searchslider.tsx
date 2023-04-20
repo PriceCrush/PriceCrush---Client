@@ -9,13 +9,13 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-type Category = {
+interface CategoryProps {
   tab: number;
   category: string;
   img: string;
-};
+}
 interface SearchSliderProps {
-  category: Category[];
+  category: CategoryProps[];
 }
 
 const Searchslider = ({ category }: SearchSliderProps) => {
@@ -49,7 +49,7 @@ const Searchslider = ({ category }: SearchSliderProps) => {
   );
 };
 
-const Item = (props: any) => {
+const Item = (props: CategoryProps) => {
   const { img, category, tab } = props;
   const router = useRouter();
   const goRouter = () => {

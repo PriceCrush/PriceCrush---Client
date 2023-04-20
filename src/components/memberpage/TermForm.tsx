@@ -1,21 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FaMinus, FaPlus, FaRegCheckSquare, FaRegSquare } from 'react-icons/fa';
-import Link from 'next/link';
+import { userInfoAndCheckProps } from '@/types/memberTypes';
 
-//여기부분 연결하는거
-const Checkbox = ({ label, checked, onChange }: any) => {
-  return (
-    <>
-      <TermCheckBox type="checkbox" checked={checked} onChange={onChange} />
-      <CheckLabel htmlFor="allChecked">
-        <span>전체동의</span>
-      </CheckLabel>
-    </>
-  );
-};
-
-const TermForm = (props: any) => {
+const TermForm = (props: userInfoAndCheckProps) => {
   const { handleUserInfo, passOrNot } = props;
 
   const [allChecked, setAllChecked] = useState(false);
@@ -23,16 +10,20 @@ const TermForm = (props: any) => {
     agreement_use: false,
     agreement_mkt: false,
   });
-
-  const handleCheckboxChange = (e: any) => {
+  /**
+   * @description name이 일치하는 체크박스 체크
+   */
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setCheckboxStates({
       ...checkboxStates,
       [name]: checked,
     });
   };
-
-  const handleAllCheckboxChange = (e: any) => {
+  /**
+   * @description 체크박스 전체 체크
+   */
+  const handleAllCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
     setAllChecked(checked);
     setCheckboxStates({
@@ -41,12 +32,14 @@ const TermForm = (props: any) => {
     });
   };
 
+  //모든 의존성 추가 시 무한루프
   useEffect(() => {
     handleUserInfo((prev: any) => ({
       ...prev,
       agreement_use: checkboxStates.agreement_use,
     }));
   }, [checkboxStates.agreement_use]);
+
   useEffect(() => {
     handleUserInfo((prev: any) => ({
       ...prev,
