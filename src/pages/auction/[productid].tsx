@@ -1,13 +1,12 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, {
+  MouseEventHandler,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
-import Image from 'next/image';
-import { getPlaiceholder } from 'plaiceholder';
 import { GetServerSideProps } from 'next';
-import {
-  FixedLengthString,
-  ProductDetailsProps,
-  TempDataProps,
-} from '@/types/productsTypes';
+import { ProductDetailsProps } from '@/types/productsTypes';
 import { AiOutlineHeart, AiOutlineShareAlt } from 'react-icons/ai';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
@@ -16,6 +15,8 @@ import { useTimeDiff } from '@/hooks/useTimeDiff';
 import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
 import { useModal } from '@/hooks/useModal';
 import BidConfirm from '@/components/modals/productPage/BidConfirm';
+import { useRecoilValue } from 'recoil';
+import { SocketContext } from '@/contexts/socket';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -69,6 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 };
 
 const ProductDetail = ({ tempData }: ServerSideReturn) => {
+  const socket = useContext(SocketContext);
   const timeDiff = useTimeDiff(String(tempData.end_date));
   const { openModal } = useModal();
   const [inputBidPrice, setInputBidPrice] = useState(tempData.start_price);
@@ -98,6 +100,16 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
       throw new Error('버튼 이름이 잘못되었습니다.');
     }
   };
+
+  const handleSocketEvent = (data: any) => {
+    console.log('소켓 연결');
+    console.log(data);
+  };
+
+  useEffect(() => {
+    // 소켓 연결
+    socket.on('bid', handleSocketEvent);
+  }, []);
 
   return (
     <S.DetailPageLayout>
