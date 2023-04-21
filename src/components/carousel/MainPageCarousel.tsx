@@ -4,41 +4,21 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useState } from 'react';
 import ArrowButton from '@/components/carousel/ArrowButton';
 import * as S from '@/components/stylecomponents/carousel.style';
-import { Api } from '@/utils/commonApi';
-
-interface Images {
-  main: string;
-  details: {
-    id: number;
-    url: string;
-  }[];
-}
-
-export interface Product {
-  id: number;
-  productName: string;
-  desc: string;
-  auctionEndDate: string;
-  currentPrice: string;
-  minimumBidPrice: string;
-  ownerName: string;
-  images: Images;
-  currentBidCount: number;
-}
+import { ProductFromApi } from '@/types/productsTypes';
 
 interface MainPageCarouselProps {
-  popularProducts: Product[];
+  popularProducts: ProductFromApi[];
 }
 
 const MainPageCarousel = ({ popularProducts }: MainPageCarouselProps) => {
   const [centerSlideIndex, setCenterSlideIndex] = useState(0);
-  // const [popularProducts, setPopularProducts] = useState<Product[]>();
+
   const settings = {
-    className: 'center',
+    className: popularProducts.length >= 3 ? 'center' : 'side',
     centerMode: true,
-    infinite: true,
+    infinite: popularProducts.length >= 3 ? true : false,
     centerPadding: '0',
-    slidesToShow: 5,
+    slidesToShow: popularProducts.length >= 5 ? 5 : 3,
     slidesToScroll: 1,
     speed: 500,
     dots: true,
@@ -51,27 +31,17 @@ const MainPageCarousel = ({ popularProducts }: MainPageCarouselProps) => {
       setCenterSlideIndex(center);
     },
   };
-  const getData = async () => {
-    const data = await Api.get<Product[]>('/products');
-    return data;
-  };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const newData = await getData();
-  //     setPopularProducts(newData);
-  //   })();
-  // }, []);
 
   return (
     <S.MainPageSlider {...settings}>
       {popularProducts &&
-        popularProducts.map((product, index) => (
+        popularProducts.map((product: any, index: any) => (
           <SliderItem
             key={product.id}
             product={product}
             curIdx={index}
             centerIdx={centerSlideIndex}
+            infiniteMode={popularProducts.length >= 3 ? true : false}
           />
         ))}
     </S.MainPageSlider>
