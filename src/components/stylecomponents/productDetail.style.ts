@@ -28,6 +28,13 @@ export const DetailPageImageBox = styled.div`
   overflow: hidden;
 `;
 
+export const DetailLeftSectionRow = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
 export const DetailRightSection = styled(DetailLeftSection)`
   width: 60%;
   gap: 20px;
@@ -73,7 +80,9 @@ export const PriceBox = styled.div`
   }
 `;
 
-export const DetailDescBox = styled(PriceBox)``;
+export const DetailDescBox = styled(PriceBox)`
+  row-gap: 2vh;
+`;
 
 export const PriceText = styled.h4`
   font-size: ${({ theme }) => theme.fontSize.xl};
@@ -84,6 +93,22 @@ export const TimeDiffBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 15px;
+
+  h3 {
+    font-size: ${({ theme }) => theme.fontSize.lg};
+    font-weight: 700;
+  }
+
+  span {
+    font-size: ${({ theme }) => theme.fontSize.md};
+    font-weight: 500;
+
+    &.timeRemain {
+      font-size: ${({ theme }) => theme.fontSize.xl};
+      color: ${({ theme }) => theme.color.DEEP_ORANGE};
+    }
+  }
 `;
 
 export const CurrentPriceBox = styled(TimeDiffBox)``;
