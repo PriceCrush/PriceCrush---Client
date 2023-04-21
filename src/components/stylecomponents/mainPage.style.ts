@@ -22,12 +22,27 @@ export const CategoryBox = styled.div`
   margin: 0 auto;
   max-width: 200px;
   div {
+    position: relative;
+    width: 100%;
+    height: 100%;
     border-radius: 8px;
     background-color: orange;
+    overflow: hidden;
   }
   p {
     margin-top: 20px;
     font-size: 1.6rem;
     font-weight: 600;
+  }
+
+  @supports (aspect-ratio: 16/9) {
+    aspect-ratio: 16/9;
+  }
+  @supports not (aspect-ratio: 16/9) {
+    div::before {
+      content: '';
+      display: block;
+      padding-top: 56.25%;
+    }
   }
 `;

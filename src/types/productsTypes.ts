@@ -59,6 +59,7 @@ export type PartialProductFromApi = Partial<ProductFromApi>;
 
 export type productCategoryType = {
   id: string;
+  imgurl: string;
   name: string;
 };
 

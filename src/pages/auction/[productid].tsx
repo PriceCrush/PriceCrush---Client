@@ -108,7 +108,19 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
 
   useEffect(() => {
     // 소켓 연결
+    socket.on('connect', () => console.log('소켓 연결됨', socket.connected));
+
+    // 소켓 연결 해제 확인
+    socket.on('disconnect', () =>
+      console.log('소켓 연결 해제됨', socket.disconnected)
+    );
+
     socket.on('bid', handleSocketEvent);
+
+    // 소켓 이벤트 연결 해제
+    return () => {
+      socket.off('bid', handleSocketEvent);
+    };
   }, []);
 
   return (
