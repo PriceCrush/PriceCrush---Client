@@ -51,14 +51,15 @@ export type ProductFromApi = {
   desc: 'string';
   start_date: string;
   end_date: string;
-  status: number;
-  deletedAt: string;
+  deletedAt: string | null;
+  productCategory: productCategoryType;
 };
 
 export type PartialProductFromApi = Partial<ProductFromApi>;
 
 export type productCategoryType = {
   id: string;
+  imgurl: string;
   name: string;
 };
 

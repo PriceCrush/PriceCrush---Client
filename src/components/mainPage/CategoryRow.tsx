@@ -1,8 +1,9 @@
 import * as S from '@/components/stylecomponents/mainPage.style';
+import { productCategoriesType } from '@/types/productsTypes';
 import Image from 'next/image';
 
 interface CategoryRowProps {
-  categories: any[];
+  categories: productCategoriesType;
 }
 
 /**
@@ -12,19 +13,21 @@ interface CategoryRowProps {
 const CategoryRow = ({ categories }: CategoryRowProps) => {
   return (
     <S.CategoryRow>
-      {categories.map((category) => (
-        <S.CategoryBox key={category}>
-          <div>
-            <Image
-              src="/sample-shoes.png"
-              alt="sample"
-              width={100}
-              height={100}
-            />
-          </div>
-          <p>{category}</p>
-        </S.CategoryBox>
-      ))}
+      {categories.map((category, index) => {
+        return (
+          <S.CategoryBox key={index}>
+            <div>
+              <Image
+                src={String(category.imgurl)}
+                alt="상품 카테고리"
+                fill
+                priority={true}
+              />
+            </div>
+            <p>{category.name}</p>
+          </S.CategoryBox>
+        );
+      })}
     </S.CategoryRow>
   );
 };

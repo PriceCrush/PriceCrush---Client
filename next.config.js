@@ -18,6 +18,11 @@ const nextConfig = {
         hostname: 'img.soldout.co.kr',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'developerkims-bucket.s3.ap-northeast-2.amazonaws.com',
+        port: '',
+      },
     ],
   },
   async rewrites() {
