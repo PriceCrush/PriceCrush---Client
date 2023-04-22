@@ -1,14 +1,14 @@
 import LoginForm from '@/components/memberpage/LoginForm';
+import Logout from '@/components/memberpage/Logout';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
-//엑세스를 로컬 스토리지 담아서
 
 const Login = () => {
   return (
     <LoginLayOut>
       <LogoTitle>PriceCrush</LogoTitle>
       <LoginForm />
+      <Logout />
     </LoginLayOut>
   );
 };

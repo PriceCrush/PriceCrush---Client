@@ -40,6 +40,18 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const categories = await Api.get('/product-category');
   //FIXME: JSON-SERVER 데이터를 서버 데이터로 교체해야함
   const data = db.products;
+  //
+  // const dd = {
+  //   email: 'test@gmail.com',
+  //   password: 'test12!',
+  // };
+  // const res = await axios.post(
+  //   'http://ec2-13-124-196-195.ap-northeast-2.compute.amazonaws.com:3000/auth',
+  //   dd
+  // );
+
+  // // console.log(res);
+  // console.log(res.headers['set-cookie'][0]);
 
   return {
     props: {
