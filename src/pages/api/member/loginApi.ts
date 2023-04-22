@@ -31,10 +31,6 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse) => {
         `accessToken=${accessToken}; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
         `${refreshToken}; HttpOnly; path=/;  expires=${refreshTokenExpireTime};`,
       ]);
-      // res.setHeader('Set-Cookie', [
-      //   `accessToken=${accessToken};  path=/;  expires=${accessTotkenExpireTime};`,
-      //   `${refreshToken};  path=/;  expires=${refreshTokenExpireTime};`,
-      // ]);
       res.status(200).json(user);
     })
     .catch(function (error) {

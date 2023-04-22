@@ -35,7 +35,8 @@ const ShowErrorMessage = (writtenData: string, name: string) => {
     password: {
       condition:
         !textlength || !specialCharacters || !includingCharacters || continuity,
-      warningMessage: '영문, 숫자, 특수문자를 조합하여 입력해주세요(4~16자)',
+      warningMessage:
+        '영문, 숫자, 특수문자,연속되지 않는 문자를 조합하여 입력해주세요(4~16자)',
     },
     name: {
       condition: writtenData.length <= 0,

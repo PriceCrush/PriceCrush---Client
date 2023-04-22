@@ -14,6 +14,7 @@ const useValidation = (text: string) => {
     emailForm: false,
     phoneNumForm: false,
   });
+
   /**
    * @description 유효성 검사를위함 함수 (문자길이, 특수문자여부, 알파벳 여부, 연속된 알파벳 여부, 연속된 숫자여부)
    */

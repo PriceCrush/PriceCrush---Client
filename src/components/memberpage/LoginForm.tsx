@@ -30,7 +30,7 @@ const LoginForm = () => {
     //rewrite에 적던가 env에 넣던가 그때가서 해결
     axios
       .post(
-        '/api/loginApi',
+        '/api/member/loginApi',
         // '/api/member/login',
         {
           email: loginInfo.email,
@@ -40,7 +40,7 @@ const LoginForm = () => {
       )
       .then(function (response) {
         console.log(response);
-        // Router.push(`${LOGIN_URL}`);
+        Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {
         if (error.response.status === 422) {
