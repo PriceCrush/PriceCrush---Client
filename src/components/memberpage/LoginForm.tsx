@@ -30,7 +30,8 @@ const LoginForm = () => {
     //rewrite에 적던가 env에 넣던가 그때가서 해결
     axios
       .post(
-        '/api/member/login',
+        '/api/member/loginApi',
+        // '/api/member/login',
         {
           email: loginInfo.email,
           password: loginInfo.password,
@@ -38,19 +39,15 @@ const LoginForm = () => {
         { withCredentials: true }
       )
       .then(function (response) {
-        const { accessToken } = response.data;
-        const expires = new Date();
-        expires.setDate(Date.now() + 7 * 24 * 60 * 60 * 1000); // 30일
-        document.cookie = `access_token=${accessToken}; expires=${expires.toUTCString()};`;
-        Router.push(`${LOGIN_URL}`);
         console.log(response);
-        console.log(response.headers);
+        Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {
-        console.log(error);
-        // 회원가입 안될시 에러 메세지
-        // 잘못된 요청?
-        // 이미 있을경우 그거만 표현
+        if (error.response.status === 422) {
+          console.log(error.response.data.message);
+        } else {
+          console.log(error);
+        }
       });
   };
   /**
