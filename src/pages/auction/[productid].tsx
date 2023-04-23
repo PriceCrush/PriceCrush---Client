@@ -1,14 +1,13 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, {
+  MouseEventHandler,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
-import Image from 'next/image';
-import { getPlaiceholder } from 'plaiceholder';
 import { GetServerSideProps } from 'next';
-import {
-  FixedLengthString,
-  ProductDetailsProps,
-  TempDataProps,
-} from '@/types/productsTypes';
-import { AiOutlineHeart, AiOutlineShareAlt } from 'react-icons/ai';
+import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
+import { AiOutlineShareAlt } from 'react-icons/ai';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
@@ -16,14 +15,19 @@ import { useTimeDiff } from '@/hooks/useTimeDiff';
 import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
 import { useModal } from '@/hooks/useModal';
 import BidConfirm from '@/components/modals/productPage/BidConfirm';
+import { SocketContext } from '@/contexts/socket';
+import { Api } from '@/utils/commonApi';
 
 interface ServerSideReturn {
   // blurDataURL: string;
   tempData: ProductDetailsProps;
+  productData: ProductFromApi;
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  console.log(query);
+  const { productid } = query;
+  const productData = await Api.get(`/product/${productid}`);
+
   // const { base64 } = await getPlaiceholder(String(query.imageUrl));
 
   /**
@@ -64,22 +68,31 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       // blurDataURL: base64,
       tempData,
+      productData,
     },
   };
 };
 
-const ProductDetail = ({ tempData }: ServerSideReturn) => {
-  const timeDiff = useTimeDiff(String(tempData.end_date));
+const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
+  const socket = useContext(SocketContext);
+  const timeDiff = useTimeDiff(String(productData.end_date));
   const { openModal } = useModal();
-  const [inputBidPrice, setInputBidPrice] = useState(tempData.start_price);
+  const [inputBidPrice, setInputBidPrice] = useState(productData.start_price);
 
+  /**
+   * @description InputBase에 입력된 값에서 숫자만 추출해 state에 저장
+   */
   const handleCustomBidPriceInput = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    e.preventDefault();
-    setInputBidPrice(Number(e.target.value));
+    const { value } = e.target;
+    const numberValue = value.replace(/[^0-9]/g, ''); // 입력된 값에서 숫자만 추출
+    setInputBidPrice(Number(numberValue));
   };
 
+  /**
+   * @description 입찰, 최소입찰 버튼 클릭시 모달창 띄우기
+   */
   const handleBidButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     type Name = 'customPriceBid' | 'staticPriceBid';
@@ -99,6 +112,33 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
     }
   };
 
+  const handleSocketEvent = (data: any) => {
+    console.log('소켓 연결');
+    console.log(data);
+  };
+
+  useEffect(() => {
+    // 소켓 연결
+    socket.on('connect', () => console.log('소켓 연결됨', socket.connected));
+
+    // 소켓 연결 해제 확인
+    socket.on('disconnect', () =>
+      console.log('소켓 연결 해제됨', socket.disconnected)
+    );
+
+    socket.on('bid', handleSocketEvent);
+
+    // 소켓 이벤트 연결 해제
+    return () => {
+      socket.off('bid', handleSocketEvent);
+    };
+  }, []);
+
+  const formattedInputBidPrice = translatePriceToKoreanWon(
+    Number(inputBidPrice),
+    true
+  );
+
   return (
     <S.DetailPageLayout>
       {/**
@@ -106,14 +146,16 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
        */}
       <S.DetailLeftSection>
         <AuctionDetailCarousel images={tempData.images} />
-        <S.CurrentPriceBox>
-          <h3>최고 입찰 가격</h3>
-          <span>최고 입찰 가격 : 현재 가격</span>
-        </S.CurrentPriceBox>
-        <S.TimeDiffBox>
-          <h3>남은 시간</h3>
-          <span>{timeDiff}</span>
-        </S.TimeDiffBox>
+        <S.DetailLeftSectionRow>
+          <S.CurrentPriceBox>
+            <h3>최고 입찰 가격</h3>
+            <span>최고 입찰 가격 : 현재 가격</span>
+          </S.CurrentPriceBox>
+          <S.TimeDiffBox>
+            <h3>남은 시간</h3>
+            <span className="timeRemain">{timeDiff}</span>
+          </S.TimeDiffBox>
+        </S.DetailLeftSectionRow>
       </S.DetailLeftSection>
       {/**
        * 오른쪽 섹션
@@ -126,12 +168,11 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
           <S.NameBoxRow>
             <S.NameText>상품</S.NameText>
             <S.NameBoxIconBox>
-              <AiOutlineHeart size={28} />
               <AiOutlineShareAlt size={28} />
             </S.NameBoxIconBox>
           </S.NameBoxRow>
           <S.NameBoxRow>
-            <S.NameText>{tempData.productName}</S.NameText>
+            <S.NameText>{productData.name}</S.NameText>
           </S.NameBoxRow>
         </S.DetailNameBox>
         {/**
@@ -139,14 +180,14 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
          */}
         <S.PriceBox>
           <S.PriceText>
-            {translatePriceToKoreanWon(tempData.start_price, true)}~
+            {translatePriceToKoreanWon(productData.start_price, true)}~
           </S.PriceText>
           <div>
             <InputBase
               fullWidth
               placeholder="입찰 금액을 입력하세요."
               onChange={handleCustomBidPriceInput}
-              value={inputBidPrice}
+              value={formattedInputBidPrice}
             />
             <ButtonBase
               variant="warning"
@@ -168,7 +209,7 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
         </S.PriceBox>
         <S.DetailDescBox>
           <S.PriceText>상품 설명</S.PriceText>
-          <span>{tempData.description}</span>
+          <span>{productData.desc}</span>
         </S.DetailDescBox>
       </S.DetailRightSection>
     </S.DetailPageLayout>
