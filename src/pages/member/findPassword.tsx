@@ -1,6 +1,7 @@
 import * as S from '@/components/stylecomponents/formbase.style';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useValidation from '@/hooks/useValidation';
 
 const FindPassword = () => {
   const [userInfo, setUserInfo] = useState({
@@ -32,13 +33,18 @@ const FindPassword = () => {
     //   });
   };
 
+  // memverinputForm 의존성 낮춰서 리팩토링할 예정
+  const { emailForm } = useValidation(userInfo.email);
+  const showButton =
+    !emailForm || !userInfo.name.length || userInfo.phone.length < 11;
+
   return (
     <S.Wrapper>
       <S.LogoTitle>비밀번호 찾기</S.LogoTitle>
       <S.HelpNoticeSection>
         <span>
           가입 시 등록한 이름,휴대폰 번호,이메일을 입력하면 가입된 휴대폰으로
-          비밀번호 재설정이 가능한 페이지를 보내드립니다.
+          임시 비밀번호를 보내드립니다.
         </span>
       </S.HelpNoticeSection>
 
@@ -65,22 +71,19 @@ const FindPassword = () => {
           ></S.FormItem>
         </S.FormItemBox>
         <S.FormItemBox>
-          <S.FormTitle textLength={userInfo.name.length}>
+          <S.FormTitle textLength={userInfo.email.length}>
             이메일 주소
           </S.FormTitle>
           <S.FormItem
             name="email"
-            value={userInfo.name}
+            value={userInfo.email}
             onChange={handleUserInfo}
             placeholder="email@priceCrush.co.kr"
-            textLength={userInfo.name.length}
+            textLength={userInfo.email.length}
           ></S.FormItem>
         </S.FormItemBox>
 
-        <S.LoginButton
-          type="submit"
-          disabled={!userInfo.name.length || userInfo.phone.length < 11}
-        >
+        <S.LoginButton type="submit" disabled={showButton}>
           이메일 아이디 찾기
         </S.LoginButton>
       </S.LoginFormLayOut>

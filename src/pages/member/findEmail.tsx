@@ -15,13 +15,15 @@ const FindEmail = () => {
     }));
   };
 
+  const showButton = !userInfo.name.length || userInfo.phone.length < 11;
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // axios의 get요청의 경우 body에 담아서 내용을 보낼 수 가 없음
     // axios
     //   .get(
     //     'http://ec2-13-124-196-195.ap-northeast-2.compute.amazonaws.com:3000/users/find/id',
-    //     userInfo
+    //     params : {userInfo}
     //   )
     //   .then(function (response) {
     //     console.log(response);
@@ -64,10 +66,7 @@ const FindEmail = () => {
           ></S.FormItem>
         </S.FormItemBox>
 
-        <S.LoginButton
-          type="submit"
-          disabled={!userInfo.name.length || userInfo.phone.length < 11}
-        >
+        <S.LoginButton type="submit" disabled={showButton}>
           이메일 아이디 찾기
         </S.LoginButton>
       </S.LoginFormLayOut>

@@ -1,5 +1,5 @@
-import LoginForm from '@/components/memberpage/LoginForm';
-import Logout from '@/components/memberpage/Logout';
+import LoginForm from '@/components/member/loginPage/LoginForm';
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -8,7 +8,6 @@ const Login = () => {
     <LoginLayOut>
       <LogoTitle>PriceCrush</LogoTitle>
       <LoginForm />
-      <Logout />
     </LoginLayOut>
   );
 };

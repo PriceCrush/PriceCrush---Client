@@ -6,7 +6,10 @@ import ButtonBase from '@/components/buttons/ButtonBase';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import useValidation from '@/hooks/useValidation';
 import Link from 'next/link';
-import MemberInputForm from '../inputs/MemberInputForm';
+import MemberInputForm from '../../inputs/MemberInputForm';
+import { access } from 'fs';
+import { useRecoilState } from 'recoil';
+import { isLoggedInState } from './isLoggedInState';
 
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -17,6 +20,9 @@ const LoginForm = () => {
     email: false,
     password: false,
   });
+
+  // 이거 reco뷔 부분으로 넣야야 하는가?
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
   const LOGIN_URL = '/'; //성공할때의 주소
 
@@ -29,17 +35,17 @@ const LoginForm = () => {
     e.preventDefault();
     //rewrite에 적던가 env에 넣던가 그때가서 해결
     axios
-      .post(
-        '/api/member/loginApi',
-        // '/api/member/login',
-        {
-          email: loginInfo.email,
-          password: loginInfo.password,
-        },
-        { withCredentials: true }
-      )
+      .post('/api/member/login', loginInfo, { withCredentials: true })
       .then(function (response) {
-        console.log(response);
+        const { data } = response;
+        //recoilState 저장
+        setIsLoggedIn({
+          accessToken: data.accessToken,
+          loginUserInfo: data.user,
+        });
+        //로컬스토리지 저장
+        // localStorage.setItem('accessToken', data.accessToken);
+
         Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {
@@ -50,6 +56,7 @@ const LoginForm = () => {
         }
       });
   };
+
   /**
    * @description input 정보
    */

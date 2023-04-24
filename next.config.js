@@ -13,6 +13,7 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
         port: '',
       },
+      // 상품리스트를 서버로 받아올 경우 삭제
       {
         protocol: 'https',
         hostname: 'img.soldout.co.kr',

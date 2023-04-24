@@ -79,7 +79,6 @@ const useValidation = (text: string) => {
       hasConsecutiveChars || hasConsecutiveNum;
     verificationCollection.emailForm = isEmailForm;
     verificationCollection.phoneNumForm = isPhoneNumForm;
-    // console.log(json, 'check???');
 
     setTextStatus(verificationCollection);
   }, [text]);
