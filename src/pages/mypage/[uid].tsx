@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
 import AuctionCardItem from '@/components/myPage/AuctionCardItem';
 import { GetServerSidePropsContext } from 'next';
+import { useRecoilValue } from 'recoil';
+import { isLoggedInState } from '@/components/member/loginPage/isLoggedInState';
+import { useRouter } from 'next/router';
 
 interface TempServerSideProps {
   tempData: {
@@ -24,6 +27,19 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   console.log(context.params);
+
+  /**
+   * @description 로그인이 안된 상태에서 접근 시 로그인 페이지로 이동
+   */
+  const { accessToken } = context.req.cookies;
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/member/login',
+        permanent: false,
+      },
+    };
+  }
 
   /**
    * @description 임시 데이터 나중에 지워짐
@@ -60,6 +76,9 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
   const [filteredMyAuctionItems, setFilteredMyAuctionItems] =
     useState(tempData);
 
+  const isLoginIn = useRecoilValue(isLoggedInState); //로그인 유무
+  const router = useRouter();
+
   const handleSellingBiddingFilter = (
     e: React.MouseEvent<HTMLHeadingElement>
   ) => {
@@ -93,6 +112,15 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
     );
     setFilteredMyAuctionItems(updatedFilteredMyAuctionItems);
   }, [progressFilterValue, sellingBiddingFilterValue]);
+
+  /**
+   * @description 로그아웃 시 mianPage로 이동
+   */
+  useEffect(() => {
+    if (!isLoginIn) {
+      router.push('/');
+    }
+  }, [isLoginIn, router]);
 
   return (
     <S.MyPageLayout>

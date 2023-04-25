@@ -1,28 +1,25 @@
 import { atom } from 'recoil';
 
-interface loginUserInfo {
+interface userDataType {
   address: string;
   email: string;
   name: string;
-  nickName: string;
+  nickname: string;
   phone: string;
 }
 
-interface isLoggedInStateType {
-  accessToken: string;
-  loginUserInfo: loginUserInfo;
-}
-
-export const isLoggedInState = atom<isLoggedInStateType>({
+export const isLoggedInState = atom({
   key: 'isLoggedInState',
+  default: false,
+});
+
+export const userDataState = atom<userDataType>({
+  key: 'userDataState',
   default: {
-    accessToken: '',
-    loginUserInfo: {
-      address: '',
-      email: '',
-      name: '',
-      nickName: '',
-      phone: '',
-    },
+    address: '',
+    email: '',
+    name: '',
+    nickname: '',
+    phone: '',
   },
 });

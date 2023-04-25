@@ -59,8 +59,9 @@ export const HeaderNavItem = styled.li`
   justify-content: space-between;
   align-items: center;
   column-gap: 1vw;
-  font-size: ${({ theme }) => theme.fontSize.md};
+  font-size: ${({ theme }) => theme.fontSize.lg};
   line-height: 3.2rem;
+  font-weight: 600;
 
   cursor: pointer;
   a {
@@ -99,6 +100,6 @@ export const HeaderGuard = styled.div`
  * 텍스트 Components들
  */
 export const LogoTitle = styled.h1`
-  font-size: 3rem;
+  font-size: 4rem;
   font-family: 'Ubuntu', sans-serif;
 `;

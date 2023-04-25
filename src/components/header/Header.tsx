@@ -4,14 +4,14 @@ import Link from 'next/link';
 import { BsSearch } from 'react-icons/bs';
 import HeaderGuard from './HeaderGuard';
 import useScrollDirection from './../../hooks/useScrollDirection';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { isLoggedInState } from '@/components/member/loginPage/isLoggedInState';
 import Logout from '@/components/member/loginPage/Logout';
 
 const Header = () => {
   const isScrollDown = useScrollDirection();
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
+  const isLoginIn = useRecoilValue(isLoggedInState);
 
   return (
     <>
@@ -32,7 +32,7 @@ const Header = () => {
             </S.HeaderNavItem>
 
             <S.HeaderNavItem>
-              {isLoggedIn.accessToken ? (
+              {isLoginIn ? (
                 <Logout />
               ) : (
                 <Link href={'/member/login'}>로그인</Link>

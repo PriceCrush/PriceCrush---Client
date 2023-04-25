@@ -1,15 +1,11 @@
 import axios from 'axios';
 import Router from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-import ButtonBase from '@/components/buttons/ButtonBase';
 import * as S from '@/components/stylecomponents/memberControl.styles';
-import useValidation from '@/hooks/useValidation';
 import Link from 'next/link';
 import MemberInputForm from '../../inputs/MemberInputForm';
-import { access } from 'fs';
 import { useRecoilState } from 'recoil';
-import { isLoggedInState } from './isLoggedInState';
+import { isLoggedInState, userDataState } from './isLoggedInState';
 
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -23,6 +19,7 @@ const LoginForm = () => {
 
   // 이거 reco뷔 부분으로 넣야야 하는가?
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
+  const [userData, setUserData] = useRecoilState(userDataState);
 
   const LOGIN_URL = '/'; //성공할때의 주소
 
@@ -35,16 +32,12 @@ const LoginForm = () => {
     e.preventDefault();
     //rewrite에 적던가 env에 넣던가 그때가서 해결
     axios
-      .post('/api/member/login', loginInfo)
+      .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
         const { data } = response;
         //recoilState 저장
-        setIsLoggedIn({
-          accessToken: data.accessToken,
-          loginUserInfo: data.user,
-        });
-        // //로컬스토리지 저장
-        localStorage.setItem('accessToken', data.accessToken);
+        setIsLoggedIn(true);
+        setUserData(data);
         Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {
