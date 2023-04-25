@@ -5,9 +5,9 @@ import { useModal } from '@/hooks/useModal';
 import FindAddressConfirm from '@/components/modals/joinpage/FindAddressConfirm';
 import { userInfoAndCheckProps } from '@/types/memberTypes';
 // import TestApi from '../modals/joinpage/testApi';
-import ButtonBase from './../buttons/ButtonBase';
+import ButtonBase from '../../buttons/ButtonBase';
 import { UserInfoErrProps } from '@/types/joinFormTypes';
-import ShowErrorMessage from './ShowErrorMessage';
+import ShowErrorMessage from '../ShowErrorMessage';
 
 const AddressForm = (props: userInfoAndCheckProps) => {
   const { handleUserInfo, passOrNot } = props;

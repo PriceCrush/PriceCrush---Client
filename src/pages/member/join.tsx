@@ -1,5 +1,4 @@
-import JoinForm from '@/components/memberpage/JoinForm';
-
+import JoinForm from '@/components/member/joinPage/JoinForm';
 import React from 'react';
 import styled from 'styled-components';
 

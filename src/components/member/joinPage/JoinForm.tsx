@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import MemberInputForm from '@/components/inputs/MemberInputForm';
-import TermForm from './TermForm';
-import AddressForm from './AddressForm';
-import CategorySelector from './CategorySelector';
 import axios from 'axios';
+import AddressForm from '@/components/member/joinPage/AddressForm';
+import TermForm from '@/components/member/joinPage/TermForm';
+import CategorySelector from '@/components/member/joinPage/CategorySelector';
 
 //LoinForm type
 interface UserInfoErrProps {

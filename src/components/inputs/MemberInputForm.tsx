@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
-import ShowErrorMessage from '../memberpage/ShowErrorMessage';
+import ShowErrorMessage from '../member/ShowErrorMessage';
 import { UserInfoErrProps } from '@/types/joinFormTypes';
 import { MemberInputFormProps } from '@/types/memberTypes';
 
