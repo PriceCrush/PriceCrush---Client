@@ -35,7 +35,7 @@ const LoginForm = () => {
     e.preventDefault();
     //rewrite에 적던가 env에 넣던가 그때가서 해결
     axios
-      .post('/api/member/login', loginInfo, { withCredentials: true })
+      .post('/api/member/login', loginInfo)
       .then(function (response) {
         const { data } = response;
         //recoilState 저장
@@ -43,9 +43,8 @@ const LoginForm = () => {
           accessToken: data.accessToken,
           loginUserInfo: data.user,
         });
-        //로컬스토리지 저장
-        // localStorage.setItem('accessToken', data.accessToken);
-
+        // //로컬스토리지 저장
+        localStorage.setItem('accessToken', data.accessToken);
         Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {

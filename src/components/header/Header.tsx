@@ -12,37 +12,35 @@ const Header = () => {
   const isScrollDown = useScrollDirection();
 
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
-  useEffect(() => {
-    console.log(isLoggedIn);
-  }, [isLoggedIn]);
 
   return (
     <>
       <S.Header isScrollDown={isScrollDown}>
-        <div>
+        <S.HeaderNavWrapper>
           <div>
             <Link href={'/'}>
               <S.LogoTitle>PriceCrush</S.LogoTitle>
             </Link>
           </div>
-          <div>
-            <div>
+          <S.HeaderNavList>
+            <S.HeaderNavItem>
               <Link href={'/search/all'}>SHOP</Link>
-            </div>
+            </S.HeaderNavItem>
 
-            <div>
-              <Link href={'/mypage/132'}>마이(임시)</Link>
-            </div>
+            <S.HeaderNavItem>
+              <Link href={'/mypage/132'}>MY</Link>
+            </S.HeaderNavItem>
 
-            <div>
+            <S.HeaderNavItem>
               {isLoggedIn.accessToken ? (
                 <Logout />
               ) : (
                 <Link href={'/member/login'}>로그인</Link>
               )}
-            </div>
-          </div>
-        </div>
+            </S.HeaderNavItem>
+          </S.HeaderNavList>
+        </S.HeaderNavWrapper>
+
         <S.InputBox>
           <input type="text" placeholder="상품명 검색" />
           <BsSearch className="search-icon" />

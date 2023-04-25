@@ -21,7 +21,7 @@ export const Header = styled.div<HeaderProps>`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   background-color: ${({ theme }) => theme.color.BLACK};
   color: ${({ theme }) => theme.color.WHITE};
   padding-left: ${({ theme }) => theme.padding.baseX};
@@ -38,18 +38,34 @@ export const Header = styled.div<HeaderProps>`
       text-decoration: none;
     }
   }
+`;
+export const HeaderNavWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
 
-  div:nth-child(2) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    column-gap: 3vw;
-    font-size: 2.4rem;
-    line-height: 3.2rem;
+export const HeaderNavList = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 20%;
+`;
 
-    div {
-      cursor: pointer;
-    }
+export const HeaderNavItem = styled.li`
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 1vw;
+  font-size: ${({ theme }) => theme.fontSize.md};
+  line-height: 3.2rem;
+
+  cursor: pointer;
+  a {
+    color: white;
+    text-decoration: none;
   }
 `;
 
