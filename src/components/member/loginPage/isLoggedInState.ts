@@ -13,6 +13,11 @@ export const isLoggedInState = atom({
   default: false,
 });
 
+export const accessTokenState = atom({
+  key: 'accessToken',
+  default: '',
+});
+
 export const userDataState = atom<userDataType>({
   key: 'userDataState',
   default: {

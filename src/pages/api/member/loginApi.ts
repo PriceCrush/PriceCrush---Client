@@ -2,9 +2,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
-// 여기 부분 아예 삭제를ㅐ해륻될듯 ?
-// 엑세스 토큰은그냥 리코일에 넣기?
-
 const setExpireTime = (hour: number) => {
   return new Date(Date.now() + hour * 60 * 60 * 1000).toUTCString();
 };
@@ -22,11 +19,13 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse) => {
        */
       const accessTotkenExpireTime = setExpireTime(1);
       res.setHeader('Set-Cookie', [
-        `accessToken=${accessToken}; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
+        `IS_LOGIN=true; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
       ]);
-      res.status(200).json(user);
+
+      res.status(200).json({ accessToken, user });
     })
     .catch(function (error) {
+      console.log(error);
       res.status(error.response.status).send(error.response.data);
     });
 };

@@ -26,13 +26,13 @@ interface TempServerSideProps {
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  console.log(context.params);
+  // console.log(context.params);
 
   /**
    * @description 로그인이 안된 상태에서 접근 시 로그인 페이지로 이동
    */
-  const { accessToken } = context.req.cookies;
-  if (!accessToken) {
+  const { IS_LOGIN } = context.req.cookies;
+  if (IS_LOGIN !== 'true') {
     return {
       redirect: {
         destination: '/member/login',
@@ -115,6 +115,7 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
 
   /**
    * @description 로그아웃 시 mianPage로 이동
+   * @description 살짝 딜레이 있긴함 차후 수정
    */
   useEffect(() => {
     if (!isLoginIn) {

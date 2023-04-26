@@ -5,7 +5,11 @@ import * as S from '@/components/stylecomponents/memberControl.styles';
 import Link from 'next/link';
 import MemberInputForm from '../../inputs/MemberInputForm';
 import { useRecoilState } from 'recoil';
-import { isLoggedInState, userDataState } from './isLoggedInState';
+import {
+  accessTokenState,
+  isLoggedInState,
+  userDataState,
+} from './isLoggedInState';
 
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -17,9 +21,9 @@ const LoginForm = () => {
     password: false,
   });
 
-  // 이거 reco뷔 부분으로 넣야야 하는가?
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   const [userData, setUserData] = useRecoilState(userDataState);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
   const LOGIN_URL = '/'; //성공할때의 주소
 
@@ -30,14 +34,13 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //rewrite에 적던가 env에 넣던가 그때가서 해결
     axios
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
         const { data } = response;
-        //recoilState 저장
         setIsLoggedIn(true);
-        setUserData(data);
+        setAccessToken(data.accessToken);
+        setUserData(data.user);
         Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {
