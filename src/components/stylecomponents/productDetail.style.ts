@@ -112,3 +112,10 @@ export const TimeDiffBox = styled.div`
 `;
 
 export const CurrentPriceBox = styled(TimeDiffBox)``;
+
+export const AuctionFormLayout = styled.div`
+  display: flex;
+  justify-content: space-between;
+  column-gap: 12px;
+  align-items: center;
+`;

@@ -8,8 +8,6 @@ import * as S from '@/components/stylecomponents/productDetail.style';
 import { GetServerSideProps } from 'next';
 import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
 import { AiOutlineShareAlt } from 'react-icons/ai';
-import ButtonBase from '@/components/buttons/ButtonBase';
-import InputBase from '@/components/inputs/InputBase';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 import { useTimeDiff } from '@/hooks/useTimeDiff';
 import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
@@ -17,6 +15,7 @@ import { useModal } from '@/hooks/useModal';
 import BidConfirm from '@/components/modals/productPage/BidConfirm';
 import { SocketContext } from '@/contexts/socket';
 import { Api } from '@/utils/commonApi';
+import AuctionForm from '@/components/auctionPage/AuctionForm';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -81,6 +80,11 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   const [currentPrice, setCurrentPrice] = useState(productData.start_price);
 
   /**
+   * @description 경매 시작 여부, 이 값에 따라 입찰 버튼 활성화
+   */
+  const isAuctionStarted = new Date(productData.start_date) < new Date();
+
+  /**
    * @description InputBase에 입력된 값에서 숫자만 추출해 state에 저장
    */
   const handleCustomBidPriceInput = (
@@ -120,7 +124,7 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
 
   const handleSocketButtonClick = () => {
     const bidData = {
-      price: 3003,
+      price: inputBidPrice,
       // TODO: 로그인 완료시 사용자 정보를 받아올 수 있도록 수정
       user: '0090ff72-65c4-463a-b2c0-276fb9a93cb1',
       product: productData.id,
@@ -157,8 +161,6 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
 
     // 소켓 이벤트 연결 해제
     return () => {
-      socket.off('connect', handleConnect);
-      socket.off('disconnect', handleDisconnect);
       socket.off('bidResult', handleBidResult);
     };
   }, []);
@@ -215,30 +217,14 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
             )}
             ~
           </S.PriceText>
-          <div>
-            <InputBase
-              fullWidth
-              placeholder="입찰 금액을 입력하세요."
-              onChange={handleCustomBidPriceInput}
-              value={formattedInputBidPrice}
-            />
-            <ButtonBase
-              variant="warning"
-              size="lg"
-              onClick={handleBidButtonClick}
-              name="customPriceBid"
-            >
-              입찰
-            </ButtonBase>
-            <ButtonBase
-              variant="error"
-              size="lg"
-              onClick={handleBidButtonClick}
-              name="staticPriceBid"
-            >
-              +최소입찰가격
-            </ButtonBase>
-          </div>
+
+          <AuctionForm
+            available={isAuctionStarted}
+            formattedInputBidPrice={formattedInputBidPrice}
+            handleBidButtonClick={handleBidButtonClick}
+            handleCustomBidPriceInput={handleCustomBidPriceInput}
+            startDate={productData.start_date}
+          />
         </S.PriceBox>
         <S.DetailDescBox>
           <S.PriceText>상품 설명</S.PriceText>

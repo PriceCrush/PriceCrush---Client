@@ -15,6 +15,7 @@ const BidConfirm = ({ bidPrice, bidFunction }: BidConfirmProps) => {
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     type ButtonName = 'confirm' | 'cancel';
     const name = e.currentTarget.name as ButtonName;
+
     if (name === 'confirm') {
       //입찰하는 API 호출
       bidFunction && bidFunction();
