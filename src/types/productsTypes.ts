@@ -1,3 +1,5 @@
+import React, { MouseEventHandler } from 'react';
+
 export interface TempDataProps {
   id: number;
   productName: string;
@@ -64,3 +66,17 @@ export type productCategoryType = {
 };
 
 export type productCategoriesType = productCategoryType[];
+
+/**
+ * @description currentProductState의 타입, 사용자가 클릭한 상품의 상세 정보를 담는다.
+ */
+
+export interface CurrentProductStateProps {
+  tempData: ProductDetailsProps | null;
+  productData: ProductFromApi | null;
+  formattedInputBidPrice: string | null;
+  handleBidButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleCustomBidPriceInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isAuctionStarted: boolean | null;
+  available: boolean | null;
+}

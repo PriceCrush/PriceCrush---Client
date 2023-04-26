@@ -1,21 +1,16 @@
-import React, {
-  MouseEventHandler,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import { GetServerSideProps } from 'next';
 import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
-import { AiOutlineShareAlt } from 'react-icons/ai';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
-import { useTimeDiff } from '@/hooks/useTimeDiff';
-import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
 import { useModal } from '@/hooks/useModal';
 import BidConfirm from '@/components/modals/productPage/BidConfirm';
 import { SocketContext } from '@/contexts/socket';
 import { Api } from '@/utils/commonApi';
-import AuctionForm from '@/components/auctionPage/AuctionForm';
+import LeftSection from '@/components/auctionPage/LeftSection';
+import RightSection from '@/components/auctionPage/RightSection';
+import { useRecoilState } from 'recoil';
+import { currentProductState } from '@/atoms/currentProductState';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -74,10 +69,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
 const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   const socket = useContext(SocketContext);
-  const timeDiff = useTimeDiff(String(productData.end_date));
   const { openModal } = useModal();
   const [inputBidPrice, setInputBidPrice] = useState(productData.start_price);
   const [currentPrice, setCurrentPrice] = useState(productData.start_price);
+  const [currentProductAtom, setCurrentProductAtom] =
+    useRecoilState(currentProductState);
+  const formattedInputBidPrice = translatePriceToKoreanWon(
+    Number(inputBidPrice),
+    true
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const available = new Date(productData.start_date) < new Date();
 
   /**
    * @description 경매 시작 여부, 이 값에 따라 입찰 버튼 활성화
@@ -87,6 +89,7 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   /**
    * @description InputBase에 입력된 값에서 숫자만 추출해 state에 저장
    */
+
   const handleCustomBidPriceInput = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -98,11 +101,15 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   /**
    * @description 입찰, 최소입찰 버튼 클릭시 모달창 띄우기
    */
-  const handleBidButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleBidButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     type Name = 'customPriceBid' | 'staticPriceBid';
     const name = e.currentTarget.name as Name;
     if (name === 'customPriceBid') {
+      if (inputBidPrice <= currentPrice) {
+        alert('현재가보다 높은 금액을 입력해주세요.');
+        return;
+      }
       openModal({
         title: '입찰 확인',
         content: (
@@ -165,72 +172,55 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     };
   }, []);
 
-  const formattedInputBidPrice = translatePriceToKoreanWon(
-    Number(inputBidPrice),
-    true
-  );
+  /**
+   * @description 현재 상품 정보를 전역 상태로 관리
+   */
+  useEffect(() => {
+    setCurrentProductAtom({
+      tempData,
+      productData,
+      formattedInputBidPrice,
+      handleBidButtonClick,
+      handleCustomBidPriceInput,
+      isAuctionStarted,
+      available,
+    });
+  }, [
+    tempData,
+    productData,
+    formattedInputBidPrice,
+    currentPrice,
+    isAuctionStarted,
+    available,
+  ]);
+
+  useEffect(() => {
+    if (
+      currentProductAtom.productData === null ||
+      currentProductAtom.tempData === null
+    ) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+    console.log(isLoading);
+  }, [currentProductAtom, isLoading]);
+
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
 
   return (
     <S.DetailPageLayout>
-      {/**
-       * 왼쪽 섹션
-       */}
-      <S.DetailLeftSection>
-        <AuctionDetailCarousel images={tempData.images} />
-        <S.DetailLeftSectionRow>
-          <S.CurrentPriceBox>
-            <h3>최고 입찰 가격</h3>
-            <span>최고 입찰 가격 : 현재 가격</span>
-          </S.CurrentPriceBox>
-          <S.TimeDiffBox>
-            <h3>남은 시간</h3>
-            <span className="timeRemain">{timeDiff}</span>
-          </S.TimeDiffBox>
-        </S.DetailLeftSectionRow>
-      </S.DetailLeftSection>
-      {/**
-       * 오른쪽 섹션
-       */}
-      <S.DetailRightSection>
-        {/**
-         * 상품명, 아이콘 섹션
-         */}
-        <S.DetailNameBox>
-          <S.NameBoxRow>
-            <S.NameText>상품</S.NameText>
-            <S.NameBoxIconBox>
-              <AiOutlineShareAlt size={28} />
-            </S.NameBoxIconBox>
-          </S.NameBoxRow>
-          <S.NameBoxRow>
-            <S.NameText>{productData.name}</S.NameText>
-          </S.NameBoxRow>
-        </S.DetailNameBox>
-        {/**
-         * 판매가, 입찰 영역
-         */}
-        <S.PriceBox>
-          <S.PriceText>
-            {translatePriceToKoreanWon(
-              currentPrice ? currentPrice : productData.start_price,
-              true
-            )}
-            ~
-          </S.PriceText>
-
-          <AuctionForm
-            available={isAuctionStarted}
-            formattedInputBidPrice={formattedInputBidPrice}
-            handleBidButtonClick={handleBidButtonClick}
-            handleCustomBidPriceInput={handleCustomBidPriceInput}
-            startDate={productData.start_date}
-          />
-        </S.PriceBox>
-        <S.DetailDescBox>
-          <S.PriceText>상품 설명</S.PriceText>
-          <span>{productData.desc}</span>
-        </S.DetailDescBox>
-      </S.DetailRightSection>
+      <LeftSection />
+      <RightSection
+        currentPrice={currentPrice}
+        formattedInputBidPrice={formattedInputBidPrice}
+        handleBidButtonClick={handleBidButtonClick}
+        handleCustomBidPriceInput={handleCustomBidPriceInput}
+        isAuctionStarted={isAuctionStarted}
+        productData={productData}
+      />
     </S.DetailPageLayout>
   );
 };
