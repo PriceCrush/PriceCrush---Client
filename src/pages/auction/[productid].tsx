@@ -1,9 +1,4 @@
-import React, {
-  MouseEventHandler,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import { GetServerSideProps } from 'next';
 import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
@@ -14,6 +9,8 @@ import { SocketContext } from '@/contexts/socket';
 import { Api } from '@/utils/commonApi';
 import LeftSection from '@/components/auctionPage/LeftSection';
 import RightSection from '@/components/auctionPage/RightSection';
+import { useRecoilState } from 'recoil';
+import { currentProductState } from '@/atoms/currentProductState';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -75,6 +72,14 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   const { openModal } = useModal();
   const [inputBidPrice, setInputBidPrice] = useState(productData.start_price);
   const [currentPrice, setCurrentPrice] = useState(productData.start_price);
+  const [currentProductAtom, setCurrentProductAtom] =
+    useRecoilState(currentProductState);
+  const formattedInputBidPrice = translatePriceToKoreanWon(
+    Number(inputBidPrice),
+    true
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const available = new Date(productData.start_date) < new Date();
 
   /**
    * @description 경매 시작 여부, 이 값에 따라 입찰 버튼 활성화
@@ -84,6 +89,7 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   /**
    * @description InputBase에 입력된 값에서 숫자만 추출해 state에 저장
    */
+
   const handleCustomBidPriceInput = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -95,7 +101,7 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   /**
    * @description 입찰, 최소입찰 버튼 클릭시 모달창 띄우기
    */
-  const handleBidButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleBidButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     type Name = 'customPriceBid' | 'staticPriceBid';
     const name = e.currentTarget.name as Name;
@@ -166,14 +172,47 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     };
   }, []);
 
-  const formattedInputBidPrice = translatePriceToKoreanWon(
-    Number(inputBidPrice),
-    true
-  );
+  /**
+   * @description 현재 상품 정보를 전역 상태로 관리
+   */
+  useEffect(() => {
+    setCurrentProductAtom({
+      tempData,
+      productData,
+      formattedInputBidPrice,
+      handleBidButtonClick,
+      handleCustomBidPriceInput,
+      isAuctionStarted,
+      available,
+    });
+  }, [
+    tempData,
+    productData,
+    formattedInputBidPrice,
+    currentPrice,
+    isAuctionStarted,
+    available,
+  ]);
+
+  useEffect(() => {
+    if (
+      currentProductAtom.productData === null ||
+      currentProductAtom.tempData === null
+    ) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+    console.log(isLoading);
+  }, [currentProductAtom, isLoading]);
+
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
 
   return (
     <S.DetailPageLayout>
-      <LeftSection productData={productData} tempData={tempData} />
+      <LeftSection />
       <RightSection
         currentPrice={currentPrice}
         formattedInputBidPrice={formattedInputBidPrice}

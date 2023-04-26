@@ -3,17 +3,19 @@ import * as S from '@/components/stylecomponents/productDetail.style';
 import { useTimeDiff } from '@/hooks/useTimeDiff';
 import AuctionDetailCarousel from '../carousel/AuctionDetailCarousel';
 import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
+import { currentProductState } from '@/atoms/currentProductState';
+import { useRecoilState } from 'recoil';
 
-interface LeftSectionProps {
-  productData: ProductFromApi;
-  tempData: ProductDetailsProps;
-}
+const LeftSection = () => {
+  const [currentProductAtom, setCurrentProductAtom] =
+    useRecoilState(currentProductState);
 
-const LeftSection = ({ productData, tempData }: LeftSectionProps) => {
-  const timeDiff = useTimeDiff(String(productData.end_date));
+  const timeDiff = useTimeDiff(
+    String(currentProductAtom.productData!.end_date)
+  );
   return (
     <S.DetailLeftSection>
-      <AuctionDetailCarousel images={tempData.images} />
+      <AuctionDetailCarousel images={currentProductAtom.tempData!.images} />
       <S.DetailLeftSectionRow>
         <S.TimeDiffBox>
           <h3>남은 시간</h3>

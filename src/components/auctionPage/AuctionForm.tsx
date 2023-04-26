@@ -2,35 +2,25 @@ import React from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
+import { currentProductState } from '@/atoms/currentProductState';
+import { useRecoilState } from 'recoil';
 
-interface AuctionFormProps {
-  available: boolean;
-  handleCustomBidPriceInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleBidButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  formattedInputBidPrice: string;
-  startDate: string;
-}
-
-const AuctionForm = ({
-  available,
-  formattedInputBidPrice,
-  handleCustomBidPriceInput,
-  handleBidButtonClick,
-  startDate,
-}: AuctionFormProps) => {
+const AuctionForm = () => {
+  const [currentProductAtom, setCurrentProductAtom] =
+    useRecoilState(currentProductState);
   return (
     <S.AuctionFormLayout>
-      {available && (
+      {currentProductAtom!.available && (
         <>
           <InputBase
             placeholder="입찰 금액을 입력하세요."
-            onChange={handleCustomBidPriceInput}
-            value={formattedInputBidPrice}
+            onChange={currentProductAtom!.handleCustomBidPriceInput}
+            value={currentProductAtom!.formattedInputBidPrice!}
           />
           <ButtonBase
             variant="warning"
             size="md"
-            onClick={handleBidButtonClick}
+            onClick={currentProductAtom!.handleBidButtonClick}
             name="customPriceBid"
           >
             입찰
@@ -38,16 +28,19 @@ const AuctionForm = ({
           <ButtonBase
             variant="error"
             size="md"
-            onClick={handleBidButtonClick}
+            onClick={currentProductAtom!.handleBidButtonClick}
             name="staticPriceBid"
           >
             +?%
           </ButtonBase>
         </>
       )}
-      {!available && (
+      {!currentProductAtom!.available && (
         <S.NotAvailableBox>
-          <span>{startDate.substring(0, 10)} 부터 참여할 수 있습니다.</span>
+          <span>
+            {currentProductAtom.productData!.start_date.substring(0, 10)} 부터
+            참여할 수 있습니다.
+          </span>
         </S.NotAvailableBox>
       )}
     </S.AuctionFormLayout>
