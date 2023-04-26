@@ -2,9 +2,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
-// 여기 부분 아예 삭제를ㅐ해륻될듯 ?
-// 엑세스 토큰은그냥 리코일에 넣기?
-
 const setExpireTime = (hour: number) => {
   return new Date(Date.now() + hour * 60 * 60 * 1000).toUTCString();
 };

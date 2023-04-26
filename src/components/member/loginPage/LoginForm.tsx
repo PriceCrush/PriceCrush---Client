@@ -17,7 +17,6 @@ const LoginForm = () => {
     password: false,
   });
 
-  // 이거 reco뷔 부분으로 넣야야 하는가?
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   const [userData, setUserData] = useRecoilState(userDataState);
 
@@ -30,12 +29,11 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //rewrite에 적던가 env에 넣던가 그때가서 해결
     axios
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
         const { data } = response;
-        //recoilState 저장
+        //recoil에 저장
         setIsLoggedIn(true);
         setUserData(data);
         Router.push(`${LOGIN_URL}`);
