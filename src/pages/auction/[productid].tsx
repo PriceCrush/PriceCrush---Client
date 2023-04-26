@@ -8,8 +8,6 @@ import * as S from '@/components/stylecomponents/productDetail.style';
 import { GetServerSideProps } from 'next';
 import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
 import { AiOutlineShareAlt } from 'react-icons/ai';
-import ButtonBase from '@/components/buttons/ButtonBase';
-import InputBase from '@/components/inputs/InputBase';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 import { useTimeDiff } from '@/hooks/useTimeDiff';
 import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
@@ -17,6 +15,7 @@ import { useModal } from '@/hooks/useModal';
 import BidConfirm from '@/components/modals/productPage/BidConfirm';
 import { SocketContext } from '@/contexts/socket';
 import { Api } from '@/utils/commonApi';
+import AuctionForm from '@/components/auctionPage/AuctionForm';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -78,6 +77,12 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   const timeDiff = useTimeDiff(String(productData.end_date));
   const { openModal } = useModal();
   const [inputBidPrice, setInputBidPrice] = useState(productData.start_price);
+  const [currentPrice, setCurrentPrice] = useState(productData.start_price);
+
+  /**
+   * @description 경매 시작 여부, 이 값에 따라 입찰 버튼 활성화
+   */
+  const isAuctionStarted = new Date(productData.start_date) < new Date();
 
   /**
    * @description InputBase에 입력된 값에서 숫자만 추출해 state에 저장
@@ -100,7 +105,12 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     if (name === 'customPriceBid') {
       openModal({
         title: '입찰 확인',
-        content: <BidConfirm bidPrice={inputBidPrice} />,
+        content: (
+          <BidConfirm
+            bidPrice={inputBidPrice}
+            bidFunction={handleSocketButtonClick}
+          />
+        ),
       });
     } else if (name === 'staticPriceBid') {
       openModal({
@@ -112,25 +122,46 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     }
   };
 
-  const handleSocketEvent = (data: any) => {
-    console.log('소켓 연결');
-    console.log(data);
+  const handleSocketButtonClick = () => {
+    const bidData = {
+      price: inputBidPrice,
+      // TODO: 로그인 완료시 사용자 정보를 받아올 수 있도록 수정
+      user: '0090ff72-65c4-463a-b2c0-276fb9a93cb1',
+      product: productData.id,
+    };
+
+    socket.emit('bid', bidData);
   };
 
+  /**
+   * @description 소켓 이벤트를 다루는 `useEffect`입니다
+   */
   useEffect(() => {
+    const handleConnect = () => console.log('소켓 연결됨', socket.connected);
+    const handleDisconnect = () =>
+      console.log('소켓 연결 해제됨', socket.disconnected);
+    const handleBidResult = (data: any) => {
+      console.log('bidResult 이벤트 발생', data);
+      if (data.success) {
+        setCurrentPrice(data.auctionResult.price);
+      } else {
+        alert(data.message);
+        console.log(data.message);
+      }
+    };
+
     // 소켓 연결
-    socket.on('connect', () => console.log('소켓 연결됨', socket.connected));
+    socket.on('connect', handleConnect);
 
     // 소켓 연결 해제 확인
-    socket.on('disconnect', () =>
-      console.log('소켓 연결 해제됨', socket.disconnected)
-    );
+    socket.on('disconnect', handleDisconnect);
 
-    socket.on('bid', handleSocketEvent);
+    // `bidResult` 이벤트 연결
+    socket.on('bidResult', handleBidResult);
 
     // 소켓 이벤트 연결 해제
     return () => {
-      socket.off('bid', handleSocketEvent);
+      socket.off('bidResult', handleBidResult);
     };
   }, []);
 
@@ -180,32 +211,20 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
          */}
         <S.PriceBox>
           <S.PriceText>
-            {translatePriceToKoreanWon(productData.start_price, true)}~
+            {translatePriceToKoreanWon(
+              currentPrice ? currentPrice : productData.start_price,
+              true
+            )}
+            ~
           </S.PriceText>
-          <div>
-            <InputBase
-              fullWidth
-              placeholder="입찰 금액을 입력하세요."
-              onChange={handleCustomBidPriceInput}
-              value={formattedInputBidPrice}
-            />
-            <ButtonBase
-              variant="warning"
-              size="lg"
-              onClick={handleBidButtonClick}
-              name="customPriceBid"
-            >
-              입찰
-            </ButtonBase>
-            <ButtonBase
-              variant="error"
-              size="lg"
-              onClick={handleBidButtonClick}
-              name="staticPriceBid"
-            >
-              +최소입찰가격
-            </ButtonBase>
-          </div>
+
+          <AuctionForm
+            available={isAuctionStarted}
+            formattedInputBidPrice={formattedInputBidPrice}
+            handleBidButtonClick={handleBidButtonClick}
+            handleCustomBidPriceInput={handleCustomBidPriceInput}
+            startDate={productData.start_date}
+          />
         </S.PriceBox>
         <S.DetailDescBox>
           <S.PriceText>상품 설명</S.PriceText>
