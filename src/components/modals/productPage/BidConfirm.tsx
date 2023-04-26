@@ -6,16 +6,18 @@ import { useModal } from '@/hooks/useModal';
 
 interface BidConfirmProps {
   bidPrice: number;
+  bidFunction?: () => void;
 }
 
-const BidConfirm = ({ bidPrice }: BidConfirmProps) => {
+const BidConfirm = ({ bidPrice, bidFunction }: BidConfirmProps) => {
   const { closeModal } = useModal();
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     type ButtonName = 'confirm' | 'cancel';
     const name = e.currentTarget.name as ButtonName;
     if (name === 'confirm') {
-      //TODO: 입찰하는 API 호출
+      //입찰하는 API 호출
+      bidFunction && bidFunction();
       closeModal();
     } else if (name === 'cancel') {
       closeModal();
