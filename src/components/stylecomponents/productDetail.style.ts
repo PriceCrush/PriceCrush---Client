@@ -37,7 +37,8 @@ export const DetailLeftSectionRow = styled.div`
 
 export const DetailRightSection = styled(DetailLeftSection)`
   width: 60%;
-  gap: 20px;
+  row-gap: 4vh;
+  padding-top: 15px;
 `;
 
 export const DetailNameBox = styled.div`
@@ -57,7 +58,6 @@ export const NameBoxRow = styled.div`
 
 export const NameText = styled.h3`
   font-size: ${({ theme }) => theme.fontSize.lg};
-  font-weight: 700;
 `;
 
 export const NameBoxIconBox = styled.div`
@@ -82,6 +82,9 @@ export const PriceBox = styled.div`
 
 export const DetailDescBox = styled(PriceBox)`
   row-gap: 2vh;
+  span {
+    color: gray;
+  }
 `;
 
 export const PriceText = styled.h4`
@@ -114,8 +117,25 @@ export const TimeDiffBox = styled.div`
 export const CurrentPriceBox = styled(TimeDiffBox)``;
 
 export const AuctionFormLayout = styled.div`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   column-gap: 12px;
   align-items: center;
+
+  input {
+    width: 60%;
+  }
+  button {
+    width: 20%;
+  }
+`;
+
+export const NotAvailableBox = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  span {
+    color: gray;
+  }
 `;

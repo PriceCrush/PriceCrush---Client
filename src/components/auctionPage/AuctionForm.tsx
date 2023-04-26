@@ -2,7 +2,6 @@ import React from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
-import { useTimeDiff } from '@/hooks/useTimeDiff';
 
 interface AuctionFormProps {
   available: boolean;
@@ -19,21 +18,18 @@ const AuctionForm = ({
   handleBidButtonClick,
   startDate,
 }: AuctionFormProps) => {
-  const auctionStartTimeDiff = useTimeDiff(startDate);
-
   return (
     <S.AuctionFormLayout>
       {available && (
         <>
           <InputBase
-            fullWidth
             placeholder="입찰 금액을 입력하세요."
             onChange={handleCustomBidPriceInput}
             value={formattedInputBidPrice}
           />
           <ButtonBase
             variant="warning"
-            size="lg"
+            size="md"
             onClick={handleBidButtonClick}
             name="customPriceBid"
           >
@@ -41,15 +37,19 @@ const AuctionForm = ({
           </ButtonBase>
           <ButtonBase
             variant="error"
-            size="lg"
+            size="md"
             onClick={handleBidButtonClick}
             name="staticPriceBid"
           >
-            +최소입찰가격
+            +?%
           </ButtonBase>
         </>
       )}
-      {!available && <div>{auctionStartTimeDiff} 후에 참여할 수 있습니다.</div>}
+      {!available && (
+        <S.NotAvailableBox>
+          <span>{startDate.substring(0, 10)} 부터 참여할 수 있습니다.</span>
+        </S.NotAvailableBox>
+      )}
     </S.AuctionFormLayout>
   );
 };
