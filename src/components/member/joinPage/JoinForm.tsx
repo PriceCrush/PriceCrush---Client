@@ -44,13 +44,9 @@ const JoinForm = () => {
       .post('/api/member/users', userInfo)
       .then(function (response) {
         console.log(response);
-        //회원가입 완료 시 완료 메세지 보내고 로그인 화면으로 이동
       })
       .catch(function (error) {
         console.log(error);
-        // 회원가입 안될시 에러 메세지
-        // 잘못된 요청?
-        // 이미 있을경우 그거만 표현
       });
   };
 

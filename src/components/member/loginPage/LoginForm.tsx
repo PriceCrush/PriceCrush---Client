@@ -5,7 +5,11 @@ import * as S from '@/components/stylecomponents/memberControl.styles';
 import Link from 'next/link';
 import MemberInputForm from '../../inputs/MemberInputForm';
 import { useRecoilState } from 'recoil';
-import { isLoggedInState, userDataState } from './isLoggedInState';
+import {
+  accessTokenState,
+  isLoggedInState,
+  userDataState,
+} from './isLoggedInState';
 
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -19,6 +23,7 @@ const LoginForm = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   const [userData, setUserData] = useRecoilState(userDataState);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
 
   const LOGIN_URL = '/'; //성공할때의 주소
 
@@ -33,9 +38,9 @@ const LoginForm = () => {
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
         const { data } = response;
-        //recoil에 저장
         setIsLoggedIn(true);
-        setUserData(data);
+        setAccessToken(data.accessToken);
+        setUserData(data.user);
         Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {

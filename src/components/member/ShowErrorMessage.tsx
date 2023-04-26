@@ -22,7 +22,6 @@ const ShowErrorMessage = (writtenData: string, name: string) => {
     textlength,
     specialCharacters,
     includingCharacters,
-    continuity,
     emailForm,
     phoneNumForm,
   } = writtenDataStatus;
@@ -33,10 +32,8 @@ const ShowErrorMessage = (writtenData: string, name: string) => {
       warningMessage: '이메일 주소를 정확히 입력해주세요',
     },
     password: {
-      condition:
-        !textlength || !specialCharacters || !includingCharacters || continuity,
-      warningMessage:
-        '영문, 숫자, 특수문자,연속되지 않는 문자를 조합하여 입력해주세요(4~16자)',
+      condition: !textlength || !specialCharacters || !includingCharacters,
+      warningMessage: '영문, 숫자, 특수문자를 조합하여 입력해주세요(4~16자)',
     },
     name: {
       condition: writtenData.length <= 0,
