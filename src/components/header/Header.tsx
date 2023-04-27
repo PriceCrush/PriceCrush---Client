@@ -1,17 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/styles';
 import Link from 'next/link';
 import { BsSearch } from 'react-icons/bs';
 import HeaderGuard from './HeaderGuard';
 import useScrollDirection from './../../hooks/useScrollDirection';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { isLoggedInState } from '@/components/member/loginPage/isLoggedInState';
+
 import Logout from '@/components/member/loginPage/Logout';
+import { isLoggedInState } from '@/components/member/loginPage/isLoggedInState';
 
 const Header = () => {
   const isScrollDown = useScrollDirection();
 
-  const isLoginIn = useRecoilValue(isLoggedInState);
+  const isLoginInValue = useRecoilValue(isLoggedInState);
+  const [isLoginIn, setIsLoginIn] = useState(false);
+  useEffect(() => {
+    setIsLoginIn(isLoginInValue);
+  }, [isLoginInValue]);
 
   return (
     <>

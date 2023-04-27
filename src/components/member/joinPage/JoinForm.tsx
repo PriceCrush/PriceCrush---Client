@@ -5,6 +5,7 @@ import axios from 'axios';
 import AddressForm from '@/components/member/joinPage/AddressForm';
 import TermForm from '@/components/member/joinPage/TermForm';
 import CategorySelector from '@/components/member/joinPage/CategorySelector';
+import ButtonBase from './../../buttons/ButtonBase';
 
 //LoinForm type
 interface UserInfoErrProps {
@@ -105,6 +106,7 @@ const JoinForm = () => {
       >
         이름
       </MemberInputForm>
+
       <MemberInputForm
         type="text"
         name="phone"
@@ -113,6 +115,10 @@ const JoinForm = () => {
       >
         핸드폰
       </MemberInputForm>
+      <ButtonBase name="open" size="sm">
+        {' '}
+      </ButtonBase>
+
       <MemberInputForm
         type="email"
         name="email"
