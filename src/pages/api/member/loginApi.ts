@@ -14,14 +14,6 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse) => {
     .post(LOGIN_API_URL, loginData)
     .then(function (response) {
       const { user, accessToken } = response.data;
-      /**
-       *  @description AccessToken 만료설정(1h) 쿠키 설정
-       */
-      const accessTotkenExpireTime = setExpireTime(1);
-      res.setHeader('Set-Cookie', [
-        `IS_LOGIN=true; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
-      ]);
-
       res.status(200).json({ accessToken, user });
     })
     .catch(function (error) {

@@ -76,7 +76,10 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
   const [filteredMyAuctionItems, setFilteredMyAuctionItems] =
     useState(tempData);
 
-  const isLoginIn = useRecoilValue(isLoggedInState); //로그인 유무
+  //로그인 유무
+  const isLoginInValue = useRecoilValue(isLoggedInState);
+  const [isLoginIn, setIsLoginIn] = useState(false);
+
   const router = useRouter();
 
   const handleSellingBiddingFilter = (
@@ -113,10 +116,14 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
     setFilteredMyAuctionItems(updatedFilteredMyAuctionItems);
   }, [progressFilterValue, sellingBiddingFilterValue]);
 
+  useEffect(() => {
+    setIsLoginIn(isLoginInValue);
+  }, [isLoginInValue]);
   /**
    * @description 로그아웃 시 mianPage로 이동
    * @description 살짝 딜레이 있긴함 차후 수정
    */
+
   useEffect(() => {
     if (!isLoginIn) {
       router.push('/');

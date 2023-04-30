@@ -21,9 +21,11 @@ const LoginForm = () => {
     password: false,
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
-  const [userData, setUserData] = useRecoilState(userDataState);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [isLoggedInAtomAtom, setIsLoggedInAtom] =
+    useRecoilState(isLoggedInState);
+  const [userDataAtom, setUserDataAtom] = useRecoilState(userDataState);
+  const [accessTokenAtom, setAccessTokenAtom] =
+    useRecoilState(accessTokenState);
 
   const LOGIN_URL = '/'; //성공할때의 주소
 
@@ -38,9 +40,9 @@ const LoginForm = () => {
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
         const { data } = response;
-        setIsLoggedIn(true);
-        setAccessToken(data.accessToken);
-        setUserData(data.user);
+        setIsLoggedInAtom(true);
+        setAccessTokenAtom(data.accessToken);
+        setUserDataAtom(data.user);
         Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {

@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import * as S from '@/components/stylecomponents/fab.style';
 import { useRouter } from 'next/router';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { isLoggedInState } from '@/components/member/loginPage/isLoggedInState';
 
 const Fab = (accessToken: any) => {
   const router = useRouter();
   const { pathname } = router;
-  const isLoginIn = useRecoilValue(isLoggedInState);
+  const isLoginInValue = useRecoilValue(isLoggedInState);
+  const [isLoginIn, setIsLoginIn] = useState(false);
+  useEffect(() => {
+    setIsLoginIn(isLoginInValue);
+  }, [isLoginInValue]);
 
   /**
    * @description 로그인상태가 아닐 시 렌더링하지 않음

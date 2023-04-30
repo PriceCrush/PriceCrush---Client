@@ -3,11 +3,12 @@ import CategoryList from '@/components/mainPage/CategoryList';
 import * as S from '@/components/stylecomponents/mainPage.style';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { categoriesState as categoriesAtom } from '@/atoms/categoriesState';
 import { productCategoriesType, ProductFromApi } from '@/types/productsTypes';
 import { Api } from '@/utils/commonApi';
 import db from '@/temp/db.json';
+import { userDataState } from '@/components/member/loginPage/isLoggedInState';
 interface ServerSideProps {
   categories: productCategoriesType;
   data: ProductFromApi[];
@@ -23,6 +24,11 @@ export default function Home({ categories, data, jsondata }: ServerSideProps) {
       //TODO: Recoil 과 LocalStorage 동기화
     }
   }, [categories, setCategoriesState]);
+
+  const dd = useRecoilValue(userDataState);
+  useEffect(() => {
+    console.log(dd);
+  }, [dd]);
 
   return (
     <main>
