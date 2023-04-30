@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/fab.style';
 import { useRouter } from 'next/router';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { isLoggedInState } from '@/components/member/loginPage/isLoggedInState';
+import { isLoggedInState } from '@/atoms/isLoggedInState';
 
 const Fab = (accessToken: any) => {
   const router = useRouter();

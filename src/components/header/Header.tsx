@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { BsSearch } from 'react-icons/bs';
 import HeaderGuard from './HeaderGuard';
 import useScrollDirection from './../../hooks/useScrollDirection';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import Logout from '@/components/member/loginPage/Logout';
-import { isLoggedInState } from '@/components/member/loginPage/isLoggedInState';
+import { isLoggedInState } from '@/atoms/isLoggedInState';
 
 const Header = () => {
   const isScrollDown = useScrollDirection();

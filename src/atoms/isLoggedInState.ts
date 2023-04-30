@@ -1,11 +1,14 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-interface userDataType {
-  address: string;
+interface userCommonDataType {
   email: string;
   name: string;
   nickname: string;
+}
+
+interface usetPrivateDataType {
+  address: string;
   phone: string;
 }
 // 해당 코드로 인하여 새로고침 시
@@ -34,20 +37,20 @@ export const isLoggedInState = atom({
   effects_UNSTABLE: [isLoggedInStatePersist],
 });
 
-export const accessTokenState = atom({
-  key: 'accessToken',
-  default: '',
-  effects_UNSTABLE: [accessTokenPersist],
-});
-
-export const userDataState = atom<userDataType>({
-  key: 'userDataState',
+export const userCommonDataState = atom<userCommonDataType>({
+  key: 'userCommonDataState',
   default: {
-    address: '',
     email: '',
     name: '',
     nickname: '',
-    phone: '',
   },
   effects_UNSTABLE: [userDataPersist],
+});
+
+export const userPrivateDataState = atom<usetPrivateDataType>({
+  key: 'userPrivateData',
+  default: {
+    address: '',
+    phone: '',
+  },
 });
