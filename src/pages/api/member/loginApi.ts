@@ -14,7 +14,11 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse) => {
     .post(LOGIN_API_URL, loginData)
     .then(function (response) {
       const { user, accessToken } = response.data;
-      res.status(200).json({ accessToken, user });
+      const accessTotkenExpireTime = setExpireTime(1);
+      res.setHeader('Set-Cookie', [
+        `accessToken=${accessToken}; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
+      ]);
+      res.status(200).json({ user });
     })
     .catch(function (error) {
       console.log(error);

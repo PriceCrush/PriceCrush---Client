@@ -6,10 +6,10 @@ import Link from 'next/link';
 import MemberInputForm from '../../inputs/MemberInputForm';
 import { useRecoilState } from 'recoil';
 import {
-  accessTokenState,
   isLoggedInState,
-  userDataState,
-} from './isLoggedInState';
+  userCommonDataState,
+  userPrivateDataState,
+} from '@/atoms/isLoggedInState';
 
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -23,9 +23,10 @@ const LoginForm = () => {
 
   const [isLoggedInAtomAtom, setIsLoggedInAtom] =
     useRecoilState(isLoggedInState);
-  const [userDataAtom, setUserDataAtom] = useRecoilState(userDataState);
-  const [accessTokenAtom, setAccessTokenAtom] =
-    useRecoilState(accessTokenState);
+  const [userCommonDataAtom, setUserCommonDataAtom] =
+    useRecoilState(userCommonDataState);
+  const [userPrivateDataAtom, setUserPrivateDataAtom] =
+    useRecoilState(userPrivateDataState);
 
   const LOGIN_URL = '/'; //성공할때의 주소
 
@@ -40,9 +41,19 @@ const LoginForm = () => {
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
         const { data } = response;
+        const { user } = data;
         setIsLoggedInAtom(true);
-        setAccessTokenAtom(data.accessToken);
-        setUserDataAtom(data.user);
+
+        setUserCommonDataAtom({
+          email: user.email,
+          name: user.name,
+          nickname: user.nickname,
+        });
+        setUserPrivateDataAtom({
+          address: user.address,
+          phone: user.phone,
+        });
+
         Router.push(`${LOGIN_URL}`);
       })
       .catch(function (error) {

@@ -3,7 +3,7 @@ import * as S from '@/components/stylecomponents/myPage.style';
 import AuctionCardItem from '@/components/myPage/AuctionCardItem';
 import { GetServerSidePropsContext } from 'next';
 import { useRecoilValue } from 'recoil';
-import { isLoggedInState } from '@/components/member/loginPage/isLoggedInState';
+import { isLoggedInState } from '@/atoms/isLoggedInState';
 import { useRouter } from 'next/router';
 
 interface TempServerSideProps {
@@ -31,8 +31,8 @@ export const getServerSideProps = async (
   /**
    * @description 로그인이 안된 상태에서 접근 시 로그인 페이지로 이동
    */
-  const { IS_LOGIN } = context.req.cookies;
-  if (IS_LOGIN !== 'true') {
+  const { accessToken } = context.req.cookies;
+  if (!accessToken) {
     return {
       redirect: {
         destination: '/member/login',
@@ -125,10 +125,11 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
    */
 
   useEffect(() => {
-    if (!isLoginIn) {
+    console.log(isLoginInValue);
+    if (!isLoginInValue) {
       router.push('/');
     }
-  }, [isLoginIn, router]);
+  }, [isLoginInValue, router]);
 
   return (
     <S.MyPageLayout>

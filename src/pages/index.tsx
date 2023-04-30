@@ -8,7 +8,7 @@ import { categoriesState as categoriesAtom } from '@/atoms/categoriesState';
 import { productCategoriesType, ProductFromApi } from '@/types/productsTypes';
 import { Api } from '@/utils/commonApi';
 import db from '@/temp/db.json';
-import { userDataState } from '@/components/member/loginPage/isLoggedInState';
+import { userCommonDataState, userDataState } from '@/atoms/isLoggedInState';
 interface ServerSideProps {
   categories: productCategoriesType;
   data: ProductFromApi[];
@@ -24,11 +24,6 @@ export default function Home({ categories, data, jsondata }: ServerSideProps) {
       //TODO: Recoil 과 LocalStorage 동기화
     }
   }, [categories, setCategoriesState]);
-
-  const dd = useRecoilValue(userDataState);
-  useEffect(() => {
-    console.log(dd);
-  }, [dd]);
 
   return (
     <main>
