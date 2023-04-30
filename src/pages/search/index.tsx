@@ -7,8 +7,9 @@ import React, { useEffect } from 'react';
 import * as S from '@/components/stylecomponents/searchAndCategoryItems/searchList.style';
 import PaginationComponent from '@/components/listPage/PaginationComponent';
 import Searchslider from '@/components/listPage/Searchslider';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { categoriesState } from '@/atoms/categoriesState';
+import { searchAndCategoriesState } from '@/atoms/searchAndCategoriesState';
 
 //이 타입은 추후 api가 들어올때 확정나기 때문에 우선보류
 // type Category = {
@@ -64,10 +65,12 @@ import { categoriesState } from '@/atoms/categoriesState';
 
 const ListPage = () => {
   const productCategories = useRecoilValue(categoriesState);
+  const [categoryAndSearchTerm, setCategroyAndSearchTerm] = useRecoilState(
+    searchAndCategoriesState
+  );
 
   // nav바
   const router = useRouter();
-  const { listid } = router.query;
 
   // PaginationComponent onChange를 위한 임시
   const handlePage = () => {
@@ -75,14 +78,19 @@ const ListPage = () => {
   };
 
   useEffect(() => {
-    //TODO: 개발 완료 후 삭제
-    console.log(productCategories);
-  }, [productCategories]);
+    const { categoryId } = router.query;
+    if (categoryId) {
+      setCategroyAndSearchTerm((prev) => ({
+        ...prev,
+        categoryId: String(categoryId),
+      }));
+    }
+  }, [router.query]);
 
   return (
     <S.ListPageWapper>
       <S.SliderSection>
-        <SliderNav tab={String(listid)} category={productCategories} />
+        <SliderNav category={productCategories} />
         <Searchslider category={productCategories} />
       </S.SliderSection>
       <S.ProductSection>
