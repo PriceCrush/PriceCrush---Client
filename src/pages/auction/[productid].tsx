@@ -111,7 +111,6 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
         return;
       }
       openModal({
-        title: '입찰 확인',
         content: (
           <BidConfirm
             bidPrice={inputBidPrice}
@@ -121,7 +120,6 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
       });
     } else if (name === 'staticPriceBid') {
       openModal({
-        title: '입찰 확인',
         content: <BidConfirm bidPrice={inputBidPrice + 1000} />,
       });
     } else {

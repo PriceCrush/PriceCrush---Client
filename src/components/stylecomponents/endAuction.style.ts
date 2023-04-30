@@ -10,6 +10,7 @@ export const EndAuctionLayout = styled.div`
   flex-direction: column;
   align-items: center;
   justify-items: space-between;
+  height: 100%;
 `;
 
 /**
@@ -22,13 +23,12 @@ export const DescriptionBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-items: center;
-  gap: 5px;
 `;
 
 export const ButtonBox = styled.div`
   width: 100%;
   display: flex;
-  alint-items: center;
+  align-items: center;
   justify-content: center;
   margin-top: 5%;
   gap: 10%;
@@ -42,9 +42,11 @@ export const DescriptionText = styled.span`
   color: black;
   font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: 700;
+  margin-bottom: 2%;
 `;
 
 export const PriceText = styled(DescriptionText)`
   font-style: italic;
   text-decoration: underline;
+  margin-top: 10%;
 `;

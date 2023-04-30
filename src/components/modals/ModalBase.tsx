@@ -14,7 +14,7 @@ const ModalBackground = styled.div`
 `;
 
 const ModalContent = styled.div`
-  height: 65%;
+  height: fit-content;
   width: 75%;
   border-radius: 1.5rem;
   background-color: white;
@@ -44,6 +44,8 @@ const ModalTitle = styled.h2`
 const CloseButton = styled.button`
   color: #4b5563;
   transition: color 150ms;
+  border: none;
+  background-color: transparent;
 
   &:hover,
   &:focus {
@@ -59,7 +61,7 @@ const ModalRealContent = styled.div`
 
 const ModalBase = () => {
   const {
-    modalDataState: { isOpen, title, content },
+    modalDataState: { isOpen, content },
     closeModal,
   } = useModal();
 
@@ -84,12 +86,6 @@ const ModalBase = () => {
   return (
     <ModalBackground onClick={handleBackgroundClick}>
       <ModalContent>
-        <ModalHeader>
-          <ModalTitle>{title}</ModalTitle>
-          <CloseButton onClick={closeModal}>
-            <CgClose />
-          </CloseButton>
-        </ModalHeader>
         <ModalRealContent>{content}</ModalRealContent>
       </ModalContent>
     </ModalBackground>
