@@ -19,6 +19,13 @@ const StyleInput = styled.input<CommonInputProps>`
   }
 `;
 
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 1;
+`;
+
 interface CommonInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   isValid?: boolean;
   feedback?: string;
@@ -28,7 +35,7 @@ interface CommonInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const CommonInput = forwardRef<HTMLInputElement, CommonInputProps>(
   ({ feedback, isValid = true, ...props }, ref) => {
     return (
-      <>
+      <InputWrapper>
         <p style={{ display: 'flex' }}>
           <span>{props.label}</span>
           {!isValid && (
@@ -38,7 +45,7 @@ const CommonInput = forwardRef<HTMLInputElement, CommonInputProps>(
           )}
         </p>
         <StyleInput ref={ref} isValid={isValid} {...props} />
-      </>
+      </InputWrapper>
     );
   }
 );
