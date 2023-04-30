@@ -6,7 +6,7 @@ const isClient = typeof window !== 'undefined';
 const storage = isClient ? window.sessionStorage : undefined;
 
 const { persistAtom } = recoilPersist({
-  key: 'recoil-persist',
+  key: 'currentProduct',
   storage,
 });
 
