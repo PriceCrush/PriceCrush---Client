@@ -8,6 +8,7 @@ import ArrowButton from '@/components/carousel/ArrowButton';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import { productCategoryType } from '@/types/productsTypes';
 
 interface CategoryProps {
   tab: number;
@@ -15,7 +16,7 @@ interface CategoryProps {
   img: string;
 }
 interface SearchSliderProps {
-  category: CategoryProps[];
+  category: productCategoryType[];
 }
 
 const Searchslider = ({ category }: SearchSliderProps) => {
@@ -34,13 +35,23 @@ const Searchslider = ({ category }: SearchSliderProps) => {
   return (
     <div>
       <StyledSlider {...settings}>
-        {category.map((sample) => {
+        {/* {category.map((sample) => {
           return (
             <Item
               key={sample.category}
               img={sample.img}
               category={sample.category}
               tab={sample.tab}
+            />
+          );
+        })} */}
+        {category.map((item, index) => {
+          return (
+            <Item
+              key={item.id}
+              img={item.imgurl}
+              tab={1}
+              category={item.name}
             />
           );
         })}

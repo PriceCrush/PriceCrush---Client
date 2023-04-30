@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import * as S from '@/components/stylecomponents/styles';
+import { productCategoryType } from '@/types/productsTypes';
 
 type Category = {
   category: string;
@@ -13,6 +14,7 @@ interface ProductListProps {
   column: number;
   category: Category[];
   data: Category[];
+  temp: productCategoryType[];
 }
 
 type ProductListLayOutProps = {
