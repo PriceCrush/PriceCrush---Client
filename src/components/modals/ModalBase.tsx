@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useModal } from '@/hooks/useModal';
 import styled from 'styled-components';
-import { CgClose } from 'react-icons/cg';
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -29,31 +28,6 @@ const ModalContent = styled.div`
   }
 `;
 
-const ModalHeader = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ModalTitle = styled.h2`
-  font-size: 1rem;
-  font-weight: 600;
-`;
-
-const CloseButton = styled.button`
-  color: #4b5563;
-  transition: color 150ms;
-  border: none;
-  background-color: transparent;
-
-  &:hover,
-  &:focus {
-    color: #1f2937;
-    outline: none;
-  }
-`;
-
 const ModalRealContent = styled.div`
   width: 100%;
   height: 100%;
@@ -73,10 +47,14 @@ const ModalBase = () => {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.classList.add('modal-open');
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.classList.remove('modal-open');
+      document.body.style.overflow = 'unset';
     }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isOpen]);
 
   if (!isOpen) {
