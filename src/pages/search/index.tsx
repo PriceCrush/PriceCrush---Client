@@ -10,6 +10,8 @@ import Searchslider from '@/components/listPage/Searchslider';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { categoriesState } from '@/atoms/categoriesState';
 import { searchAndCategoriesState } from '@/atoms/searchAndCategoriesState';
+import { Api } from '@/utils/commonApi';
+import { productFromServerState } from '@/atoms/productsFromServerState';
 
 //이 타입은 추후 api가 들어올때 확정나기 때문에 우선보류
 // type Category = {
@@ -68,15 +70,20 @@ const ListPage = () => {
   const [categoryAndSearchTerm, setCategroyAndSearchTerm] = useRecoilState(
     searchAndCategoriesState
   );
+  const [wholeProductFromServer, setWholeProductFromServer] = useRecoilState(
+    productFromServerState
+  );
 
   // nav바
   const router = useRouter();
-
   // PaginationComponent onChange를 위한 임시
   const handlePage = () => {
     console.log('');
   };
 
+  /**
+   * @description 카테고리 id를 추적해 Recoil의 searchAndCategoriesState에 저장
+   */
   useEffect(() => {
     const { categoryId } = router.query;
     if (categoryId) {
@@ -87,20 +94,27 @@ const ListPage = () => {
     }
   }, [router.query]);
 
+  /**
+   * @description 서버에서 전체 상품 데이터 요청, 현재 카테고리별 상품 데이터 요청 API 없어 전체 데이터를 핸들링
+   */
+  useEffect(() => {
+    const getWholeProductData = async () => {
+      const wholeProductData = await Api.get('/product');
+      // TODO: 현재 CORS로인해 요청이 막힘 -> CORS 에러 해결 후 에러부분 수정할 것!!
+      if (wholeProductData) {
+        setWholeProductFromServer(wholeProductData);
+      }
+    };
+    getWholeProductData();
+  }, []);
+
   return (
     <S.ListPageWapper>
       <S.SliderSection>
         <SliderNav category={productCategories} />
         <Searchslider category={productCategories} />
       </S.SliderSection>
-      <S.ProductSection>
-        {/* <ProductList
-          column={4}
-          data={sampleCategory}
-          category={sampleCategory}
-          temp={productCategories}
-        /> */}
-      </S.ProductSection>
+      <S.ProductSection></S.ProductSection>
       <S.PageButtonSection>
         <PaginationComponent
           activePage={5}
