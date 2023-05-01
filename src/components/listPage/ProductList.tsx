@@ -1,9 +1,7 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
-import * as S from '@/components/stylecomponents/styles';
-import { productCategoryType, ProductFromApi } from '@/types/productsTypes';
+import { ProductFromApi } from '@/types/productsTypes';
 
 interface ProductListProps {
   column: number;
@@ -30,39 +28,47 @@ const ProductList = ({ column, data }: ProductListProps) => {
   // }, [filtedData]);
   //데이터 -> 그냥 db에 있는걸로 하자
 
+  if (data && data.length > 0) {
+    return (
+      <ProductListLayOut column={column}>
+        {/* 0~8 이부분 수정이 가능하도록  */}
+        {data.map((item, idx) => {
+          return (
+            <ProductListBox key={idx}>
+              <ProductBox>
+                {/* 차후 link는 디테일로 가도록  */}
+                <ProductInner href={`/auction/${item.id}`}>
+                  <Product>
+                    <Image
+                      src={item.productCategory.imgurl}
+                      alt="sample"
+                      width={230}
+                      height={230}
+                    />
+                  </Product>
+
+                  {/* <p>{item.tab}</p> */}
+                  <NameText>{item.name}</NameText>
+
+                  <PriceBox>
+                    <p>현재 경매가 </p>
+                    <PriceParagraph>{`${Number(
+                      item.start_price
+                    ).toLocaleString()}원`}</PriceParagraph>
+                  </PriceBox>
+                </ProductInner>
+              </ProductBox>
+            </ProductListBox>
+          );
+        })}
+      </ProductListLayOut>
+    );
+  }
+
   return (
-    <ProductListLayOut column={column}>
-      {/* 0~8 이부분 수정이 가능하도록  */}
-      {data.map((item, idx) => {
-        return (
-          <ProductListBox key={idx}>
-            <ProductBox>
-              {/* 차후 link는 디테일로 가도록  */}
-              <ProductInner href={`/auction/${item.id}`}>
-                <Product>
-                  <Image
-                    src={item.productCategory.imgurl}
-                    alt="sample"
-                    width={230}
-                    height={230}
-                  />
-                </Product>
-
-                {/* <p>{item.tab}</p> */}
-                <NameText>{item.name}</NameText>
-
-                <PriceBox>
-                  <p>현재 경매가 </p>
-                  <PriceParagraph>{`${Number(
-                    item.start_price
-                  ).toLocaleString()}원`}</PriceParagraph>
-                </PriceBox>
-              </ProductInner>
-            </ProductBox>
-          </ProductListBox>
-        );
-      })}
-    </ProductListLayOut>
+    <ProductEmptyBox>
+      <p>해당 카테고리에 데이터가 없습니다.</p>
+    </ProductEmptyBox>
   );
 };
 
@@ -128,6 +134,17 @@ const ProductListBox = styled.div`
 
   /* background-color: ${({ theme }) => theme.color.GRAY}; */
   /* opacity: 0.5; */
+`;
+
+const ProductEmptyBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
 `;
 
 export default ProductList;

@@ -1,6 +1,4 @@
 import ProductList from '@/components/listPage/ProductList';
-
-// import SearchSlider from '@/components/listPage/SearchSlider';
 import SliderNav from '@/components/listPage/SliderNav';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
