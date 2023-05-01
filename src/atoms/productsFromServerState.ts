@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom, selectorFamily } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 import { ProductFromApi } from '@/types/productsTypes';
 
@@ -14,4 +14,17 @@ export const productFromServerState = atom<ProductFromApi[]>({
   key: 'productFromServerState',
   default: [],
   effects_UNSTABLE: [persistAtom],
+});
+
+export const filteredProductsByCategoryState = selectorFamily({
+  key: 'filteredProductsByCategoryState',
+  get:
+    (categoryId) =>
+    ({ get }) => {
+      const products = get(productFromServerState);
+      if (categoryId === 'all') return products;
+      return products.filter(
+        (product) => product.productCategory.id === categoryId
+      );
+    },
 });
