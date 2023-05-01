@@ -76,17 +76,15 @@ const ListPage = ({ data }: ListPageProps) => {
     setWholeProductFromServer(data);
   }, [wholeProductFromServer, data, setWholeProductFromServer]);
 
-  useEffect(() => {
-    console.log(filteredProducts);
-  }, [filteredProducts]);
-
   return (
     <S.ListPageWapper>
       <S.SliderSection>
         <SliderNav category={productCategories} />
         <Searchslider category={productCategories} />
       </S.SliderSection>
-      <S.ProductSection></S.ProductSection>
+      <S.ProductSection>
+        <ProductList column={4} data={filteredProducts} />
+      </S.ProductSection>
       <S.PageButtonSection>
         <PaginationComponent
           activePage={5}

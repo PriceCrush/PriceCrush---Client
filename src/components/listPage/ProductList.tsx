@@ -3,18 +3,11 @@ import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import * as S from '@/components/stylecomponents/styles';
-import { productCategoryType } from '@/types/productsTypes';
-
-type Category = {
-  category: string;
-  img: string;
-};
+import { productCategoryType, ProductFromApi } from '@/types/productsTypes';
 
 interface ProductListProps {
   column: number;
-  category: Category[];
-  data: Category[];
-  temp: productCategoryType[];
+  data: ProductFromApi[];
 }
 
 type ProductListLayOutProps = {
@@ -24,32 +17,13 @@ type ProductListLayOutProps = {
 //nav에서 누른거 연결
 // ex-> 가방이면 가방 9개 나오도록
 
-const ProductList = ({ column, data, category }: ProductListProps) => {
-  //예비
-  const Price = 10000000;
-  const DetailPageURL = '/';
-  const categoryName = '시계';
+const ProductList = ({ column, data }: ProductListProps) => {
   //페이지 네이션을 누를경우 여기 부분만 바뀌도록
   // column에 따라 grid-template-colmn과 slice의 숫자가 바뀌도록
 
   //카테고리별 나오게하는거
   // 데이터 필터링 -> nav바에 따라서
-  const [filtedData, setFiltedData] = useState<Category[]>([]);
-
-  type handleDataProps = {
-    data: Category[];
-    categoryName: string;
-  };
-
-  const handleData = useCallback(({ data, categoryName }: handleDataProps) => {
-    let filtedData = [];
-    filtedData = data.filter((el) => el.category === categoryName);
-    return filtedData;
-  }, []);
-
-  useEffect(() => {
-    setFiltedData(handleData({ data, categoryName }));
-  }, [data, handleData, categoryName]);
+  // RecoilValue로 index.tsx 에서 받아옴
 
   // useEffect(() => {
   //   console.log(filtedData);
@@ -59,23 +33,28 @@ const ProductList = ({ column, data, category }: ProductListProps) => {
   return (
     <ProductListLayOut column={column}>
       {/* 0~8 이부분 수정이 가능하도록  */}
-      {filtedData.slice(0, 8).map((item, idx) => {
+      {data.map((item, idx) => {
         return (
           <ProductListBox key={idx}>
             <ProductBox>
               {/* 차후 link는 디테일로 가도록  */}
-              <ProductInner href={DetailPageURL}>
+              <ProductInner href={`/auction/${item.id}`}>
                 <Product>
-                  <Image src={item.img} alt="sample" width={230} height={230} />
+                  <Image
+                    src={item.productCategory.imgurl}
+                    alt="sample"
+                    width={230}
+                    height={230}
+                  />
                 </Product>
 
                 {/* <p>{item.tab}</p> */}
-                <NameText>상품명(제목)</NameText>
+                <NameText>{item.name}</NameText>
 
                 <PriceBox>
                   <p>현재 경매가 </p>
                   <PriceParagraph>{`${Number(
-                    Price
+                    item.start_price
                   ).toLocaleString()}원`}</PriceParagraph>
                 </PriceBox>
               </ProductInner>
