@@ -12,26 +12,10 @@ type ProductListLayOutProps = {
   column: number;
 };
 
-//nav에서 누른거 연결
-// ex-> 가방이면 가방 9개 나오도록
-
 const ProductList = ({ column, data }: ProductListProps) => {
-  //페이지 네이션을 누를경우 여기 부분만 바뀌도록
-  // column에 따라 grid-template-colmn과 slice의 숫자가 바뀌도록
-
-  //카테고리별 나오게하는거
-  // 데이터 필터링 -> nav바에 따라서
-  // RecoilValue로 index.tsx 에서 받아옴
-
-  // useEffect(() => {
-  //   console.log(filtedData);
-  // }, [filtedData]);
-  //데이터 -> 그냥 db에 있는걸로 하자
-
   if (data && data.length > 0) {
     return (
       <ProductListLayOut column={column}>
-        {/* 0~8 이부분 수정이 가능하도록  */}
         {data.map((item, idx) => {
           return (
             <ProductListBox key={idx}>

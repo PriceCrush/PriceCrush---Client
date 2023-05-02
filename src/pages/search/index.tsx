@@ -1,7 +1,7 @@
 import ProductList from '@/components/listPage/ProductList';
 import SliderNav from '@/components/listPage/SliderNav';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/searchAndCategoryItems/searchList.style';
 import PaginationComponent from '@/components/listPage/PaginationComponent';
 import Searchslider from '@/components/listPage/Searchslider';
@@ -35,6 +35,8 @@ interface ListPageProps {
 }
 
 const ListPage = ({ data }: ListPageProps) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   const productCategories = useRecoilValue(categoriesState);
   const [categoryAndSearchTerm, setCategroyAndSearchTerm] = useRecoilState(
     searchAndCategoriesState
@@ -44,14 +46,18 @@ const ListPage = ({ data }: ListPageProps) => {
   );
   const currentCategory = useRecoilValue(selectedCategory);
   const filteredProducts = useRecoilValue(
-    filteredProductsByCategoryState(currentCategory)
+    filteredProductsByCategoryState({
+      categoryId: currentCategory,
+      currentIndex: currentPage,
+      itemsPerPage,
+    })
   );
 
   // nav바
   const router = useRouter();
-  // PaginationComponent onChange를 위한 임시
-  const handlePage = () => {
-    console.log('');
+  // PaginationComponent onChange를 위한 함수
+  const handlePage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   };
 
   /**
@@ -81,15 +87,14 @@ const ListPage = ({ data }: ListPageProps) => {
         <Searchslider category={productCategories} />
       </S.SliderSection>
       <S.ProductSection>
-        <ProductList column={4} data={filteredProducts} />
+        <ProductList column={4} data={filteredProducts.result} />
       </S.ProductSection>
       <S.PageButtonSection>
         <PaginationComponent
-          activePage={5}
+          activePage={currentPage}
           onChange={handlePage}
-          itemsCountPerPage={5}
-          totalItemsCount={10}
-          pageRangeDisplayed={5}
+          itemsCountPerPage={itemsPerPage}
+          totalItemsCount={filteredProducts.totalItems}
         />
       </S.PageButtonSection>
     </S.ListPageWapper>
