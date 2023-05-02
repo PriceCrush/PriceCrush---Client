@@ -32,6 +32,7 @@ const AddressForm = (props: userInfoAndCheckProps) => {
    * @description 주소 api와 연결된 모달 open
    */
   const handleBidButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     openModal({
       title: '주소검색',
       content: <FindAddressConfirm handlepost={handlepost} />,
