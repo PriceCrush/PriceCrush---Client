@@ -1,89 +1,58 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
-import * as S from '@/components/stylecomponents/styles';
-import { productCategoryType } from '@/types/productsTypes';
-
-type Category = {
-  category: string;
-  img: string;
-};
+import { ProductFromApi } from '@/types/productsTypes';
 
 interface ProductListProps {
   column: number;
-  category: Category[];
-  data: Category[];
-  temp: productCategoryType[];
+  data: ProductFromApi[];
 }
 
 type ProductListLayOutProps = {
   column: number;
 };
 
-//nav에서 누른거 연결
-// ex-> 가방이면 가방 9개 나오도록
+const ProductList = ({ column, data }: ProductListProps) => {
+  if (data && data.length > 0) {
+    return (
+      <ProductListLayOut column={column}>
+        {data.map((item, idx) => {
+          return (
+            <ProductListBox key={idx}>
+              <ProductBox>
+                {/* 차후 link는 디테일로 가도록  */}
+                <ProductInner href={`/auction/${item.id}`}>
+                  <Product>
+                    <Image
+                      src={item.productCategory.imgurl}
+                      alt="sample"
+                      width={230}
+                      height={230}
+                    />
+                  </Product>
 
-const ProductList = ({ column, data, category }: ProductListProps) => {
-  //예비
-  const Price = 10000000;
-  const DetailPageURL = '/';
-  const categoryName = '시계';
-  //페이지 네이션을 누를경우 여기 부분만 바뀌도록
-  // column에 따라 grid-template-colmn과 slice의 숫자가 바뀌도록
+                  {/* <p>{item.tab}</p> */}
+                  <NameText>{item.name}</NameText>
 
-  //카테고리별 나오게하는거
-  // 데이터 필터링 -> nav바에 따라서
-  const [filtedData, setFiltedData] = useState<Category[]>([]);
-
-  type handleDataProps = {
-    data: Category[];
-    categoryName: string;
-  };
-
-  const handleData = useCallback(({ data, categoryName }: handleDataProps) => {
-    let filtedData = [];
-    filtedData = data.filter((el) => el.category === categoryName);
-    return filtedData;
-  }, []);
-
-  useEffect(() => {
-    setFiltedData(handleData({ data, categoryName }));
-  }, [data, handleData, categoryName]);
-
-  // useEffect(() => {
-  //   console.log(filtedData);
-  // }, [filtedData]);
-  //데이터 -> 그냥 db에 있는걸로 하자
+                  <PriceBox>
+                    <p>현재 경매가 </p>
+                    <PriceParagraph>{`${Number(
+                      item.start_price
+                    ).toLocaleString()}원`}</PriceParagraph>
+                  </PriceBox>
+                </ProductInner>
+              </ProductBox>
+            </ProductListBox>
+          );
+        })}
+      </ProductListLayOut>
+    );
+  }
 
   return (
-    <ProductListLayOut column={column}>
-      {/* 0~8 이부분 수정이 가능하도록  */}
-      {filtedData.slice(0, 8).map((item, idx) => {
-        return (
-          <ProductListBox key={idx}>
-            <ProductBox>
-              {/* 차후 link는 디테일로 가도록  */}
-              <ProductInner href={DetailPageURL}>
-                <Product>
-                  <Image src={item.img} alt="sample" width={230} height={230} />
-                </Product>
-
-                {/* <p>{item.tab}</p> */}
-                <NameText>상품명(제목)</NameText>
-
-                <PriceBox>
-                  <p>현재 경매가 </p>
-                  <PriceParagraph>{`${Number(
-                    Price
-                  ).toLocaleString()}원`}</PriceParagraph>
-                </PriceBox>
-              </ProductInner>
-            </ProductBox>
-          </ProductListBox>
-        );
-      })}
-    </ProductListLayOut>
+    <ProductEmptyBox>
+      <p>해당 카테고리에 데이터가 없습니다.</p>
+    </ProductEmptyBox>
   );
 };
 
@@ -149,6 +118,17 @@ const ProductListBox = styled.div`
 
   /* background-color: ${({ theme }) => theme.color.GRAY}; */
   /* opacity: 0.5; */
+`;
+
+const ProductEmptyBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
 `;
 
 export default ProductList;

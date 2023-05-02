@@ -41,9 +41,6 @@ function TabItem({ active, children }: React.PropsWithChildren<TabItemProps>) {
  */
 
 const SliderNav = ({ category }: SliderNavProps) => {
-  const [categoryAndSearchTerm, setCategroyAndSearchTerm] = useRecoilState(
-    searchAndCategoriesState
-  );
   const currentCategory = useRecoilValue(selectedCategory);
 
   // listid에서  router로 params를 받음

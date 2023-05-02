@@ -14,6 +14,7 @@ export const SliderSection = styled.section`
   margin-top: 50px;
 `;
 export const ProductSection = styled.section`
+  width: 100%;
   display: flex;
   position: relative;
   padding: 70px 40px 60px 40px;
@@ -22,7 +23,9 @@ export const ProductSection = styled.section`
   max-width: 1280px;
 `;
 //
-export const ListPageWapper = styled.div``;
+export const ListPageWapper = styled.div`
+  width: 100%;
+`;
 
 //폰트
 export const SliderNavLayOut = styled.div`
