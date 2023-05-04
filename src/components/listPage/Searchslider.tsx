@@ -8,16 +8,15 @@ import ArrowButton from '@/components/carousel/ArrowButton';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import { productCategoryType } from '@/types/productsTypes';
 
-interface CategoryProps {
-  tab: number;
-  category: string;
-  img: string;
-}
 interface SearchSliderProps {
-  category: CategoryProps[];
+  category: productCategoryType[];
 }
 
+/**
+ * @description 렌더함수
+ */
 const Searchslider = ({ category }: SearchSliderProps) => {
   const settings = {
     dots: true,
@@ -34,7 +33,7 @@ const Searchslider = ({ category }: SearchSliderProps) => {
   return (
     <div>
       <StyledSlider {...settings}>
-        {category.map((sample) => {
+        {/* {category.map((sample) => {
           return (
             <Item
               key={sample.category}
@@ -43,23 +42,37 @@ const Searchslider = ({ category }: SearchSliderProps) => {
               tab={sample.tab}
             />
           );
+        })} */}
+        {category.map((item, index) => {
+          return (
+            <Item
+              key={item.id}
+              id={item.id}
+              imgurl={item.imgurl}
+              name={item.name}
+            />
+          );
         })}
       </StyledSlider>
     </div>
   );
 };
 
-const Item = (props: CategoryProps) => {
-  const { img, category, tab } = props;
+const Item = ({ id, imgurl, name }: productCategoryType) => {
   const router = useRouter();
   const goRouter = () => {
-    router.push(`/search/${tab}`);
+    router.push({
+      pathname: `search`,
+      query: {
+        categoryId: id,
+      },
+    });
   };
 
   return (
     <Box onClick={goRouter}>
-      <Image src={img} alt="sample" width={100} height={100} />
-      <span> {category}</span>
+      <Image src={imgurl} alt="sample" width={100} height={100} />
+      <span> {name}</span>
     </Box>
   );
 };

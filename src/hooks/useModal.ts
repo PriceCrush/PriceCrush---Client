@@ -3,7 +3,6 @@ import { modalState } from '@/atoms/modalState';
 import { useCallback } from 'react';
 
 interface OpenModalProps {
-  title: string;
   content: JSX.Element | string;
 }
 
@@ -33,15 +32,13 @@ export const useModal = () => {
 
   /**
    * @description Modal을 열고 데이터를 넣어주는 함수
-   * @param title Modal의 제목
    * @param content {JSX Element} Modal의 내용 컴포넌트가 들어가며 모달창의 컨텐츠가 됨
    */
 
   const openModal = useCallback(
-    ({ title, content }: OpenModalProps) => {
+    ({ content }: OpenModalProps) => {
       setModalDataState({
         isOpen: true,
-        title,
         content,
       });
     },
@@ -54,11 +51,10 @@ export const useModal = () => {
    * @param content {JSX Element} Modal의 내용 컴포넌트가 들어가며 모달창의 컨텐츠가 됨
    */
   const changeModal = useCallback(
-    ({ title, content }: OpenModalProps) => {
+    ({ content }: OpenModalProps) => {
       setModalDataState((prev) => {
         return {
           ...prev,
-          title,
           content,
         };
       });

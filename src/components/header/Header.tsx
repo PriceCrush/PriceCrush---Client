@@ -29,7 +29,16 @@ const Header = () => {
           </div>
           <S.HeaderNavList>
             <S.HeaderNavItem>
-              <Link href={'/search/all'}>SHOP</Link>
+              <Link
+                href={{
+                  pathname: `/search`,
+                  query: {
+                    categoryId: 'all',
+                  },
+                }}
+              >
+                SHOP
+              </Link>
             </S.HeaderNavItem>
 
             <S.HeaderNavItem>

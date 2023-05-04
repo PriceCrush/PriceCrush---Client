@@ -34,7 +34,6 @@ const AddressForm = (props: userInfoAndCheckProps) => {
   const handleBidButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     openModal({
-      title: '주소검색',
       content: <FindAddressConfirm handlepost={handlepost} />,
     });
   };

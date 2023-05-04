@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Pagination from 'react-js-pagination';
+import Pagination, { ReactJsPaginationProps } from 'react-js-pagination';
 
 const StyledPagination = styled.div<{ active: boolean }>`
   > ul {
@@ -13,6 +13,12 @@ const StyledPagination = styled.div<{ active: boolean }>`
       font-size: ${({ theme }) => theme.fontSize.md};
       list-style: none;
       margin: 0 5px;
+      &.active {
+        a {
+          color: #fff;
+          background-color: #333;
+        }
+      }
       a {
         display: block;
         padding: 8px 15px;
@@ -41,13 +47,7 @@ const StyledPagination = styled.div<{ active: boolean }>`
 `;
 //react-js-pagination 사용
 
-interface PaginationComponentProps {
-  activePage: number;
-  totalItemsCount: number;
-  onChange: (pageNumber: number) => void;
-  itemsCountPerPage?: number | undefined;
-  pageRangeDisplayed: number;
-}
+interface PaginationComponentProps extends ReactJsPaginationProps {}
 
 const PaginationComponent = (props: PaginationComponentProps) => {
   const {
@@ -55,7 +55,7 @@ const PaginationComponent = (props: PaginationComponentProps) => {
     itemsCountPerPage,
     totalItemsCount,
     onChange,
-    pageRangeDisplayed,
+    ...settings
   } = props;
 
   return (
@@ -65,9 +65,8 @@ const PaginationComponent = (props: PaginationComponentProps) => {
         itemsCountPerPage={itemsCountPerPage}
         totalItemsCount={totalItemsCount}
         onChange={onChange}
-        itemClass="page-item"
-        linkClass="page-link"
         activeClass="active"
+        {...settings}
       />
     </StyledPagination>
   );
