@@ -7,7 +7,8 @@ const setExpireTime = (hour: number) => {
 };
 
 const LoginApi = async (req: NextApiRequest, res: NextApiResponse) => {
-  const LOGIN_API_URL = `http://ec2-13-124-196-195.ap-northeast-2.compute.amazonaws.com:3000/auth`;
+  const serverBaseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+  const LOGIN_API_URL = `${serverBaseURL}auth`;
   const loginData = req.body;
 
   axios

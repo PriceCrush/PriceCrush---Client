@@ -7,4 +7,5 @@ export interface MemberInputFormProps extends userInfoAndCheckProps {
   type: string;
   children: string;
   name: string;
+  disable?: boolean;
 }

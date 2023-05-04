@@ -6,7 +6,7 @@ interface checkvalidationProps {
   textLength?: number;
 }
 
-export const LoginButton = styled(ButtonBase)<checkvalidationProps>`
+export const FormButton = styled(ButtonBase)<checkvalidationProps>`
   margin-top: 20px;
   height: 52px;
   font-weight: 700;
@@ -24,13 +24,17 @@ export const LogoTitle = styled.h2`
 `;
 
 export const HelpNoticeSection = styled.section`
+  min-width: 500px;
   margin-top: 40px;
   border-top: 3px solid;
   padding: 40px 0 30px;
   font-size: ${({ theme }) => theme.fontSize.md};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-export const LoginFormLayOut = styled.form`
+export const FormLayOut = styled.form`
   width: 400px;
   display: flex;
   flex-direction: column;
