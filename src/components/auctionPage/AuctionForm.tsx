@@ -3,11 +3,12 @@ import * as S from '@/components/stylecomponents/productDetail.style';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
 import { currentProductState } from '@/atoms/currentProductState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 const AuctionForm = () => {
   const [currentProductAtom, setCurrentProductAtom] =
     useRecoilState(currentProductState);
+
   return (
     <S.AuctionFormLayout>
       {currentProductAtom!.available && (
