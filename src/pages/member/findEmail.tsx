@@ -1,5 +1,6 @@
 import * as S from '@/components/stylecomponents/formbase.style';
 import axios from 'axios';
+import Router from 'next/router';
 import React, { useState } from 'react';
 
 const FindEmail = () => {
@@ -17,20 +18,20 @@ const FindEmail = () => {
 
   const showButton = !userInfo.name.length || userInfo.phone.length < 11;
 
+  const LOGIN_URL = '/member/login';
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // axios의 get요청의 경우 body에 담아서 내용을 보낼 수 가 없음
-    // axios
-    //   .get(
-    //     'http://ec2-13-124-196-195.ap-northeast-2.compute.amazonaws.com:3000/users/find/id',
-    //     params : {userInfo}
-    //   )
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    axios
+      .post('/api/member/findEmailApi', { userInfo })
+      .then(function (response) {
+        console.log(response);
+        Router.push(`${LOGIN_URL}`);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   //placeholder 추가 예정
   return (
@@ -43,7 +44,7 @@ const FindEmail = () => {
         </span>
       </S.HelpNoticeSection>
 
-      <S.LoginFormLayOut method="post" onSubmit={handleSubmit}>
+      <S.FormLayOut method="post" onSubmit={handleSubmit}>
         <S.FormItemBox>
           <S.FormTitle textLength={userInfo.name.length}>이름</S.FormTitle>
           <S.FormItem
@@ -66,10 +67,10 @@ const FindEmail = () => {
           ></S.FormItem>
         </S.FormItemBox>
 
-        <S.LoginButton type="submit" disabled={showButton}>
+        <S.FormButton type="submit" disabled={showButton}>
           이메일 아이디 찾기
-        </S.LoginButton>
-      </S.LoginFormLayOut>
+        </S.FormButton>
+      </S.FormLayOut>
     </S.Wrapper>
   );
 };

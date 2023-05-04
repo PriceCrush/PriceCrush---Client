@@ -28,7 +28,7 @@ const LoginForm = () => {
   const [userPrivateDataAtom, setUserPrivateDataAtom] =
     useRecoilState(userPrivateDataState);
 
-  const LOGIN_URL = '/'; //성공할때의 주소
+  const MAIN_PAGE_URL = '/'; //성공할때의 주소
 
   /**
    * @description 로그인 axios요청
@@ -54,7 +54,7 @@ const LoginForm = () => {
           phone: user.phone,
         });
 
-        Router.push(`${LOGIN_URL}`);
+        Router.push(`${MAIN_PAGE_URL}`);
       })
       .catch(function (error) {
         if (error.response.status === 422) {

@@ -2,6 +2,7 @@ import * as S from '@/components/stylecomponents/formbase.style';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import useValidation from '@/hooks/useValidation';
+import Router from 'next/router';
 
 const FindPassword = () => {
   const [userInfo, setUserInfo] = useState({
@@ -9,7 +10,8 @@ const FindPassword = () => {
     email: '',
     phone: '',
   });
-
+  const RESET_PW_URL = '/member/resetPassword';
+  const LOGIN_URL = '/member/login';
   const handleUserInfo = (e: any) => {
     setUserInfo((prev: any) => ({
       ...prev,
@@ -20,17 +22,16 @@ const FindPassword = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // axios의 get요청의 경우 body에 담아서 내용을 보낼 수 가 없음
-    // axios
-    //   .get(
-    //     'http://ec2-13-124-196-195.ap-northeast-2.compute.amazonaws.com:3000/users/find/id',
-    //     userInfo
-    //   )
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    axios
+      .post('/api/member/findPassWordApi', { userInfo })
+      .then(function (response) {
+        console.log(response);
+        Router.push(`${LOGIN_URL}`);
+        //Router.push(`${RESET_PW_URL}`);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   // memverinputForm 의존성 낮춰서 리팩토링할 예정
@@ -48,7 +49,7 @@ const FindPassword = () => {
         </span>
       </S.HelpNoticeSection>
 
-      <S.LoginFormLayOut method="post" onSubmit={handleSubmit}>
+      <S.FormLayOut method="post" onSubmit={handleSubmit}>
         <S.FormItemBox>
           <S.FormTitle textLength={userInfo.name.length}>이름</S.FormTitle>
           <S.FormItem
@@ -83,10 +84,10 @@ const FindPassword = () => {
           ></S.FormItem>
         </S.FormItemBox>
 
-        <S.LoginButton type="submit" disabled={showButton}>
+        <S.FormButton type="submit" disabled={showButton}>
           이메일 아이디 찾기
-        </S.LoginButton>
-      </S.LoginFormLayOut>
+        </S.FormButton>
+      </S.FormLayOut>
     </S.Wrapper>
   );
 };

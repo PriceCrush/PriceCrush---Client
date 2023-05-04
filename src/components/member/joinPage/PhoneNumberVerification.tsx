@@ -121,9 +121,9 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
       <S.FormItemTitle errorCheck={inputChcek} textLength={phoneNum.length}>
         핸드폰
       </S.FormItemTitle>
-      <ZondcodeBox>
+      <PhoneNumBox>
         {/* 에러 시 하단바 색깔변화 확인 */}
-        <ZondcodeItem
+        <PhoneNumInputItem
           type="text"
           name="zonecode"
           value={phoneNum}
@@ -133,7 +133,7 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
             setPhoneNum(e.target.value);
           }}
           placeholder='"-"빼고 숫자만 입력'
-        ></ZondcodeItem>
+        ></PhoneNumInputItem>
         {showCodeInput ? (
           <CodeReqBtn size="sm" onClick={handleRequsetcode}>
             재인증
@@ -147,12 +147,12 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
             인증
           </CodeReqBtn>
         )}
-      </ZondcodeBox>
+      </PhoneNumBox>
       {phoneNum !== '' && <span>{errorMessage}</span>}
 
       {showCodeInput ? (
-        <ZondcodeBox>
-          <ZondcodeItem
+        <PhoneNumBox>
+          <PhoneNumInputItem
             type="text"
             name="zonecode"
             value={phoneCode}
@@ -160,7 +160,7 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
               setPhonecode(e.target.value);
             }}
             placeholder="인증번호입력"
-          ></ZondcodeItem>
+          ></PhoneNumInputItem>
           <TimerBox>
             <span>{remainingTime}</span>
           </TimerBox>
@@ -168,7 +168,7 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
           <CodeReqBtn size="sm" onClick={handleCertificationCode}>
             확인
           </CodeReqBtn>
-        </ZondcodeBox>
+        </PhoneNumBox>
       ) : (
         ''
       )}
@@ -185,7 +185,7 @@ const TimerBox = styled.div`
   color: ${({ theme }) => theme.color.DEEP_ORANGE};
 `;
 
-const ZondcodeBox = styled.div`
+const PhoneNumBox = styled.div`
   padding-top: 10px;
   display: flex;
   justify-content: space-between;
@@ -199,12 +199,7 @@ const CodeReqBtn = styled(S.LoginButton)`
   letter-spacing: 2px;
 `;
 
-const AddressBtn = styled(ButtonBase)`
-  font-weight: 600;
-  letter-spacing: 2px;
-`;
-
-const ZondcodeItem = styled(S.FormItem)`
+const PhoneNumInputItem = styled(S.FormItem)`
   width: 60%;
 `;
 
