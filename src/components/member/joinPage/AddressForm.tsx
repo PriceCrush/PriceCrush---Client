@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import styled from 'styled-components';
 import { useModal } from '@/hooks/useModal';
-import FindAddressConfirm from '@/components/modals/joinpage/FindAddressConfirm';
+import FindAddressConfirm from '@/components/modals/member/FindAddressConfirm';
 import { userInfoAndCheckProps } from '@/types/memberTypes';
 // import TestApi from '../modals/joinpage/testApi';
 import ButtonBase from '../../buttons/ButtonBase';
