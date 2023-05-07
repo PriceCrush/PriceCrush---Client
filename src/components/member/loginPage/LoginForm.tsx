@@ -1,15 +1,18 @@
 import axios from 'axios';
-import Router from 'next/router';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import Link from 'next/link';
-import MemberInputForm from '../../inputs/MemberInputForm';
+import MemberInputForm from '@/components/inputs/MemberInputForm';
 import { useRecoilState } from 'recoil';
 import {
   isLoggedInState,
   userCommonDataState,
   userPrivateDataState,
 } from '@/atoms/isLoggedInState';
+import { useModal } from '@/hooks/useModal';
+import { loginErrorCode } from '@/components/member/ErrorCodeMessage';
+import CommonMessage from '@/components/modals/member/CommonMessage';
 
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -28,12 +31,14 @@ const LoginForm = () => {
   const [userPrivateDataAtom, setUserPrivateDataAtom] =
     useRecoilState(userPrivateDataState);
 
-  const MAIN_PAGE_URL = '/'; //성공할때의 주소
-
+  const router = useRouter();
+  const { openModal } = useModal();
   /**
    * @description 로그인 axios요청
    * @param e submitEvent
    */
+
+  // errormessage
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,15 +58,20 @@ const LoginForm = () => {
           address: user.address,
           phone: user.phone,
         });
-
-        Router.push(`${MAIN_PAGE_URL}`);
+        //로그인 이전 페이지로 이동
+        router.back();
       })
       .catch(function (error) {
-        if (error.response.status === 422) {
-          console.log(error.response.data.message);
-        } else {
-          console.log(error);
-        }
+        // 에러 처리하는거만 쬐가 해보자구
+        const { title, message } = loginErrorCode(error.response.status);
+        openModal({
+          content: (
+            <>
+              <CommonMessage title={title}>{message}</CommonMessage>
+            </>
+          ),
+        });
+        console.log(error.response.data.message);
       });
   };
 
