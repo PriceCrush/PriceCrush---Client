@@ -244,13 +244,13 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
       <S.CardWrapper>
         {filteredMyAuctionItems2.map((item, index) => (
           <AuctionCardItem
-            id={item.id}
-            key={index}
-            title={item.title}
-            price={item.price}
-            date={item.date}
-            isSelling={item.isSelling}
-            status={item.status}
+            // TODO: item 빼고 다 삭제
+            key={item.id}
+            isSelling={
+              progressFilterValue === '진행중' &&
+              sellingBiddingFilterValue === '판매 상품'
+            }
+            item={item}
           />
         ))}
       </S.CardWrapper>

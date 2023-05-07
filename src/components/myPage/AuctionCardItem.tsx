@@ -6,35 +6,30 @@ import ButtonBase from '../buttons/ButtonBase';
 import { useModal } from '@/hooks/useModal';
 import EndAuction from '../modals/mypage/EndAuction';
 import CancelAuction from '../modals/mypage/CancelAuction';
+import { MyAuctionItem } from '@/types/myAuctionItemsTypes';
 
 interface AuctionCardItemProps {
-  id?: number;
-  title?: string;
-  price?: number;
-  date?: string;
   isSelling?: boolean;
-  status?: string;
+  item?: MyAuctionItem;
 }
 
-const AuctionCardItem = ({
-  id,
-  title = '테스트 경매 상품',
-  price = 1000000,
-  date = '2021.08.01 ~ 2021.08.31',
-  isSelling = true,
-  status = '진행중',
-}: AuctionCardItemProps) => {
+const AuctionCardItem = ({ isSelling, item }: AuctionCardItemProps) => {
   const { openModal } = useModal();
 
   const handleEndAuction = () => {
     openModal({
-      content: <EndAuction productId={String(id)} />,
+      content: (
+        <EndAuction
+          auctionId={String(item?.id)}
+          currentPrice={Number(item?.price)}
+        />
+      ),
     });
   };
 
   const handleCancelAuction = () => {
     openModal({
-      content: <CancelAuction />,
+      content: <CancelAuction auctionId={String(item?.id)} />,
     });
   };
 
@@ -52,15 +47,15 @@ const AuctionCardItem = ({
       </S.CardImageBox>
       <S.CardInfoBox>
         <S.CardInfoRow>
-          <S.CardTitle>{title}</S.CardTitle>
+          <S.CardTitle>{item?.product.name}</S.CardTitle>
         </S.CardInfoRow>
         <S.CardInfoRow>
-          <S.CardPrice>{translatePriceToKoreanWon(price)}</S.CardPrice>
-          <S.CardDate>{date}</S.CardDate>
+          <S.CardPrice>{translatePriceToKoreanWon(item?.price!)}</S.CardPrice>
+          <S.CardDate>{`${item?.product.start_date} ~ ${item?.product.end_date}`}</S.CardDate>
         </S.CardInfoRow>
       </S.CardInfoBox>
       <S.CardStatusBox>
-        {isSelling && status === '진행중' ? (
+        {isSelling ? (
           <>
             <ButtonBase
               variant="endAuction"
@@ -77,9 +72,7 @@ const AuctionCardItem = ({
               경매 취소
             </ButtonBase>
           </>
-        ) : (
-          <S.CardStatus>{status}</S.CardStatus>
-        )}
+        ) : null}
       </S.CardStatusBox>
     </S.AuctionCardItemLayout>
   );

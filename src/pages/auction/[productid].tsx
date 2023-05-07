@@ -11,7 +11,6 @@ import LeftSection from '@/components/auctionPage/LeftSection';
 import RightSection from '@/components/auctionPage/RightSection';
 import { useRecoilState } from 'recoil';
 import { currentProductState } from '@/atoms/currentProductState';
-import { io } from 'socket.io-client';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -132,9 +131,11 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     const bidData = {
       price: inputBidPrice,
       // TODO: 로그인 완료시 사용자 정보를 받아올 수 있도록 수정
-      user: '0090ff72-65c4-463a-b2c0-276fb9a93cb1',
+      user: 'ed420979-07a2-4a04-b376-48bfbd3379b1',
       product: productData.id,
     };
+
+    console.log('버튼을 눌렀을때의 ID', socket.id);
 
     socket.emit('bid', bidData);
   };
@@ -143,35 +144,41 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
    * @description 소켓 이벤트를 다루는 `useEffect`입니다
    */
   useEffect(() => {
-    if (!isLoading) {
-      const handleConnect = () => console.log('소켓 연결됨', socket.connected);
-      const handleDisconnect = () =>
-        console.log('소켓 연결 해제됨', socket.disconnected);
-      const handleBidResult = (data: any) => {
-        console.log('bidResult 이벤트 발생', data);
-        if (data.success) {
-          setCurrentPrice(data.auctionResult.price);
-        } else {
-          alert(data.message);
-          console.log(data.message);
-        }
-      };
+    const handleConnect = () => console.log('소켓 연결됨', socket.connected);
+    const handleDisconnect = () =>
+      console.log('소켓 연결 해제됨', socket.disconnected);
 
-      // 소켓 연결
-      socket.on('connect', handleConnect);
+    const handleBidResult = (data: any) => {
+      console.log('bidResult 이벤트 발생', data);
+      console.log('이벤트 실행 후의 ID', socket.id);
+      if (data.success) {
+        setCurrentPrice(data.auctionResult.price);
+      } else {
+        alert(data.message);
+        console.log(data.message);
+      }
+    };
 
-      // 소켓 연결 해제 확인
-      socket.on('disconnect', handleDisconnect);
+    // 소켓 연결
+    socket.on('connect', handleConnect);
 
-      // `bidResult` 이벤트 연결
-      socket.on('bidResult', handleBidResult);
+    // 소켓 연결 해제 확인
+    socket.on('disconnect', handleDisconnect);
 
-      // 소켓 이벤트 연결 해제
-      return () => {
-        socket.off('bidResult', handleBidResult);
-      };
-    }
-  }, [isLoading, socket]);
+    // `bidResult` 이벤트 연결
+    socket.on('bidResult', handleBidResult);
+
+    //소켓 이벤트 연결 해제
+    return () => {
+      socket.off('bidResult', handleBidResult);
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(`소켓 연결 상태 ${socket.connected}`);
+  }, [socket]);
 
   /**
    * @description 현재 상품 정보를 전역 상태로 관리
@@ -204,7 +211,7 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     } else {
       setIsLoading(false);
     }
-    console.log('isLoading', isLoading);
+    // console.log('isLoading', isLoading);
   }, [currentProductAtom, isLoading]);
 
   if (isLoading) {
