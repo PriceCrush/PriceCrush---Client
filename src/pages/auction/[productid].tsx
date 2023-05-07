@@ -131,9 +131,11 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     const bidData = {
       price: inputBidPrice,
       // TODO: 로그인 완료시 사용자 정보를 받아올 수 있도록 수정
-      user: '0090ff72-65c4-463a-b2c0-276fb9a93cb1',
+      user: 'ed420979-07a2-4a04-b376-48bfbd3379b1',
       product: productData.id,
     };
+
+    console.log('버튼을 눌렀을때의 ID', socket.id);
 
     socket.emit('bid', bidData);
   };
@@ -145,8 +147,10 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     const handleConnect = () => console.log('소켓 연결됨', socket.connected);
     const handleDisconnect = () =>
       console.log('소켓 연결 해제됨', socket.disconnected);
+
     const handleBidResult = (data: any) => {
       console.log('bidResult 이벤트 발생', data);
+      console.log('이벤트 실행 후의 ID', socket.id);
       if (data.success) {
         setCurrentPrice(data.auctionResult.price);
       } else {
@@ -164,11 +168,17 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     // `bidResult` 이벤트 연결
     socket.on('bidResult', handleBidResult);
 
-    // 소켓 이벤트 연결 해제
+    //소켓 이벤트 연결 해제
     return () => {
       socket.off('bidResult', handleBidResult);
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
     };
   }, []);
+
+  useEffect(() => {
+    console.log(`소켓 연결 상태 ${socket.connected}`);
+  }, [socket]);
 
   /**
    * @description 현재 상품 정보를 전역 상태로 관리
@@ -201,7 +211,7 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     } else {
       setIsLoading(false);
     }
-    console.log(isLoading);
+    // console.log('isLoading', isLoading);
   }, [currentProductAtom, isLoading]);
 
   if (isLoading) {

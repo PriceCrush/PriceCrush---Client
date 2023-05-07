@@ -17,7 +17,9 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse) => {
       const { user, accessToken } = response.data;
       const accessTotkenExpireTime = setExpireTime(1);
       res.setHeader('Set-Cookie', [
-        `accessToken=${accessToken}; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
+        // HttpOnly 테스트를 위해서 임시 삭제
+        // `accessToken=${accessToken}; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
+        `accessToken=${accessToken}; path=/;  expires=${accessTotkenExpireTime};`,
       ]);
       res.status(200).json({ user });
     })

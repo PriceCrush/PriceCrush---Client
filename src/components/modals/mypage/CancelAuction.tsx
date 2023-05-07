@@ -4,12 +4,24 @@ import { BsExclamationTriangleFill } from 'react-icons/bs';
 import COLOR from '@/colors/color';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import { useModal } from '@/hooks/useModal';
+import { Api } from '@/utils/commonApi';
 
-const CancelAuction = () => {
+interface CancelAuctionProps {
+  auctionId: string;
+}
+
+const CancelAuction = ({ auctionId }: CancelAuctionProps) => {
   const { closeModal } = useModal();
 
-  const handleCancleYes = () => {
+  const handleCancleYes = async () => {
     //TODO: 경매 취소 API 호출
+    const result = await Api.delete(`auction/${auctionId}`);
+    console.log(result);
+    try {
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
 
     closeModal();
   };
