@@ -11,6 +11,7 @@ import LeftSection from '@/components/auctionPage/LeftSection';
 import RightSection from '@/components/auctionPage/RightSection';
 import { useRecoilState } from 'recoil';
 import { currentProductState } from '@/atoms/currentProductState';
+import { io } from 'socket.io-client';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -142,33 +143,35 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
    * @description 소켓 이벤트를 다루는 `useEffect`입니다
    */
   useEffect(() => {
-    const handleConnect = () => console.log('소켓 연결됨', socket.connected);
-    const handleDisconnect = () =>
-      console.log('소켓 연결 해제됨', socket.disconnected);
-    const handleBidResult = (data: any) => {
-      console.log('bidResult 이벤트 발생', data);
-      if (data.success) {
-        setCurrentPrice(data.auctionResult.price);
-      } else {
-        alert(data.message);
-        console.log(data.message);
-      }
-    };
+    if (!isLoading) {
+      const handleConnect = () => console.log('소켓 연결됨', socket.connected);
+      const handleDisconnect = () =>
+        console.log('소켓 연결 해제됨', socket.disconnected);
+      const handleBidResult = (data: any) => {
+        console.log('bidResult 이벤트 발생', data);
+        if (data.success) {
+          setCurrentPrice(data.auctionResult.price);
+        } else {
+          alert(data.message);
+          console.log(data.message);
+        }
+      };
 
-    // 소켓 연결
-    socket.on('connect', handleConnect);
+      // 소켓 연결
+      socket.on('connect', handleConnect);
 
-    // 소켓 연결 해제 확인
-    socket.on('disconnect', handleDisconnect);
+      // 소켓 연결 해제 확인
+      socket.on('disconnect', handleDisconnect);
 
-    // `bidResult` 이벤트 연결
-    socket.on('bidResult', handleBidResult);
+      // `bidResult` 이벤트 연결
+      socket.on('bidResult', handleBidResult);
 
-    // 소켓 이벤트 연결 해제
-    return () => {
-      socket.off('bidResult', handleBidResult);
-    };
-  }, []);
+      // 소켓 이벤트 연결 해제
+      return () => {
+        socket.off('bidResult', handleBidResult);
+      };
+    }
+  }, [isLoading, socket]);
 
   /**
    * @description 현재 상품 정보를 전역 상태로 관리
@@ -201,7 +204,7 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
     } else {
       setIsLoading(false);
     }
-    console.log(isLoading);
+    console.log('isLoading', isLoading);
   }, [currentProductAtom, isLoading]);
 
   if (isLoading) {

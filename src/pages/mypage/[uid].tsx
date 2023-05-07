@@ -5,6 +5,7 @@ import { GetServerSidePropsContext } from 'next';
 import { useRecoilValue } from 'recoil';
 import { isLoggedInState } from '@/atoms/isLoggedInState';
 import { useRouter } from 'next/router';
+import { Api } from '@/utils/commonApi';
 
 interface TempServerSideProps {
   tempData: {
@@ -69,17 +70,29 @@ export const getServerSideProps = async (
 };
 
 const MyPage = ({ tempData }: TempServerSideProps) => {
+  // 필터링 버튼의 상태
   const [progressFilterValue, setProgressFilterValue] = useState('진행중');
   const [sellingBiddingFilterValue, setSellingBiddingFilterValue] =
     useState('입찰 상품');
+  // 테스트용 데이터
   const [myAuctionItems, setMyAuctionItems] = useState(tempData);
   const [filteredMyAuctionItems, setFilteredMyAuctionItems] =
     useState(tempData);
-
+  // 실제 경매 데이터
+  const [myAuctionItems2, setMyAuctionItems2] = useState({
+    sellingBids: [],
+    endedBids: [],
+    biddingBids: [],
+    soldBids: [],
+  });
+  const [filteredMyAuctionItems2, setFilteredMyAuctionItems2] = useState<any[]>(
+    []
+  );
   //로그인 유무
   const isLoginInValue = useRecoilValue(isLoggedInState);
   const [isLoginIn, setIsLoginIn] = useState(false);
 
+  // 라우터
   const router = useRouter();
 
   const handleSellingBiddingFilter = (
@@ -123,13 +136,70 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
    * @description 로그아웃 시 mianPage로 이동
    * @description 살짝 딜레이 있긴함 차후 수정
    */
-
   useEffect(() => {
     console.log(isLoginInValue);
     if (!isLoginInValue) {
       router.push('/');
     }
   }, [isLoginInValue, router]);
+
+  /**
+   * @description 내 경매 상품 불러오기
+   */
+  useEffect(() => {
+    const getMyAuctionItems = async () => {
+      try {
+        let myAuctionItems;
+        const [sellingBids, biddingBids, soldBids, endedBids] =
+          await Promise.all([
+            Api.get('auction/user/selling'),
+            Api.get('auction/user/bidding'),
+            Api.get('auction/user/sold'),
+            Api.get('auction/user/endedBid'),
+          ]);
+
+        myAuctionItems = {
+          sellingBids: sellingBids,
+          biddingBids: biddingBids,
+          soldBids: soldBids,
+          endedBids: endedBids,
+        };
+        setMyAuctionItems2(myAuctionItems);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getMyAuctionItems();
+  }, []);
+
+  // 필터링 값에 따라 FilteredMyAuctionItems2에 값 넣기
+  useEffect(() => {
+    if (myAuctionItems2) {
+      if (sellingBiddingFilterValue === '입찰 상품') {
+        if (progressFilterValue === '진행중') {
+          setFilteredMyAuctionItems2(myAuctionItems2.biddingBids);
+        } else if (progressFilterValue === '종료됨') {
+          setFilteredMyAuctionItems2(myAuctionItems2.endedBids);
+        }
+      } else if (sellingBiddingFilterValue === '판매 상품') {
+        if (progressFilterValue === '진행중') {
+          setFilteredMyAuctionItems2(myAuctionItems2.sellingBids);
+        } else if (progressFilterValue === '종료됨') {
+          setFilteredMyAuctionItems2(myAuctionItems2.soldBids);
+        }
+      }
+    }
+  }, [
+    progressFilterValue,
+    sellingBiddingFilterValue,
+    myAuctionItems2,
+    filteredMyAuctionItems2,
+  ]);
+
+  useEffect(() => {
+    console.log(myAuctionItems2);
+  }, [myAuctionItems2]);
 
   return (
     <S.MyPageLayout>
@@ -172,7 +242,7 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
        * @description 경매 상품 리스트 카드 영역
        */}
       <S.CardWrapper>
-        {filteredMyAuctionItems.map((item, index) => (
+        {filteredMyAuctionItems2.map((item, index) => (
           <AuctionCardItem
             id={item.id}
             key={index}
