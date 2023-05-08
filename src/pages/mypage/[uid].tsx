@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { isLoggedInState } from '@/atoms/isLoggedInState';
 import { useRouter } from 'next/router';
 import { Api } from '@/utils/commonApi';
+import styled from 'styled-components';
 
 interface TempServerSideProps {
   tempData: {

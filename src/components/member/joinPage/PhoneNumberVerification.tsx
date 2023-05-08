@@ -31,14 +31,13 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
 
   const handleRequsetcode = async (e: any) => {
     e.preventDefault();
-
-    console.log(phoneNum);
     resetTimer();
     axios
       .post(`/api/member/smsApi`, { phone: phoneNum })
       .then(function (response) {
         console.log(response);
         setShowCodeInput(true);
+        //인증하면 인증버튼 비활성화
       })
       .catch(function (error) {
         console.log(error);
@@ -57,11 +56,11 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
   const handleCertificationCode = async (e: any) => {
     e.preventDefault();
 
-    const bringData = { phone: phoneNum, code: phoneCode };
-    console.log(bringData);
+    const verificationData = { phone: phoneNum, code: phoneCode };
+    console.log(verificationData);
     //return값이 제대로 올경우
     axios
-      .post(`/api/member/smsCertificationApi`, bringData)
+      .post(`/api/member/smsCertificationApi`, verificationData)
       .then(function (response) {
         console.log(response);
         setPassCode(true);
@@ -70,6 +69,10 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
         setInputCheck(true);
       })
       .catch(function (error) {
+        //409
+        //message : 인증코드가 유효하지 않음
+        setShowCodeInput(false);
+        alert(error.message);
         console.log(error);
         //인증번호가 틀릴경우의 상태도 보여줘야함
       });

@@ -28,7 +28,6 @@ const ResetPassword = () => {
   const handleResetPassword = (e: any) => {
     e.preventDefault();
     openModal({
-      title: '',
       content: <ReconfirmPassword newPassword={newPassword.password} />,
     });
   };
