@@ -3,9 +3,11 @@ import * as S from '@/components/stylecomponents/myPage.style';
 import AuctionCardItem from '@/components/myPage/AuctionCardItem';
 import { GetServerSidePropsContext } from 'next';
 import { useRecoilValue } from 'recoil';
-import { isLoggedInState } from '@/atoms/isLoggedInState';
-import { useRouter } from 'next/router';
+import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
+import Router from 'next/router';
 import { Api } from '@/utils/commonApi';
+import { FaUserCircle } from 'react-icons/fa';
+import ButtonBase from '@/components/buttons/ButtonBase';
 import styled from 'styled-components';
 
 interface TempServerSideProps {
@@ -89,12 +91,27 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
   const [filteredMyAuctionItems2, setFilteredMyAuctionItems2] = useState<any[]>(
     []
   );
-  //로그인 유무
+  /**
+   * @description 유저 기본 정보
+   */
+  const [userCommonData, setUserCommonData] = useState({
+    email: '',
+    name: '',
+    nickname: '',
+  });
+  const userCommonDataValue = useRecoilValue(userCommonDataState);
+  const { nickname } = userCommonData;
+
+  /**
+   * @description 유저 로그인 여부
+   */
   const isLoginInValue = useRecoilValue(isLoggedInState);
   const [isLoginIn, setIsLoginIn] = useState(false);
 
-  // 라우터
-  const router = useRouter();
+  /**
+   * @description profile page url
+   */
+  const PROFILE_URL = '/mypage/profile';
 
   const handleSellingBiddingFilter = (
     e: React.MouseEvent<HTMLHeadingElement>
@@ -138,11 +155,10 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
    * @description 살짝 딜레이 있긴함 차후 수정
    */
   useEffect(() => {
-    console.log(isLoginInValue);
     if (!isLoginInValue) {
-      router.push('/');
+      Router.push('/');
     }
-  }, [isLoginInValue, router]);
+  }, [isLoginInValue]);
 
   /**
    * @description 내 경매 상품 불러오기
@@ -199,12 +215,30 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
   ]);
 
   useEffect(() => {
+    setUserCommonData(userCommonDataValue);
+  }, [userCommonDataValue]);
+
+  useEffect(() => {
     console.log(myAuctionItems2);
   }, [myAuctionItems2]);
 
   return (
     <S.MyPageLayout>
       <S.PageTitle>마이 페이지</S.PageTitle>
+      <S.ProfileInfoBox>
+        <S.UserProfileIcon />
+        <S.UserInfoBox>
+          <p>{nickname}</p>
+          <S.ProfileBtn
+            size="sm"
+            onClick={() => {
+              Router.push(`${PROFILE_URL}`);
+            }}
+          >
+            프로필 수정
+          </S.ProfileBtn>
+        </S.UserInfoBox>
+      </S.ProfileInfoBox>
       {/**
        * @description Filter 영역
        */}
