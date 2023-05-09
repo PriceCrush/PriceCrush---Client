@@ -10,6 +10,7 @@ import * as S from '@/components/stylecomponents/myPage.style';
 // api를 만들지 안마들지에 대한 의견 교환 후 진행 할 예정
 // 1. api요청 시 axios이용
 // 2. api요청 안할 시 atom에서 유정 상태 session에 저장해서 보여주는걸로
+
 const UserProfile = () => {
   const userCommonDataValue = useRecoilValue(userCommonDataState);
   const userPrivateDataValue = useRecoilValue(userPrivateDataState);
@@ -35,6 +36,8 @@ const UserProfile = () => {
     setUerPrivateData(userPrivateDataValue);
   }, [userPrivateDataValue]);
 
+  const RESET_PASSWORD_URL = '/member/resetPassword';
+
   return (
     <S.ProfileLayout>
       <S.ContentBox>
@@ -57,7 +60,7 @@ const UserProfile = () => {
                 <S.InfoBtn
                   size="sm"
                   onClick={() => {
-                    Router.push('/member/resetPassword');
+                    Router.push(`${RESET_PASSWORD_URL}`);
                   }}
                 >
                   변경

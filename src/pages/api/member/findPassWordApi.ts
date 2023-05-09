@@ -19,15 +19,15 @@ const findPassWordApi = async (req: NextApiRequest, res: NextApiResponse) => {
   /**
    *  @decreption 백엔드분들과 오프라인으로 진행할듯함
    */
-  //   axios
-  //     .put(REQUEST_SMS_URL, { usrInfo })
-  //     .then(function (response) {
-  //       res.status(200).json(response);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //       res.status(error.response.status).send(error.response.data);
-  //     });
+  // axios
+  //   .put(REQUEST_SMS_URL, { usrInfo })
+  //   .then(function (response) {
+  //     res.status(200).json(response);
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //     res.status(error.response.status).send(error.response.data);
+  //   });
 };
 
 export default findPassWordApi;

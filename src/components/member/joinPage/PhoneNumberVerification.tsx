@@ -72,8 +72,10 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
         //409
         //message : 인증코드가 유효하지 않음
         setShowCodeInput(false);
-        alert(error.message);
-        console.log(error);
+        if (error.response.status === 409) {
+          alert(error.response.data.message);
+        }
+        console.log(error.response.status);
         //인증번호가 틀릴경우의 상태도 보여줘야함
       });
 
