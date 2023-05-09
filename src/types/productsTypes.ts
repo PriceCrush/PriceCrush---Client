@@ -25,10 +25,9 @@ export type FixedLengthString<N extends number> = `${string & { length: N }}`;
  * @description ProductDetailsProps에 포함, 1:N 관계
  */
 export interface ProductImageProps {
-  imageId: FixedLengthString<5>;
-  imageUrl: string;
-  isMain: string;
-  productId: FixedLengthString<4>;
+  id: string;
+  url: string;
+  is_main: boolean;
 }
 
 /**
@@ -46,6 +45,14 @@ export interface ProductDetailsProps {
   images: ProductImageProps[];
 }
 
+export type productCategoryType = {
+  id: string;
+  name: string;
+  imgurl: string;
+};
+
+export type productCategoriesType = productCategoryType[];
+
 export type ProductFromApi = {
   id: 'string';
   name: 'string';
@@ -55,24 +62,16 @@ export type ProductFromApi = {
   end_date: string;
   deletedAt: string | null;
   productCategory: productCategoryType;
+  productImage: ProductImageProps[];
 };
 
 export type PartialProductFromApi = Partial<ProductFromApi>;
-
-export type productCategoryType = {
-  id: string;
-  imgurl: string;
-  name: string;
-};
-
-export type productCategoriesType = productCategoryType[];
 
 /**
  * @description currentProductState의 타입, 사용자가 클릭한 상품의 상세 정보를 담는다.
  */
 
 export interface CurrentProductStateProps {
-  tempData: ProductDetailsProps | null;
   productData: ProductFromApi | null;
   formattedInputBidPrice: string | null;
   handleBidButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;

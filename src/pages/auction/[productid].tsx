@@ -14,10 +14,9 @@ import { currentProductState } from '@/atoms/currentProductState';
 
 interface ServerSideReturn {
   // blurDataURL: string;
-  tempData: ProductDetailsProps;
+
   productData: ProductFromApi;
 }
-
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { productid } = query;
   const productData = await Api.get(`/product/${productid}`);
@@ -27,47 +26,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   /**
    * @description 임시 데이터 10개 생성
    */
-  const tempData: ProductDetailsProps = {
-    productId: '1234',
-    productName: `엄청난 상품`,
-    category: '카테고리',
-    start_price: 100000,
-    description: '상품 설명 상품 설명 상품 설명 상품 설명',
-    start_date: new Date().toISOString(), // start_date를 문자열로 변경
-    end_date: new Date('2023-06-10').toISOString(), // end_date를 문자열로 변경
-    status: '상태',
-    images: [
-      {
-        imageId: '12345',
-        imageUrl: '/images/temp.jpeg',
-        isMain: 'Y',
-        productId: '1234',
-      },
-      {
-        imageId: '23456',
-        imageUrl: '/images/temp.jpeg',
-        isMain: 'N',
-        productId: '1234',
-      },
-      {
-        imageId: '34567',
-        imageUrl: '/images/temp.jpeg',
-        isMain: 'N',
-        productId: '1234',
-      },
-    ],
-  };
 
   return {
     props: {
       // blurDataURL: base64,
-      tempData,
+
       productData,
     },
   };
 };
 
-const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
+const ProductDetail = ({ productData }: ServerSideReturn) => {
   const socket = useContext(SocketContext);
   const { openModal } = useModal();
   const [inputBidPrice, setInputBidPrice] = useState(productData.start_price);
@@ -185,7 +154,6 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
    */
   useEffect(() => {
     setCurrentProductAtom({
-      tempData,
       productData,
       formattedInputBidPrice,
       handleBidButtonClick,
@@ -194,7 +162,6 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
       available,
     });
   }, [
-    tempData,
     productData,
     formattedInputBidPrice,
     currentPrice,
@@ -203,10 +170,7 @@ const ProductDetail = ({ tempData, productData }: ServerSideReturn) => {
   ]);
 
   useEffect(() => {
-    if (
-      currentProductAtom.productData === null ||
-      currentProductAtom.tempData === null
-    ) {
+    if (currentProductAtom.productData === null) {
       setIsLoading(true);
     } else {
       setIsLoading(false);

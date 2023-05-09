@@ -15,7 +15,13 @@ const LeftSection = () => {
   );
   return (
     <S.DetailLeftSection>
-      <AuctionDetailCarousel images={currentProductAtom.tempData!.images} />
+      <AuctionDetailCarousel
+        images={
+          currentProductAtom.productData!.productImage.length > 0
+            ? currentProductAtom.productData?.productImage
+            : null
+        }
+      />
       <S.DetailLeftSectionRow>
         <S.TimeDiffBox>
           <h3>남은 시간</h3>
