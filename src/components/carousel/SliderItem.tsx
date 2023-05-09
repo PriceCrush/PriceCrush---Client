@@ -1,5 +1,6 @@
 import * as S from '@/components/stylecomponents/carousel.style';
 import { ProductFromApi } from '@/types/productsTypes';
+import Image from 'next/image';
 
 import { useRouter } from 'next/router';
 
@@ -26,7 +27,7 @@ const SliderItem = ({
       onClick={handleClick}
     >
       <S.SliderImageWrapper>
-        <img src={product.productCategory.imgurl} alt={product.name} />
+        <Image src={product.productCategory.imgurl} alt={product.name} fill />
       </S.SliderImageWrapper>
       <S.DetailBox>
         <p>{product.name}</p>
