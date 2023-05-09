@@ -36,6 +36,7 @@ const Header = () => {
         searchTerm,
       },
     });
+    setSearchTerm('');
   };
 
   const handleSearchClick = (e: MouseEvent<SVGAElement>) => {
@@ -56,9 +57,24 @@ const Header = () => {
     }
   };
 
+  // effects
+
   useEffect(() => {
     setIsLoginIn(isLoginInValue);
   }, [isLoginInValue]);
+
+  useEffect(() => {
+    // 라우팅 될 때마다 검색어 초기화
+    const handleRouteChangeComplete = () => {
+      setSearchTerm('');
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, [router]);
 
   return (
     <>
