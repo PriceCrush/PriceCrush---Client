@@ -9,18 +9,25 @@ const findPassWordApi = async (req: NextApiRequest, res: NextApiResponse) => {
     .status(200)
     .json({ message: '가입된 핸드폰으로 임시비밀번호를 전송했습니다.' });
 
+  //에러 코드 이것만 사용하면 되는지
+  // {
+  //   "statusCode": 404,
+  //   "message": "Cannot PUT /users/find/pw",
+  //   "error": "Not Found"
+  // }
+
   /**
    *  @decreption 백엔드분들과 오프라인으로 진행할듯함
    */
-  //   axios
-  //     .put(REQUEST_SMS_URL, { usrInfo })
-  //     .then(function (response) {
-  //       res.status(200).json(response);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //       res.status(error.response.status).send(error.response.data);
-  //     });
+  // axios
+  //   .put(REQUEST_SMS_URL, { usrInfo })
+  //   .then(function (response) {
+  //     res.status(200).json(response);
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //     res.status(error.response.status).send(error.response.data);
+  //   });
 };
 
 export default findPassWordApi;

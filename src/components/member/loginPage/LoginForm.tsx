@@ -14,6 +14,9 @@ import { useModal } from '@/hooks/useModal';
 import { loginErrorCode } from '@/components/member/ErrorCodeMessage';
 import CommonMessage from '@/components/modals/member/CommonMessage';
 
+//추가사항
+// 로그인 상태시 뒤로가기로 loginpage로 접속 시 main화면으로 가도록
+
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
     email: '',
@@ -38,17 +41,16 @@ const LoginForm = () => {
    * @param e submitEvent
    */
 
-  // errormessage
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     axios
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
         const { data } = response;
         const { user } = data;
         setIsLoggedInAtom(true);
-
+        console.log(user);
         setUserCommonDataAtom({
           email: user.email,
           name: user.name,

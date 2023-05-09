@@ -39,7 +39,7 @@ const FindPassword = () => {
         .post('/api/member/findPassWordApi', { userInfo })
         .then(function (response) {
           console.log(response);
-          const title = '임시비밀번호 전송';
+          const title = '임시 비밀번호 발급';
           const message = response.data.message;
           openModal({
             content: (
@@ -122,7 +122,7 @@ const FindPassword = () => {
             ref={buttonRef}
             onClick={sendPasswordSuccess}
           >
-            로그인페이지 이동
+            로그인 페이지 이동
           </S.FormButton>
         ) : (
           <S.FormButton
@@ -131,7 +131,7 @@ const FindPassword = () => {
             ref={buttonRef}
             disabled={showButton}
           >
-            이메일 아이디 찾기
+            임시 비밀번호 발급
           </S.FormButton>
         )}
       </S.FormLayOut>

@@ -4,6 +4,7 @@ import ButtonBase from '@/components/buttons/ButtonBase';
 import { useModal } from '@/hooks/useModal';
 import axios from 'axios';
 import Router from 'next/router';
+import styled from 'styled-components';
 
 interface ReconfirmPasswordPorps {
   newPassword: string;
@@ -37,10 +38,12 @@ const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
 
   return (
     <S.BidConfirmLayout>
-      <S.TextBox>
-        <S.Title>새로 바꾸신 비밀번호는 {newPassword}입니다.</S.Title>
+      <TextBox>
+        <S.Title>
+          새로 바꾸신 비밀번호는 <Highligt>{newPassword}</Highligt>입니다.
+        </S.Title>
         <S.Title>정말로 비밀번호를 바꾸시겠습니까?</S.Title>
-      </S.TextBox>
+      </TextBox>
       <S.ButtonBox>
         <ButtonBase
           name="confirm"
@@ -60,5 +63,17 @@ const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
     </S.BidConfirmLayout>
   );
 };
+
+const Highligt = styled.span`
+  color: ${({ theme }) => theme.color.DEEP_ORANGE};
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: 600;
+`;
+
+const TextBox = styled(S.TextBox)`
+  > p {
+    text-align: center;
+  }
+`;
 
 export default ReconfirmPassword;

@@ -43,7 +43,7 @@ const useValidation = (text: string) => {
     /**
      * @description 특수문자여부확인
      */
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(text);
+    const hasSpecialChar = /[!@#$%^&*(),.?:{}|<>]/.test(text);
     /**
      * @description 알파벳 여부확인
      */
