@@ -14,6 +14,7 @@ const useValidation = (text: string) => {
     emailForm: false,
     phoneNumForm: false,
   });
+
   /**
    * @description 유효성 검사를위함 함수 (문자길이, 특수문자여부, 알파벳 여부, 연속된 알파벳 여부, 연속된 숫자여부)
    */
@@ -42,7 +43,7 @@ const useValidation = (text: string) => {
     /**
      * @description 특수문자여부확인
      */
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(text);
+    const hasSpecialChar = /[!@#$%^&*(),.?:{}|<>]/.test(text);
     /**
      * @description 알파벳 여부확인
      */
@@ -78,7 +79,6 @@ const useValidation = (text: string) => {
       hasConsecutiveChars || hasConsecutiveNum;
     verificationCollection.emailForm = isEmailForm;
     verificationCollection.phoneNumForm = isPhoneNumForm;
-    // console.log(json, 'check???');
 
     setTextStatus(verificationCollection);
   }, [text]);

@@ -2,6 +2,13 @@ import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
 import AuctionCardItem from '@/components/myPage/AuctionCardItem';
 import { GetServerSidePropsContext } from 'next';
+import { useRecoilValue } from 'recoil';
+import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
+import Router from 'next/router';
+import { Api } from '@/utils/commonApi';
+import { FaUserCircle } from 'react-icons/fa';
+import ButtonBase from '@/components/buttons/ButtonBase';
+import styled from 'styled-components';
 
 interface TempServerSideProps {
   tempData: {
@@ -23,7 +30,20 @@ interface TempServerSideProps {
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  console.log(context.params);
+  // console.log(context.params);
+
+  /**
+   * @description 로그인이 안된 상태에서 접근 시 로그인 페이지로 이동
+   */
+  const { accessToken } = context.req.cookies;
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/member/login',
+        permanent: false,
+      },
+    };
+  }
 
   /**
    * @description 임시 데이터 나중에 지워짐
@@ -53,12 +73,45 @@ export const getServerSideProps = async (
 };
 
 const MyPage = ({ tempData }: TempServerSideProps) => {
+  // 필터링 버튼의 상태
   const [progressFilterValue, setProgressFilterValue] = useState('진행중');
   const [sellingBiddingFilterValue, setSellingBiddingFilterValue] =
     useState('입찰 상품');
+  // 테스트용 데이터
   const [myAuctionItems, setMyAuctionItems] = useState(tempData);
   const [filteredMyAuctionItems, setFilteredMyAuctionItems] =
     useState(tempData);
+  // 실제 경매 데이터
+  const [myAuctionItems2, setMyAuctionItems2] = useState({
+    sellingBids: [],
+    endedBids: [],
+    biddingBids: [],
+    soldBids: [],
+  });
+  const [filteredMyAuctionItems2, setFilteredMyAuctionItems2] = useState<any[]>(
+    []
+  );
+  /**
+   * @description 유저 기본 정보
+   */
+  const [userCommonData, setUserCommonData] = useState({
+    email: '',
+    name: '',
+    nickname: '',
+  });
+  const userCommonDataValue = useRecoilValue(userCommonDataState);
+  const { nickname } = userCommonData;
+
+  /**
+   * @description 유저 로그인 여부
+   */
+  const isLoginInValue = useRecoilValue(isLoggedInState);
+  const [isLoginIn, setIsLoginIn] = useState(false);
+
+  /**
+   * @description profile page url
+   */
+  const PROFILE_URL = '/mypage/profile';
 
   const handleSellingBiddingFilter = (
     e: React.MouseEvent<HTMLHeadingElement>
@@ -94,9 +147,98 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
     setFilteredMyAuctionItems(updatedFilteredMyAuctionItems);
   }, [progressFilterValue, sellingBiddingFilterValue]);
 
+  useEffect(() => {
+    setIsLoginIn(isLoginInValue);
+  }, [isLoginInValue]);
+  /**
+   * @description 로그아웃 시 mianPage로 이동
+   * @description 살짝 딜레이 있긴함 차후 수정
+   */
+  useEffect(() => {
+    if (!isLoginInValue) {
+      Router.push('/');
+    }
+  }, [isLoginInValue]);
+
+  /**
+   * @description 내 경매 상품 불러오기
+   */
+  useEffect(() => {
+    const getMyAuctionItems = async () => {
+      try {
+        let myAuctionItems;
+        const [sellingBids, biddingBids, soldBids, endedBids] =
+          await Promise.all([
+            Api.get('auction/user/selling'),
+            Api.get('auction/user/bidding'),
+            Api.get('auction/user/sold'),
+            Api.get('auction/user/endedBid'),
+          ]);
+
+        myAuctionItems = {
+          sellingBids: sellingBids,
+          biddingBids: biddingBids,
+          soldBids: soldBids,
+          endedBids: endedBids,
+        };
+        setMyAuctionItems2(myAuctionItems);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getMyAuctionItems();
+  }, []);
+
+  // 필터링 값에 따라 FilteredMyAuctionItems2에 값 넣기
+  useEffect(() => {
+    if (myAuctionItems2) {
+      if (sellingBiddingFilterValue === '입찰 상품') {
+        if (progressFilterValue === '진행중') {
+          setFilteredMyAuctionItems2(myAuctionItems2.biddingBids);
+        } else if (progressFilterValue === '종료됨') {
+          setFilteredMyAuctionItems2(myAuctionItems2.endedBids);
+        }
+      } else if (sellingBiddingFilterValue === '판매 상품') {
+        if (progressFilterValue === '진행중') {
+          setFilteredMyAuctionItems2(myAuctionItems2.sellingBids);
+        } else if (progressFilterValue === '종료됨') {
+          setFilteredMyAuctionItems2(myAuctionItems2.soldBids);
+        }
+      }
+    }
+  }, [
+    progressFilterValue,
+    sellingBiddingFilterValue,
+    myAuctionItems2,
+    filteredMyAuctionItems2,
+  ]);
+
+  useEffect(() => {
+    setUserCommonData(userCommonDataValue);
+  }, [userCommonDataValue]);
+
+  useEffect(() => {
+    console.log(myAuctionItems2);
+  }, [myAuctionItems2]);
+
   return (
     <S.MyPageLayout>
       <S.PageTitle>마이 페이지</S.PageTitle>
+      <S.ProfileInfoBox>
+        <S.UserProfileIcon />
+        <S.UserInfoBox>
+          <p>{nickname}</p>
+          <S.ProfileBtn
+            size="sm"
+            onClick={() => {
+              Router.push(`${PROFILE_URL}`);
+            }}
+          >
+            프로필 수정
+          </S.ProfileBtn>
+        </S.UserInfoBox>
+      </S.ProfileInfoBox>
       {/**
        * @description Filter 영역
        */}
@@ -135,15 +277,15 @@ const MyPage = ({ tempData }: TempServerSideProps) => {
        * @description 경매 상품 리스트 카드 영역
        */}
       <S.CardWrapper>
-        {filteredMyAuctionItems.map((item, index) => (
+        {filteredMyAuctionItems2.map((item, index) => (
           <AuctionCardItem
-            id={item.id}
-            key={index}
-            title={item.title}
-            price={item.price}
-            date={item.date}
-            isSelling={item.isSelling}
-            status={item.status}
+            // TODO: item 빼고 다 삭제
+            key={item.id}
+            isSelling={
+              progressFilterValue === '진행중' &&
+              sellingBiddingFilterValue === '판매 상품'
+            }
+            item={item}
           />
         ))}
       </S.CardWrapper>

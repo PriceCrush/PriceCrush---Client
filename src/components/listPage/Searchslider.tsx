@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowButton from '@/components/carousel/ArrowButton';
-
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import { productCategoryType } from '@/types/productsTypes';
 
-type Category = {
-  tab: number;
-  category: string;
-  img: string;
-};
 interface SearchSliderProps {
-  category: Category[];
+  category: productCategoryType[];
 }
 
+/**
+ * @description 렌더함수
+ */
 const Searchslider = ({ category }: SearchSliderProps) => {
   const settings = {
     dots: true,
@@ -34,13 +31,13 @@ const Searchslider = ({ category }: SearchSliderProps) => {
   return (
     <div>
       <StyledSlider {...settings}>
-        {category.map((sample) => {
+        {category.map((item, index) => {
           return (
             <Item
-              key={sample.category}
-              img={sample.img}
-              category={sample.category}
-              tab={sample.tab}
+              key={item.id}
+              id={item.id}
+              imgurl={item.imgurl}
+              name={item.name}
             />
           );
         })}
@@ -49,17 +46,23 @@ const Searchslider = ({ category }: SearchSliderProps) => {
   );
 };
 
-const Item = (props: any) => {
-  const { img, category, tab } = props;
+const Item = ({ id, imgurl, name }: productCategoryType) => {
   const router = useRouter();
+  const { searchTerm } = router.query;
   const goRouter = () => {
-    router.push(`/search/${tab}`);
+    router.push({
+      pathname: `search`,
+      query: {
+        categoryId: id,
+        searchTerm,
+      },
+    });
   };
 
   return (
     <Box onClick={goRouter}>
-      <Image src={img} alt="sample" width={100} height={100} />
-      <span> {category}</span>
+      <Image src={imgurl} alt="sample" width={100} height={100} />
+      <span> {name}</span>
     </Box>
   );
 };
@@ -69,7 +72,7 @@ const Item = (props: any) => {
 // 캐러셀
 const StyledSlider = styled(Slider)`
   max-width: 1280px;
-  width: 90%;
+  width: 100%;
   width: 100%;
 
   .slick-prev::before,

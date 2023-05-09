@@ -1,3 +1,5 @@
+import React, { MouseEventHandler } from 'react';
+
 export interface TempDataProps {
   id: number;
   productName: string;
@@ -23,10 +25,9 @@ export type FixedLengthString<N extends number> = `${string & { length: N }}`;
  * @description ProductDetailsProps에 포함, 1:N 관계
  */
 export interface ProductImageProps {
-  imageId: FixedLengthString<5>;
-  imageUrl: string;
-  isMain: string;
-  productId: FixedLengthString<4>;
+  id: string;
+  url: string;
+  is_main: boolean;
 }
 
 /**
@@ -44,6 +45,14 @@ export interface ProductDetailsProps {
   images: ProductImageProps[];
 }
 
+export type productCategoryType = {
+  id: string;
+  name: string;
+  imgurl: string;
+};
+
+export type productCategoriesType = productCategoryType[];
+
 export type ProductFromApi = {
   id: 'string';
   name: 'string';
@@ -51,15 +60,22 @@ export type ProductFromApi = {
   desc: 'string';
   start_date: string;
   end_date: string;
-  status: number;
-  deletedAt: string;
+  deletedAt: string | null;
+  productCategory: productCategoryType;
+  productImage: ProductImageProps[];
 };
 
 export type PartialProductFromApi = Partial<ProductFromApi>;
 
-export type productCategoryType = {
-  id: string;
-  name: string;
-};
+/**
+ * @description currentProductState의 타입, 사용자가 클릭한 상품의 상세 정보를 담는다.
+ */
 
-export type productCategoriesType = productCategoryType[];
+export interface CurrentProductStateProps {
+  productData: ProductFromApi | null;
+  formattedInputBidPrice: string | null;
+  handleBidButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleCustomBidPriceInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isAuctionStarted: boolean | null;
+  available: boolean | null;
+}

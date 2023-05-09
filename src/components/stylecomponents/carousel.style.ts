@@ -50,15 +50,20 @@ export const ArrowBaseButton = styled.button<ArrowBaseButtonProps>`
     direction === 'next' ? 'right: 25px' : 'left: 25px'} */
 `;
 
-export const NextArrow = styled(IoIosArrowForward)<PickSizeColorProps>`
-  height: ${({ size }) => getSize(size)};
-  color: ${({ color }) => color};
-`;
+// 브라우저의 Error: <svg> attribute width: Expected length, "lg" 에러 해결을 위해 아래와 같이 작성
+export const NextArrow = styled(IoIosArrowForward).attrs<PickSizeColorProps>(
+  ({ size, color }) => ({
+    size: getSize(size),
+    color,
+  })
+)<PickSizeColorProps>``;
 
-export const PrevArrow = styled(IoIosArrowBack)<PickSizeColorProps>`
-  height: ${({ size }) => getSize(size)};
-  color: ${({ color }) => color};
-`;
+export const PrevArrow = styled(IoIosArrowBack).attrs<PickSizeColorProps>(
+  ({ size, color }) => ({
+    size: getSize(size),
+    color,
+  })
+)<PickSizeColorProps>``;
 
 export const MainPageSlider = styled(Slider)`
   .slick-slide {
@@ -105,6 +110,7 @@ export const SliderImageWrapper = styled.div`
   box-sizing: border-box;
   padding: 8px;
   background-color: ${COLOR.GRAY};
+  position: relative;
 
   img {
     transition: all 0.3s ease-in-out;

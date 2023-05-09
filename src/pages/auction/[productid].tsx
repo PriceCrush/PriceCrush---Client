@@ -1,97 +1,91 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
-import Image from 'next/image';
-import { getPlaiceholder } from 'plaiceholder';
 import { GetServerSideProps } from 'next';
-import {
-  FixedLengthString,
-  ProductDetailsProps,
-  TempDataProps,
-} from '@/types/productsTypes';
-import { AiOutlineHeart, AiOutlineShareAlt } from 'react-icons/ai';
-import ButtonBase from '@/components/buttons/ButtonBase';
-import InputBase from '@/components/inputs/InputBase';
+import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
-import { useTimeDiff } from '@/hooks/useTimeDiff';
-import AuctionDetailCarousel from '@/components/carousel/AuctionDetailCarousel';
 import { useModal } from '@/hooks/useModal';
 import BidConfirm from '@/components/modals/productPage/BidConfirm';
+import { SocketContext } from '@/contexts/socket';
+import { Api } from '@/utils/commonApi';
+import LeftSection from '@/components/auctionPage/LeftSection';
+import RightSection from '@/components/auctionPage/RightSection';
+import { useRecoilState } from 'recoil';
+import { currentProductState } from '@/atoms/currentProductState';
 
 interface ServerSideReturn {
   // blurDataURL: string;
-  tempData: ProductDetailsProps;
+
+  productData: ProductFromApi;
 }
-
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  console.log(query);
-  // const { base64 } = await getPlaiceholder(String(query.imageUrl));
+  const { productid } = query;
+  const productData = await Api.get(`/product/${productid}`);
 
-  /**
-   * @description 임시 데이터 10개 생성
-   */
-  const tempData: ProductDetailsProps = {
-    productId: '1234',
-    productName: `엄청난 상품`,
-    category: '카테고리',
-    start_price: 100000,
-    description: '상품 설명 상품 설명 상품 설명 상품 설명',
-    start_date: new Date().toISOString(), // start_date를 문자열로 변경
-    end_date: new Date('2023-06-10').toISOString(), // end_date를 문자열로 변경
-    status: '상태',
-    images: [
-      {
-        imageId: '12345',
-        imageUrl: '/images/temp.jpeg',
-        isMain: 'Y',
-        productId: '1234',
-      },
-      {
-        imageId: '23456',
-        imageUrl: '/images/temp.jpeg',
-        isMain: 'N',
-        productId: '1234',
-      },
-      {
-        imageId: '34567',
-        imageUrl: '/images/temp.jpeg',
-        isMain: 'N',
-        productId: '1234',
-      },
-    ],
-  };
+  // const { base64 } = await getPlaiceholder(String(query.imageUrl));
 
   return {
     props: {
       // blurDataURL: base64,
-      tempData,
+      productData,
     },
   };
 };
 
-const ProductDetail = ({ tempData }: ServerSideReturn) => {
-  const timeDiff = useTimeDiff(String(tempData.end_date));
+const ProductDetail = ({ productData }: ServerSideReturn) => {
+  const socket = useContext(SocketContext);
   const { openModal } = useModal();
-  const [inputBidPrice, setInputBidPrice] = useState(tempData.start_price);
+  const [inputBidPrice, setInputBidPrice] = useState(productData.start_price);
+  const [currentPrice, setCurrentPrice] = useState(productData.start_price);
+  const [currentProductAtom, setCurrentProductAtom] =
+    useRecoilState(currentProductState);
+  const formattedInputBidPrice = translatePriceToKoreanWon(
+    Number(inputBidPrice),
+    true
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const available =
+    new Date(productData.start_date) < new Date() &&
+    new Date(productData.end_date) > new Date();
+
+  /**
+   * @description 경매 시작 여부, 이 값에 따라 입찰 버튼 활성화
+   */
+  const isAuctionStarted = new Date(productData.start_date) < new Date();
+
+  /**
+   * @description InputBase에 입력된 값에서 숫자만 추출해 state에 저장
+   */
 
   const handleCustomBidPriceInput = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    e.preventDefault();
-    setInputBidPrice(Number(e.target.value));
+    const { value } = e.target;
+    const numberValue = value.replace(/[^0-9]/g, ''); // 입력된 값에서 숫자만 추출
+    setInputBidPrice(Number(numberValue));
   };
 
-  const handleBidButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+  /**
+   * @description 입찰, 최소입찰 버튼 클릭시 모달창 띄우기
+   */
+  const handleBidButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     type Name = 'customPriceBid' | 'staticPriceBid';
     const name = e.currentTarget.name as Name;
     if (name === 'customPriceBid') {
+      if (inputBidPrice <= currentPrice) {
+        alert('현재가보다 높은 금액을 입력해주세요.');
+        return;
+      }
       openModal({
-        title: '입찰 확인',
-        content: <BidConfirm bidPrice={inputBidPrice} />,
+        content: (
+          <BidConfirm
+            bidPrice={inputBidPrice}
+            bidFunction={handleSocketButtonClick}
+          />
+        ),
       });
     } else if (name === 'staticPriceBid') {
       openModal({
-        title: '입찰 확인',
         content: <BidConfirm bidPrice={inputBidPrice + 1000} />,
       });
     } else {
@@ -99,78 +93,103 @@ const ProductDetail = ({ tempData }: ServerSideReturn) => {
     }
   };
 
+  const handleSocketButtonClick = () => {
+    const bidData = {
+      price: inputBidPrice,
+      // TODO: 로그인 완료시 사용자 정보를 받아올 수 있도록 수정
+      user: 'ed420979-07a2-4a04-b376-48bfbd3379b1',
+      product: productData.id,
+    };
+
+    console.log('버튼을 눌렀을때의 ID', socket.id);
+
+    socket.emit('bid', bidData);
+  };
+
+  /**
+   * @description 소켓 이벤트를 다루는 `useEffect`입니다
+   */
+  useEffect(() => {
+    const handleConnect = () => console.log('소켓 연결됨', socket.connected);
+    const handleDisconnect = () =>
+      console.log('소켓 연결 해제됨', socket.disconnected);
+
+    const handleBidResult = (data: any) => {
+      console.log('bidResult 이벤트 발생', data);
+      console.log('이벤트 실행 후의 ID', socket.id);
+      if (data.success) {
+        setCurrentPrice(data.auctionResult.price);
+      } else {
+        alert(data.message);
+        console.log(data.message);
+      }
+    };
+
+    // 소켓 연결
+    socket.on('connect', handleConnect);
+
+    // 소켓 연결 해제 확인
+    socket.on('disconnect', handleDisconnect);
+
+    // `bidResult` 이벤트 연결
+    socket.on('bidResult', handleBidResult);
+
+    //소켓 이벤트 연결 해제
+    return () => {
+      socket.off('bidResult', handleBidResult);
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(`소켓 연결 상태 ${socket.connected}`);
+  }, [socket]);
+
+  /**
+   * @description 현재 상품 정보를 전역 상태로 관리
+   */
+  useEffect(() => {
+    setCurrentProductAtom({
+      productData,
+      formattedInputBidPrice,
+      handleBidButtonClick,
+      handleCustomBidPriceInput,
+      isAuctionStarted,
+      available,
+    });
+  }, [
+    productData,
+    formattedInputBidPrice,
+    currentPrice,
+    isAuctionStarted,
+    available,
+  ]);
+
+  useEffect(() => {
+    if (currentProductAtom.productData === null) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+    // console.log('isLoading', isLoading);
+  }, [currentProductAtom, isLoading]);
+
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
+
   return (
     <S.DetailPageLayout>
-      {/**
-       * 왼쪽 섹션
-       */}
-      <S.DetailLeftSection>
-        <AuctionDetailCarousel images={tempData.images} />
-        <S.CurrentPriceBox>
-          <h3>최고 입찰 가격</h3>
-          <span>최고 입찰 가격 : 현재 가격</span>
-        </S.CurrentPriceBox>
-        <S.TimeDiffBox>
-          <h3>남은 시간</h3>
-          <span>{timeDiff}</span>
-        </S.TimeDiffBox>
-      </S.DetailLeftSection>
-      {/**
-       * 오른쪽 섹션
-       */}
-      <S.DetailRightSection>
-        {/**
-         * 상품명, 아이콘 섹션
-         */}
-        <S.DetailNameBox>
-          <S.NameBoxRow>
-            <S.NameText>상품</S.NameText>
-            <S.NameBoxIconBox>
-              <AiOutlineHeart size={28} />
-              <AiOutlineShareAlt size={28} />
-            </S.NameBoxIconBox>
-          </S.NameBoxRow>
-          <S.NameBoxRow>
-            <S.NameText>{tempData.productName}</S.NameText>
-          </S.NameBoxRow>
-        </S.DetailNameBox>
-        {/**
-         * 판매가, 입찰 영역
-         */}
-        <S.PriceBox>
-          <S.PriceText>
-            {translatePriceToKoreanWon(tempData.start_price, true)}~
-          </S.PriceText>
-          <div>
-            <InputBase
-              fullWidth
-              placeholder="입찰 금액을 입력하세요."
-              onChange={handleCustomBidPriceInput}
-              value={inputBidPrice}
-            />
-            <ButtonBase
-              variant="warning"
-              size="lg"
-              onClick={handleBidButtonClick}
-              name="customPriceBid"
-            >
-              입찰
-            </ButtonBase>
-            <ButtonBase
-              variant="error"
-              size="lg"
-              onClick={handleBidButtonClick}
-              name="staticPriceBid"
-            >
-              +최소입찰가격
-            </ButtonBase>
-          </div>
-        </S.PriceBox>
-        <S.DetailDescBox>
-          <S.PriceText>상품 설명</S.PriceText>
-          <span>{tempData.description}</span>
-        </S.DetailDescBox>
-      </S.DetailRightSection>
+      <LeftSection />
+      <RightSection
+        currentPrice={currentPrice}
+        formattedInputBidPrice={formattedInputBidPrice}
+        handleBidButtonClick={handleBidButtonClick}
+        handleCustomBidPriceInput={handleCustomBidPriceInput}
+        isAuctionStarted={isAuctionStarted}
+        productData={productData}
+      />
     </S.DetailPageLayout>
   );
 };

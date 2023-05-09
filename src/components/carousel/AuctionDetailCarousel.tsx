@@ -7,7 +7,7 @@ import { ProductImageProps } from '@/types/productsTypes';
 import Image from 'next/image';
 
 interface AuctionDetailCarouselProps {
-  images: ProductImageProps[];
+  images?: ProductImageProps[] | null;
 }
 
 const AuctionDetailCarousel = ({ images }: AuctionDetailCarouselProps) => {
@@ -32,16 +32,26 @@ const AuctionDetailCarousel = ({ images }: AuctionDetailCarouselProps) => {
           <S.DetailPageImageBox key={index}>
             <Image
               alt=""
-              src="/images/temp.jpeg"
+              src={image ? image.url : '/images/temp.jpeg'}
               fill
               style={{ objectFit: 'cover' }}
               priority
               sizes="50vw"
-              // placeholder="blur"
-              // blurDataURL={blurDataURL}
             />
           </S.DetailPageImageBox>
         ))}
+      {!images && (
+        <S.DetailPageImageBox>
+          <Image
+            alt=""
+            src="/images/temp.jpeg"
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
+            sizes="50vw"
+          />
+        </S.DetailPageImageBox>
+      )}
     </S.AuctionDetailSlider>
   );
 };

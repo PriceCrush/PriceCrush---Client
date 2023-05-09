@@ -11,6 +11,7 @@ export const BidConfirmLayout = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+  row-gap: 30px;
 `;
 
 /**
@@ -22,6 +23,7 @@ export const TextBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  row-gap: 10px;
 `;
 
 export const ButtonBox = styled.div`

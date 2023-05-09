@@ -1,15 +1,19 @@
 import * as S from '@/components/stylecomponents/carousel.style';
+import { ProductFromApi } from '@/types/productsTypes';
+import Image from 'next/image';
+
 import { useRouter } from 'next/router';
-import { Product } from './MainPageCarousel';
 
 const SliderItem = ({
   product,
   centerIdx,
   curIdx,
+  infiniteMode,
 }: {
-  product: Product;
+  product: ProductFromApi;
   centerIdx: number;
   curIdx: number;
+  infiniteMode: boolean;
 }) => {
   const router = useRouter();
 
@@ -19,16 +23,20 @@ const SliderItem = ({
 
   return (
     <S.SliderItemContainer
-      className={curIdx === centerIdx ? 'center' : 'side'}
+      className={infiniteMode && curIdx === centerIdx ? 'center' : 'side'}
       onClick={handleClick}
     >
       <S.SliderImageWrapper>
-        <img src={product.images.main} alt={product.productName} />
+        <Image
+          src={product.productCategory.imgurl}
+          alt={product.name}
+          fill
+          sizes="300px"
+        />
       </S.SliderImageWrapper>
       <S.DetailBox>
-        <p>{product.ownerName}</p>
-        <p>{product.productName}</p>
-        <p>{`${Number(product.currentPrice).toLocaleString()} 원`}</p>
+        <p>{product.name}</p>
+        <p>{`${Number(product.start_price).toLocaleString()} 원`}</p>
       </S.DetailBox>
     </S.SliderItemContainer>
   );

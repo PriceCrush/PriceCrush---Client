@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import MemberInputForm from '@/components/inputs/MemberInputForm';
-import TermForm from './TermForm';
-import AddressForm from './AddressForm';
-// import TestApi from '../modals/joinpage/testApi';
-import TestButton from './../modals/joinpage/TestButton';
+import axios from 'axios';
+import AddressForm from '@/components/member/joinPage/AddressForm';
+import TermForm from '@/components/member/joinPage/TermForm';
+import CategorySelector from '@/components/member/joinPage/CategorySelector';
+import PhoneNumberVerification from './PhoneNumberVerification';
 
 //LoinForm type
 interface UserInfoErrProps {
@@ -30,25 +31,43 @@ const JoinForm = () => {
     phone: false,
     name: false,
     nickname: false,
-    address: true,
+    address: false,
     agreement_use: false,
   });
 
-  const BASE_URL = process.env.NEXT_PUBLIC_BASEURL;
-  const LOGIN_URL = '/'; //성공할때의 주소
-
-  const handleSubmit = async (e: any) => {
+  /**
+   *
+   * @description 회원가입 axios요청
+   */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(userInfo);
-    console.log(userInfoErr);
+
+    axios
+      .post('/api/member/users', userInfo)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
+  /**
+   * @description input 정보
+   */
   const handleUserInfo = (e: any) => {
     setUserInfo(e);
   };
+  /**
+   * @description input 오류여부
+   */
   const passOrNot = (e: any) => {
     setUserInfoErr(e);
   };
+  /**
+   * @description 버튼 활성화
+   * @description userInfoErr의 하나의 값이라도 false가 나올시 false리턴
+   */
   const showButton = useCallback(() => {
     for (let key in userInfoErr) {
       if (!userInfoErr[key as keyof UserInfoErrProps]) {
@@ -61,14 +80,6 @@ const JoinForm = () => {
   useEffect(() => {
     showButton();
   }, [showButton]);
-
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
-
-  useEffect(() => {
-    console.log(userInfoErr);
-  }, [userInfoErr]);
 
   return (
     <S.LoginFormLayOut method="post" onSubmit={handleSubmit}>
@@ -96,14 +107,12 @@ const JoinForm = () => {
       >
         이름
       </MemberInputForm>
-      <MemberInputForm
-        type="text"
-        name="phone"
+      {/* 핸드폰 */}
+      <PhoneNumberVerification
         handleUserInfo={handleUserInfo}
         passOrNot={passOrNot}
-      >
-        핸드폰
-      </MemberInputForm>
+      />
+
       <MemberInputForm
         type="email"
         name="email"
@@ -114,10 +123,12 @@ const JoinForm = () => {
       </MemberInputForm>
 
       {/* 주소 */}
-      <AddressForm />
+      <AddressForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />
 
       {/* 약관 */}
       <TermForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />
+
+      <CategorySelector handleUserInfo={handleUserInfo} />
 
       <S.LoginButton type="submit" disabled={showButton()}>
         동의하고 가입하기
