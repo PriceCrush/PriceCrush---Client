@@ -11,16 +11,17 @@ export const SliderSection = styled.section`
   justify-content: center;
   align-items: center;
 
-  margin-top: 50px;
+  padding: ${({ theme }) => `${theme.padding.baseY} ${theme.padding.baseX}`};
 `;
 export const ProductSection = styled.section`
   width: 100%;
   display: flex;
   position: relative;
-  padding: 70px 40px 60px 40px;
-  margin: 25px auto 0 auto;
+  padding: ${({ theme }) => `${theme.padding.baseY} ${theme.padding.baseX}`};
+  /* padding: 70px 40px 60px 40px; */
+  /* margin: 25px auto 0 auto; */
+
   border-top: 1px solid ${({ theme }) => theme.color.GRAY};
-  max-width: 1280px;
 `;
 //
 export const ListPageWapper = styled.div`
@@ -45,4 +46,19 @@ export const TabLink = styled(Link)`
   display: flex;
   height: 30px;
   text-decoration: none;
+`;
+
+export const SearchTermWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: ${({ theme }) => `${theme.padding.baseY} ${theme.padding.baseX}`};
+`;
+
+export const SearchTerm = styled.span`
+  font-size: ${({ theme }) => theme.fontSize.lg};
+
+  strong {
+    font-weight: 700;
+    font-size: ${({ theme }) => theme.fontSize.lg};
+  }
 `;

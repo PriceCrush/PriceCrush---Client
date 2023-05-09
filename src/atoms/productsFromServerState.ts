@@ -27,30 +27,34 @@ export const filteredProductsByCategoryState = selectorFamily<
   FilteredProductsByCategoryStateProps,
   {
     categoryId: string;
+    searchTerm: string;
     currentIndex: number;
     itemsPerPage: number;
   }
 >({
   key: 'filteredProductsByCategoryState',
   get:
-    ({ categoryId, currentIndex, itemsPerPage }) =>
+    ({ categoryId, currentIndex, itemsPerPage, searchTerm }) =>
     ({ get }) => {
       const startIndex = (currentIndex - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
       const products = get(productFromServerState);
-      if (categoryId === 'all') {
-        return {
-          result: products.slice(startIndex, endIndex),
-          totalItems: products.length,
-          currentPage: currentIndex,
-          lastPage: Math.ceil(products.length / itemsPerPage),
-        };
+
+      let filteredProducts = products;
+      if (categoryId !== 'all') {
+        filteredProducts = products.filter(
+          (product) => product.productCategory.id === categoryId
+        );
       }
-      const filteredProducts = products.filter(
-        (product) => product.productCategory.id === categoryId
-      );
+
+      if (searchTerm) {
+        filteredProducts = filteredProducts.filter((product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
 
       const result = filteredProducts.slice(startIndex, endIndex);
+
       return {
         result,
         totalItems: filteredProducts.length,
