@@ -42,6 +42,7 @@ const CategoryRow = ({ categories }: CategoryRowProps) => {
                 alt="상품 카테고리"
                 fill
                 priority={true}
+                sizes="12.5vw"
               />
             </div>
             <p>{category.name}</p>

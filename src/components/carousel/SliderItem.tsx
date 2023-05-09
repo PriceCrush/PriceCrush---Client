@@ -27,7 +27,12 @@ const SliderItem = ({
       onClick={handleClick}
     >
       <S.SliderImageWrapper>
-        <Image src={product.productCategory.imgurl} alt={product.name} fill />
+        <Image
+          src={product.productCategory.imgurl}
+          alt={product.name}
+          fill
+          sizes="300px"
+        />
       </S.SliderImageWrapper>
       <S.DetailBox>
         <p>{product.name}</p>
