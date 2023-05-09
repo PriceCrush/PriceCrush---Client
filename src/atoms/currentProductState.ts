@@ -14,7 +14,6 @@ export const currentProductState = atom<CurrentProductStateProps>({
   key: 'currentProductState',
   default: {
     productData: null,
-
     formattedInputBidPrice: null,
     handleBidButtonClick: () => null,
     handleCustomBidPriceInput: () => null,

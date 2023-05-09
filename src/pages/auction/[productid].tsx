@@ -23,14 +23,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   // const { base64 } = await getPlaiceholder(String(query.imageUrl));
 
-  /**
-   * @description 임시 데이터 10개 생성
-   */
-
   return {
     props: {
       // blurDataURL: base64,
-
       productData,
     },
   };
@@ -48,7 +43,9 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
     true
   );
   const [isLoading, setIsLoading] = useState(true);
-  const available = new Date(productData.start_date) < new Date();
+  const available =
+    new Date(productData.start_date) < new Date() &&
+    new Date(productData.end_date) > new Date();
 
   /**
    * @description 경매 시작 여부, 이 값에 따라 입찰 버튼 활성화
