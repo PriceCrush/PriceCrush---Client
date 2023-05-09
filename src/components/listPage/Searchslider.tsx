@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowButton from '@/components/carousel/ArrowButton';
-
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
@@ -33,16 +31,6 @@ const Searchslider = ({ category }: SearchSliderProps) => {
   return (
     <div>
       <StyledSlider {...settings}>
-        {/* {category.map((sample) => {
-          return (
-            <Item
-              key={sample.category}
-              img={sample.img}
-              category={sample.category}
-              tab={sample.tab}
-            />
-          );
-        })} */}
         {category.map((item, index) => {
           return (
             <Item
@@ -60,11 +48,13 @@ const Searchslider = ({ category }: SearchSliderProps) => {
 
 const Item = ({ id, imgurl, name }: productCategoryType) => {
   const router = useRouter();
+  const { searchTerm } = router.query;
   const goRouter = () => {
     router.push({
       pathname: `search`,
       query: {
         categoryId: id,
+        searchTerm,
       },
     });
   };
@@ -82,7 +72,7 @@ const Item = ({ id, imgurl, name }: productCategoryType) => {
 // 캐러셀
 const StyledSlider = styled(Slider)`
   max-width: 1280px;
-  width: 90%;
+  width: 100%;
   width: 100%;
 
   .slick-prev::before,
