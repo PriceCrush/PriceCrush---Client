@@ -39,12 +39,19 @@ const Header = () => {
   };
 
   const handleSearchClick = (e: MouseEvent<SVGAElement>) => {
-    if (searchTerm === '') return;
+    if (searchTerm === '') {
+      alert('검색어를 입력해주세요');
+      return;
+    }
     goToSearchPage();
   };
 
   const handleSearchEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      if (searchTerm === '') {
+        alert('검색어를 입력해주세요');
+        return;
+      }
       goToSearchPage();
     }
   };
