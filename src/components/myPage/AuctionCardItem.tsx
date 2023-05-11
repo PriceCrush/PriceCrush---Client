@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { Dispatch, MouseEvent } from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
 import Image from 'next/image';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
@@ -12,9 +12,14 @@ import { useRouter } from 'next/router';
 interface AuctionCardItemProps {
   isSelling?: boolean;
   item?: MyAuctionItem;
+  reloadTrigger?: Dispatch<React.SetStateAction<number>>;
 }
 
-const AuctionCardItem = ({ isSelling, item }: AuctionCardItemProps) => {
+const AuctionCardItem = ({
+  isSelling,
+  item,
+  reloadTrigger,
+}: AuctionCardItemProps) => {
   const { openModal } = useModal();
   const router = useRouter();
 
@@ -22,12 +27,14 @@ const AuctionCardItem = ({ isSelling, item }: AuctionCardItemProps) => {
   /**
    * @description 현재 가격으로 판매자가 경매를 종료하는 경우
    */
-  const handleEndAuction = () => {
+  const handleEndAuction = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     openModal({
       content: (
         <EndAuction
           auctionId={String(item?.id)}
           currentPrice={Number(item?.price)}
+          reloadTrigger={reloadTrigger}
         />
       ),
     });
@@ -38,9 +45,18 @@ const AuctionCardItem = ({ isSelling, item }: AuctionCardItemProps) => {
    */
   const handleCancelAuction = () => {
     openModal({
-      content: <CancelAuction auctionId={String(item?.id)} />,
+      content: (
+        <CancelAuction
+          auctionId={String(item?.id)}
+          reloadTrigger={reloadTrigger}
+        />
+      ),
     });
   };
+
+  /**
+   * @description 경매 아이템을 클릭했을 때 경매 상세 페이지로 이동
+   */
 
   const handleCardClick = (e: MouseEvent<HTMLDivElement>) => {
     if (item) {

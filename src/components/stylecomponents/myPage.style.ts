@@ -272,3 +272,13 @@ export const ContentBox = styled.div`
   min-width: 600px;
   margin: 3vh auto;
 `;
+
+export const NoItemBox = styled.div`
+  width: 100%;
+  padding: ${({ theme }) => theme.padding.baseY};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: ${({ theme }) => theme.fontSize.pageTitle};
+  font-weight: 700;
+`;

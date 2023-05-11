@@ -1,34 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
 import AuctionCardItem from '@/components/myPage/AuctionCardItem';
-import { GetServerSidePropsContext } from 'next';
 import { useRecoilValue } from 'recoil';
 import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
 import Router from 'next/router';
 import { Api } from '@/utils/commonApi';
-
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  /**
-   * @description 로그인이 안된 상태에서 접근 시 로그인 페이지로 이동
-   */
-  const { accessToken } = context.req.cookies;
-  if (!accessToken) {
-    return {
-      redirect: {
-        destination: '/member/login',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      thisWillbeDeleted: 'thisWillbeDeleted',
-    },
-  };
-};
 
 const MyPage = () => {
   // 필터링 버튼의 상태
@@ -64,9 +40,17 @@ const MyPage = () => {
   const [isLoginIn, setIsLoginIn] = useState(false);
 
   /**
+   * @description 경매 상품 다시 불러오기 트리거
+   */
+  const [reloadTrigger, setReloadTrigger] = useState(0);
+
+  /**
    * @description profile page url
    */
   const PROFILE_URL = '/mypage/profile';
+
+  // Functions
+  // Functions
 
   const handleSellingBiddingFilter = (
     e: React.MouseEvent<HTMLHeadingElement>
@@ -133,7 +117,7 @@ const MyPage = () => {
     };
 
     getMyAuctionItems();
-  }, []);
+  }, [reloadTrigger]);
 
   // 필터링 값에 따라 FilteredMyAuctionItems에 값 넣기
   useEffect(() => {
@@ -162,6 +146,11 @@ const MyPage = () => {
   useEffect(() => {
     setUserCommonData(userCommonDataValue);
   }, [userCommonDataValue]);
+
+  useEffect(() => {
+    console.log('myAuctionItems', myAuctionItems);
+    console.log('filteredMyAuctionItems', filteredMyAuctionItems);
+  }, [filteredMyAuctionItems, myAuctionItems]);
 
   return (
     <S.MyPageLayout>
@@ -218,16 +207,23 @@ const MyPage = () => {
        * @description 경매 상품 리스트 카드 영역
        */}
       <S.CardWrapper>
-        {filteredMyAuctionItems.map((item, index) => (
-          <AuctionCardItem
-            key={item.id}
-            isSelling={
-              progressFilterValue === '진행중' &&
-              sellingBiddingFilterValue === '판매 상품'
-            }
-            item={item}
-          />
-        ))}
+        {filteredMyAuctionItems.length !== 0 ? (
+          filteredMyAuctionItems.map((item, index) => (
+            <AuctionCardItem
+              key={item.id}
+              isSelling={
+                progressFilterValue === '진행중' &&
+                sellingBiddingFilterValue === '판매 상품'
+              }
+              item={item}
+              reloadTrigger={setReloadTrigger}
+            />
+          ))
+        ) : (
+          <S.NoItemBox>
+            <div>아이템 없음</div>
+          </S.NoItemBox>
+        )}
       </S.CardWrapper>
     </S.MyPageLayout>
   );

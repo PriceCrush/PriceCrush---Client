@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import * as S from '@/components/stylecomponents/cancelAuction.style';
 import { BsExclamationTriangleFill } from 'react-icons/bs';
 import COLOR from '@/colors/color';
@@ -8,14 +8,21 @@ import { Api } from '@/utils/commonApi';
 
 interface CancelAuctionProps {
   auctionId: string;
+  reloadTrigger?: Dispatch<React.SetStateAction<number>>;
 }
 
-const CancelAuction = ({ auctionId }: CancelAuctionProps) => {
+const CancelAuction = ({ auctionId, reloadTrigger }: CancelAuctionProps) => {
   const { closeModal } = useModal();
 
   const handleCancleYes = async () => {
-    //TODO: 경매 취소 API 호출
-    const result = await Api.delete(`auction/${auctionId}`);
+    const result = await Api.delete(`auction`, {
+      params: {
+        id: auctionId,
+      },
+    });
+    // [uid].tsx의 데이터 새로고침
+    reloadTrigger && reloadTrigger((prev) => prev + 1);
+
     console.log(result);
     try {
     } catch (error) {
