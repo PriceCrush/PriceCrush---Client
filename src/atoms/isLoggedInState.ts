@@ -8,6 +8,7 @@ interface userCommonDataType {
   email: string;
   name: string;
   nickname: string;
+  uid: string;
 }
 
 interface usetPrivateDataType {
@@ -41,6 +42,7 @@ export const userCommonDataState = atom<userCommonDataType>({
     email: '',
     name: '',
     nickname: '',
+    uid: '',
   },
   effects_UNSTABLE: [userDataPersist],
 });

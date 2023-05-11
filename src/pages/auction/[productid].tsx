@@ -9,8 +9,9 @@ import { SocketContext } from '@/contexts/socket';
 import { Api } from '@/utils/commonApi';
 import LeftSection from '@/components/auctionPage/LeftSection';
 import RightSection from '@/components/auctionPage/RightSection';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentProductState } from '@/atoms/currentProductState';
+import { userCommonDataState } from '@/atoms/isLoggedInState';
 
 interface ServerSideReturn {
   // blurDataURL: string;
@@ -32,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 };
 
 const ProductDetail = ({ productData }: ServerSideReturn) => {
+  const { uid } = useRecoilValue(userCommonDataState);
   const socket = useContext(SocketContext);
   const { openModal } = useModal();
   const [inputBidPrice, setInputBidPrice] = useState(productData.start_price);
@@ -96,8 +98,7 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
   const handleSocketButtonClick = () => {
     const bidData = {
       price: inputBidPrice,
-      // TODO: 로그인 완료시 사용자 정보를 받아올 수 있도록 수정
-      user: 'ed420979-07a2-4a04-b376-48bfbd3379b1',
+      user: uid,
       product: productData.id,
     };
 

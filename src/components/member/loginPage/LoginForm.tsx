@@ -55,6 +55,7 @@ const LoginForm = () => {
           email: user.email,
           name: user.name,
           nickname: user.nickname,
+          uid: user.id,
         });
         setUserPrivateDataAtom({
           address: user.address,

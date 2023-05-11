@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import { useTimeDiff } from '@/hooks/useTimeDiff';
 import AuctionDetailCarousel from '../carousel/AuctionDetailCarousel';
 import { currentProductState } from '@/atoms/currentProductState';
 import { useRecoilValue } from 'recoil';
+import { ProductFromApi } from '@/types/productsTypes';
 
 const LeftSection = () => {
   const currentProduct = useRecoilValue(currentProductState);
-
   const timeDiff = useTimeDiff(String(currentProduct.productData!.end_date));
+
   return (
     <S.DetailLeftSection>
       <AuctionDetailCarousel
