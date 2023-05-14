@@ -24,6 +24,11 @@ const nextConfig = {
         hostname: 'developerkims-bucket.s3.ap-northeast-2.amazonaws.com',
         port: '',
       },
+      {
+        protocol: 'http',
+        hostname: 'developerkims-bucket.s3.ap-northeast-2.amazonaws.com',
+        port: '',
+      },
     ],
   },
   async rewrites() {

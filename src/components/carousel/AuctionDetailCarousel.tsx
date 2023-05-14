@@ -28,18 +28,20 @@ const AuctionDetailCarousel = ({ images }: AuctionDetailCarouselProps) => {
   return (
     <S.AuctionDetailSlider {...settings}>
       {images &&
-        images.map((image, index) => (
-          <S.DetailPageImageBox key={index}>
-            <Image
-              alt=""
-              src={image ? image.url : '/images/temp.jpeg'}
-              fill
-              style={{ objectFit: 'cover' }}
-              priority
-              sizes="50vw"
-            />
-          </S.DetailPageImageBox>
-        ))}
+        images.map((image, index) => {
+          return (
+            <S.DetailPageImageBox key={index}>
+              <Image
+                alt=""
+                src={image ? image.url : '/images/temp.jpeg'}
+                fill
+                style={{ objectFit: 'cover' }}
+                priority
+                sizes="50vw"
+              />
+            </S.DetailPageImageBox>
+          );
+        })}
       {!images && (
         <S.DetailPageImageBox>
           <Image
