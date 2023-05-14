@@ -9,3 +9,5 @@
 - Socket 클라이언트 과도하게 쌓이는 문제
   - socekt.connect(), socket.disconnect()를 핸들링해야함
   - socket.disconnect()를 한다고 해서 소켓 자체가 사라지는 것은 아님
+
+## 배포 0514
