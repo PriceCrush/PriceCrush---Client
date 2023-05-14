@@ -112,6 +112,7 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
    */
   useEffect(() => {
     const handleConnect = () => console.log('소켓 연결됨', socket.connected);
+
     const handleDisconnect = () =>
       console.log('소켓 연결 해제됨', socket.disconnected);
 
@@ -127,9 +128,12 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
     };
 
     // 소켓 연결
+    socket.connect();
+
+    // 소켓 연결 이벤트
     socket.on('connect', handleConnect);
 
-    // 소켓 연결 해제 확인
+    // 소켓 연결 해제 이벤트
     socket.on('disconnect', handleDisconnect);
 
     // `bidResult` 이벤트 연결
@@ -140,6 +144,7 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
       socket.off('bidResult', handleBidResult);
       socket.off('connect', handleConnect);
       socket.off('disconnect', handleDisconnect);
+      socket.disconnect();
     };
   }, []);
 
