@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
 import Router from 'next/router';
 import { Api } from '@/utils/commonApi';
+import { MyAuctionItem } from '@/types/myAuctionItemsTypes';
 
 const MyPage = () => {
   // 필터링 버튼의 상태
@@ -19,9 +20,9 @@ const MyPage = () => {
     biddingBids: [],
     soldBids: [],
   });
-  const [filteredMyAuctionItems, setFilteredMyAuctionItems] = useState<any[]>(
-    []
-  );
+  const [filteredMyAuctionItems, setFilteredMyAuctionItems] = useState<
+    MyAuctionItem[]
+  >([]);
   /**
    * @description 유저 기본 정보
    */
