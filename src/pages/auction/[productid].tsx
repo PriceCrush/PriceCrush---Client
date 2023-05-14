@@ -1,7 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import { GetServerSideProps } from 'next';
-import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
+import {
+  ProductDetailsProps,
+  ProductFromApi,
+  ProductImagesAPI,
+} from '@/types/productsTypes';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 import { useModal } from '@/hooks/useModal';
 import BidConfirm from '@/components/modals/productPage/BidConfirm';
@@ -9,17 +13,27 @@ import { SocketContext } from '@/contexts/socket';
 import { Api } from '@/utils/commonApi';
 import LeftSection from '@/components/auctionPage/LeftSection';
 import RightSection from '@/components/auctionPage/RightSection';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentProductState } from '@/atoms/currentProductState';
+import { userCommonDataState } from '@/atoms/isLoggedInState';
 
 interface ServerSideReturn {
   // blurDataURL: string;
 
   productData: ProductFromApi;
+  ownerUid: string;
 }
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { productid } = query;
   const productData = await Api.get(`/product/${productid}`);
+  const productImages: ProductImagesAPI[] = await Api.get(`productImage`, {
+    params: {
+      productId: productid,
+    },
+  });
+  const ownerUid = productImages[0].product.user.id;
+
+  console.log(ownerUid);
 
   // const { base64 } = await getPlaiceholder(String(query.imageUrl));
 
@@ -27,11 +41,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       // blurDataURL: base64,
       productData,
+      ownerUid,
     },
   };
 };
 
-const ProductDetail = ({ productData }: ServerSideReturn) => {
+const ProductDetail = ({ productData, ownerUid }: ServerSideReturn) => {
+  const { uid } = useRecoilValue(userCommonDataState);
   const socket = useContext(SocketContext);
   const { openModal } = useModal();
   const [inputBidPrice, setInputBidPrice] = useState(productData.start_price);
@@ -96,8 +112,7 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
   const handleSocketButtonClick = () => {
     const bidData = {
       price: inputBidPrice,
-      // TODO: 로그인 완료시 사용자 정보를 받아올 수 있도록 수정
-      user: 'ed420979-07a2-4a04-b376-48bfbd3379b1',
+      user: uid,
       product: productData.id,
     };
 
@@ -111,6 +126,7 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
    */
   useEffect(() => {
     const handleConnect = () => console.log('소켓 연결됨', socket.connected);
+
     const handleDisconnect = () =>
       console.log('소켓 연결 해제됨', socket.disconnected);
 
@@ -126,9 +142,12 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
     };
 
     // 소켓 연결
+    socket.connect();
+
+    // 소켓 연결 이벤트
     socket.on('connect', handleConnect);
 
-    // 소켓 연결 해제 확인
+    // 소켓 연결 해제 이벤트
     socket.on('disconnect', handleDisconnect);
 
     // `bidResult` 이벤트 연결
@@ -139,6 +158,7 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
       socket.off('bidResult', handleBidResult);
       socket.off('connect', handleConnect);
       socket.off('disconnect', handleDisconnect);
+      socket.disconnect();
     };
   }, []);
 
@@ -189,6 +209,7 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
         handleCustomBidPriceInput={handleCustomBidPriceInput}
         isAuctionStarted={isAuctionStarted}
         productData={productData}
+        ownerUid={ownerUid}
       />
     </S.DetailPageLayout>
   );

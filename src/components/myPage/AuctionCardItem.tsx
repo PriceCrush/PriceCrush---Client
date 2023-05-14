@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, MouseEvent } from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
 import Image from 'next/image';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
@@ -7,34 +7,68 @@ import { useModal } from '@/hooks/useModal';
 import EndAuction from '../modals/mypage/EndAuction';
 import CancelAuction from '../modals/mypage/CancelAuction';
 import { MyAuctionItem } from '@/types/myAuctionItemsTypes';
+import { useRouter } from 'next/router';
 
 interface AuctionCardItemProps {
   isSelling?: boolean;
   item?: MyAuctionItem;
+  reloadTrigger?: Dispatch<React.SetStateAction<number>>;
 }
 
-const AuctionCardItem = ({ isSelling, item }: AuctionCardItemProps) => {
+const AuctionCardItem = ({
+  isSelling,
+  item,
+  reloadTrigger,
+}: AuctionCardItemProps) => {
   const { openModal } = useModal();
+  const router = useRouter();
 
-  const handleEndAuction = () => {
+  //funtions
+  /**
+   * @description 현재 가격으로 판매자가 경매를 종료하는 경우
+   */
+  const handleEndAuction = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     openModal({
       content: (
         <EndAuction
           auctionId={String(item?.id)}
           currentPrice={Number(item?.price)}
+          reloadTrigger={reloadTrigger}
         />
       ),
     });
   };
 
+  /**
+   * @description 경매자체를 취소하는 경우
+   */
   const handleCancelAuction = () => {
     openModal({
-      content: <CancelAuction auctionId={String(item?.id)} />,
+      content: (
+        <CancelAuction
+          auctionId={String(item?.id)}
+          reloadTrigger={reloadTrigger}
+        />
+      ),
     });
   };
 
+  /**
+   * @description 경매 아이템을 클릭했을 때 경매 상세 페이지로 이동
+   */
+
+  const handleCardClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (item) {
+      console.log(item!.id);
+      router.push(`/auction/${item!.product.id}`);
+    }
+  };
+
+  //TODO: Props로 빋은 Item에 `product` 객체가 없고 item 객체 안에 `key`값들 존재, 현재 API 수정중인데 수정되면 이에 맞게 수정 해야할듯 함
+
   return (
-    <S.AuctionCardItemLayout>
+    <S.AuctionCardItemLayout onClick={handleCardClick}>
       <S.CardImageBox>
         <Image
           alt="경매 아이템 이미지"

@@ -5,7 +5,6 @@ import ButtonBase from '@/components/buttons/ButtonBase';
 import { useModal } from '@/hooks/useModal';
 import { useRecoilValue } from 'recoil';
 import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
-import { GetServerSidePropsContext } from 'next';
 import Router from 'next/router';
 
 interface BidConfirmProps {

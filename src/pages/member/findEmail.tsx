@@ -1,7 +1,8 @@
+import { findEmailApiCode } from '@/components/member/apiCodeMessage';
 import CommonMessage from '@/components/modals/member/CommonMessage';
 import * as S from '@/components/stylecomponents/formbase.style';
 import { useModal } from '@/hooks/useModal';
-import axios from 'axios';
+import { Api } from '@/utils/commonApi';
 import Router from 'next/router';
 import React, { useRef, useState } from 'react';
 
@@ -29,37 +30,44 @@ const FindEmail = () => {
   };
   const showButton = !userInfo.name.length || userInfo.phone.length < 11;
 
+  // 우선 보류
+  // 메인페이지 이동 시 Error: Abort fetching component for route: "/member/login" 이런 오류발생
+  // 메인 페이지 이동 시 Error: Loading initial props cancelled  이런 오류 발생
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // axios의 get요청의 경우 body에 담아서 내용을 보낼 수 가 없음
     if (buttonRef.current?.name === 'findEmailBtn') {
-      axios
-        .post('/api/member/findEmailApi', { userInfo })
-        .then(function (response) {
-          console.log(response);
-          const title = '가입된 이메일';
-          const message = response.data.email;
-          openModal({
-            content: (
-              <>
-                <CommonMessage title={title}>{message}</CommonMessage>
-              </>
-            ),
-          });
-          setSendEmail(true);
-          // setTimeout(() => {
-          //   closeModal(), Router.push(`${LOGIN_URL}`);
-          //   // sendPasswordSuccess; //왜 적용이 안되지?
-          // }, 10000);
-        })
-        .catch(function (error) {
-          console.log(error);
+      try {
+        const result = await Api.get(`users/find/id`, { params: userInfo });
+        console.log(result);
+        const title = '가입된 이메일';
+        openModal({
+          content: (
+            <>
+              <CommonMessage title={title}>{result}</CommonMessage>
+            </>
+          ),
         });
+        setSendEmail(true);
+        setTimeout(() => {
+          closeModal(), Router.push(`${LOGIN_URL}`);
+        }, 10000);
+      } catch (error: any) {
+        const { title, message } = findEmailApiCode(error.response.status);
+        console.log(error);
+        openModal({
+          content: (
+            <>
+              <CommonMessage title={title}>{message}</CommonMessage>
+            </>
+          ),
+        });
+      }
     } else if (buttonRef.current?.name === 'goLoginPageBtn') {
       Router.push(`${LOGIN_URL}`);
     }
   };
-  //placeholder 추가 예정
+
   return (
     <S.Wrapper>
       <S.LogoTitle>이메일 아이디 찾기</S.LogoTitle>
@@ -79,6 +87,7 @@ const FindEmail = () => {
             onChange={handleUserInfo}
             placeholder="이름 입력"
             textLength={userInfo.name.length}
+            disabled={sendEmail}
           ></S.FormItem>
         </S.FormItemBox>
 
@@ -90,6 +99,7 @@ const FindEmail = () => {
             onChange={handleUserInfo}
             placeholder="'-' 빼고 숫자만 입력"
             textLength={userInfo.phone.length}
+            disabled={sendEmail}
           ></S.FormItem>
         </S.FormItemBox>
 
@@ -109,7 +119,7 @@ const FindEmail = () => {
             ref={buttonRef}
             disabled={showButton}
           >
-            임시 비밀번호 발급
+            이메일 찾기
           </S.FormButton>
         )}
       </S.FormLayOut>

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
-import ShowErrorMessage from '../member/ShowErrorMessage';
+
 import { UserInfoErrProps } from '@/types/joinFormTypes';
 import { MemberInputFormProps } from '@/types/memberTypes';
+import ShowErrorMessage from '@/components/member/ShowErrorMessage';
 
 interface placeHolderCollectionProps {
   [key: string]: string;
