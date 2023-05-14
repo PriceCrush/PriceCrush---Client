@@ -15,6 +15,7 @@ import useTimer from '@/components/common/useTimer';
 
 const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
   const { handleUserInfo, passOrNot } = props;
+  const serverBaseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
   const [phoneNum, setPhoneNum] = useState('');
   const [phoneCode, setPhonecode] = useState('');
 
@@ -27,21 +28,44 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const { condition, warningMessage } = ShowErrorMessage(phoneNum, 'phone');
-  const { remainingTime, timeOver, resetTimer } = useTimer(180);
+  const { remainingTime, resetTimer } = useTimer(180);
 
+  /**
+   * @description 인증번호 전송
+   */
   const handleRequsetcode = async (e: any) => {
     e.preventDefault();
     resetTimer();
-    axios
-      .post(`/api/member/smsApi`, { phone: phoneNum })
-      .then(function (response) {
-        console.log(response);
-        setShowCodeInput(true);
-        //인증하면 인증버튼 비활성화
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+
+    try {
+      const result = await Api.post('auth/sms', { phone: phoneNum });
+      console.log(result);
+      setShowCodeInput(true);
+      setPhonecode('');
+    } catch (error: any) {
+      const { status, data } = error.response;
+      if (status === 500) {
+        alert(data.error.errorMessage);
+      }
+      console.log(error);
+    }
+    // axios
+    //   // .post(`/api/member/smsApi`, { phone: phoneNum })
+    //   .post(`${SMS_API_URL}`, { phone: phoneNum })
+    //   .then(function (response) {
+    //     console.log(response);
+    //     setShowCodeInput(true);
+    //     setPhonecode('');
+    //   })
+    //   .catch(function (error) {
+    //     const { status, data } = error.response;
+    //     if (status === 500) {
+    //       alert(data.error.errorMessage);
+    //     }
+    //     console.log(error);
+    //   });
+
+    // 여기부분 어떻게 다뤄야할지는 쬐까 나중에
     // const VerificationRequest = Api.post(`/api/member/smsApi`, {
     //   phone: phoneNum,
     // })
@@ -52,48 +76,51 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
     //     console.log(e);
     //   });
   };
+  /**
+   * @descript 전송한 인증번호 검증
+   */
 
+  // 여기부분 Api 변환 시 오류
   const handleCertificationCode = async (e: any) => {
     e.preventDefault();
 
     const verificationData = { phone: phoneNum, code: phoneCode };
-    console.log(verificationData);
+    const SMS_CERTIFICATION_API_URL = `${serverBaseURL}auth/sms/certification`;
+
+    // try {
+    //   const result = Api.post('auth/sms/certification', verificationData);
+    //   console.log(result);
+    //   // setPassCode(true);
+    //   // setShowCodeInput(false);
+    //   // setInputCheck(true);
+    //   // alert('인증번호 확인 완료');
+    // } catch (error: any) {
+    //   console.log(error);
+    //   // if (error.response.status === 409) {
+    //   //   alert(error.response.data.message);
+    //   // }
+    // }
+
     //return값이 제대로 올경우
     axios
-      .post(`/api/member/smsCertificationApi`, verificationData)
+      // .post(`/api/member/smsCertificationApi`, verificationData)
+      .post(`${SMS_CERTIFICATION_API_URL}`, verificationData)
       .then(function (response) {
         console.log(response);
         setPassCode(true);
         setShowCodeInput(false);
-        setPhonecode('');
         setInputCheck(true);
+        alert('인증번호 확인 완료');
       })
       .catch(function (error) {
-        //409
-        //message : 인증코드가 유효하지 않음
-        setShowCodeInput(false);
+        console.log(error);
         if (error.response.status === 409) {
           alert(error.response.data.message);
         }
-        console.log(error.response.status);
-        //인증번호가 틀릴경우의 상태도 보여줘야함
+
+        // setPhonecode('');
+        // setShowCodeInput(false);
       });
-
-    // const codeConfirmation = Api.post(
-    //   `/api/member/smsCertificationApi`,
-    //   bringData
-    // )
-    //   .then(function (response) {
-    //     //핸드폰 번호 disable
-    //     // 코드입력 부분 사라짐
-    //     // 인증버튼 사라짐
-    //     //
-
-    //     console.log(response);
-    //   })
-    //   .catch(function (e) {
-    //     console.log(e);
-    //   });
   };
 
   const showErrorMessage = useCallback(() => {

@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as S from '@/components/stylecomponents/modals/productDetails/bidConfirm.style';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import { useModal } from '@/hooks/useModal';
-import axios from 'axios';
 import Router from 'next/router';
 import styled from 'styled-components';
+import { getCookie } from 'cookies-next';
+import { Api } from '@/utils/commonApi';
+import { resetPasswordApiCode } from '@/components/member/apiCodeMessage';
 
 interface ReconfirmPasswordPorps {
   newPassword: string;
@@ -13,21 +15,27 @@ interface ReconfirmPasswordPorps {
 const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
   const { newPassword } = props;
   const { closeModal } = useModal();
+  const MAIN_URL = '/';
 
-  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     type ButtonName = 'confirm' | 'cancel';
     const name = e.currentTarget.name as ButtonName;
-    const MAIN_URL = '/';
+
     if (name === 'confirm') {
-      axios
-        .post('/api/member/resetPasswordApi', { newPassword })
-        .then(function (response) {
-          console.log(response);
-          Router.push(`${MAIN_URL}`);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      const newPw = { password: `${newPassword}` };
+      try {
+        const result = await Api.patch(`users/reset/pw`, newPw);
+        Router.push(`${MAIN_URL}`);
+        console.log(result);
+      } catch (error: any) {
+        const { code } = error.response.status;
+        const { title, message } = resetPasswordApiCode(code);
+        console.log(error);
+        alert(message);
+        // 우선은 alert를 사용하고 차 후 모달은 쓰는 방법으로
+        // 현재 컴포넌트가 모달안에 존재하기 때문에 부모 컴포넌트의 구조를 바꾼 후 해야하기때문에
+        // 이곳에서 다시 모달을 띄울경우 오류발생
+      }
       closeModal();
     } else if (name === 'cancel') {
       closeModal();

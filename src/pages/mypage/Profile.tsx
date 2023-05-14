@@ -1,40 +1,32 @@
-import {
-  userCommonDataState,
-  userPrivateDataState,
-} from '@/atoms/isLoggedInState';
 import Router from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React from 'react';
 import * as S from '@/components/stylecomponents/myPage.style';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { Api } from '@/utils/commonApi';
 
 // api를 만들지 안마들지에 대한 의견 교환 후 진행 할 예정
 // 1. api요청 시 axios이용
 // 2. api요청 안할 시 atom에서 유정 상태 session에 저장해서 보여주는걸로
+interface userDataProps {
+  id: string;
+  email: string;
+  phone: string;
+  nickname: string;
+  address: string;
+  name: string;
+  agreement_use: boolean;
+  agreement_mkt: boolean;
+  favorites?: [string];
+}
 
-const UserProfile = () => {
-  const userCommonDataValue = useRecoilValue(userCommonDataState);
-  const userPrivateDataValue = useRecoilValue(userPrivateDataState);
+interface ServerSideReturn {
+  userData: userDataProps;
+}
 
-  const [userCommonData, setUserCommonData] = useState({
-    email: '',
-    name: '',
-    nickname: '',
-  });
+const UserProfile = (props: ServerSideReturn) => {
+  const { userData } = props;
 
-  const [userPrivateData, setUerPrivateData] = useState({
-    address: '',
-    phone: '',
-  });
-
-  const { email, name, nickname } = userCommonData;
-  const { address, phone } = userPrivateData;
-
-  useEffect(() => {
-    setUserCommonData(userCommonDataValue);
-  }, [userCommonDataValue]);
-  useEffect(() => {
-    setUerPrivateData(userPrivateDataValue);
-  }, [userPrivateDataValue]);
+  const { email, name, phone, nickname, address } = userData;
 
   const RESET_PASSWORD_URL = '/member/resetPassword';
 
@@ -100,6 +92,26 @@ const UserProfile = () => {
       </S.ContentBox>
     </S.ProfileLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { accessToken } = context.req.cookies;
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const userData = await Api.get('users', config);
+  return {
+    props: {
+      userData,
+    },
+  };
 };
 
 export default UserProfile;

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 type ErrorMessageModalProps = {
-  title: string;
+  title?: string;
   children: React.ReactNode;
 };
 
