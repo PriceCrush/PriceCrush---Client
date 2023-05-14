@@ -65,6 +65,8 @@ const AuctionCardItem = ({
     }
   };
 
+  //TODO: Props로 빋은 Item에 `product` 객체가 없고 item 객체 안에 `key`값들 존재, 현재 API 수정중인데 수정되면 이에 맞게 수정 해야할듯 함
+
   return (
     <S.AuctionCardItemLayout onClick={handleCardClick}>
       <S.CardImageBox>
