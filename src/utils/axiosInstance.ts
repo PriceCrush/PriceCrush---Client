@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
-const LOCALHOST = 'http://localhost:3001';
-
 /**
  * @description baseURL localhost:3001번으로 설정되어 있습니다.
  * timeout 10초로 설정되어 있습니다.

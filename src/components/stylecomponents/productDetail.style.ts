@@ -139,3 +139,13 @@ export const NotAvailableBox = styled.div`
     color: gray;
   }
 `;
+
+export const MyAuctionLayout = styled.div`
+  display: flex;
+  width: 100%;
+
+  span {
+    color: gray;
+    ${({ theme }) => theme.fontSize.md};
+  }
+`;

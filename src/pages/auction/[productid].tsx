@@ -1,7 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import { GetServerSideProps } from 'next';
-import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
+import {
+  ProductDetailsProps,
+  ProductFromApi,
+  ProductImagesAPI,
+} from '@/types/productsTypes';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 import { useModal } from '@/hooks/useModal';
 import BidConfirm from '@/components/modals/productPage/BidConfirm';
@@ -17,10 +21,19 @@ interface ServerSideReturn {
   // blurDataURL: string;
 
   productData: ProductFromApi;
+  ownerUid: string;
 }
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { productid } = query;
   const productData = await Api.get(`/product/${productid}`);
+  const productImages: ProductImagesAPI[] = await Api.get(`productImage`, {
+    params: {
+      productId: productid,
+    },
+  });
+  const ownerUid = productImages[0].product.user.id;
+
+  console.log(ownerUid);
 
   // const { base64 } = await getPlaiceholder(String(query.imageUrl));
 
@@ -28,11 +41,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       // blurDataURL: base64,
       productData,
+      ownerUid,
     },
   };
 };
 
-const ProductDetail = ({ productData }: ServerSideReturn) => {
+const ProductDetail = ({ productData, ownerUid }: ServerSideReturn) => {
   const { uid } = useRecoilValue(userCommonDataState);
   const socket = useContext(SocketContext);
   const { openModal } = useModal();
@@ -195,6 +209,7 @@ const ProductDetail = ({ productData }: ServerSideReturn) => {
         handleCustomBidPriceInput={handleCustomBidPriceInput}
         isAuctionStarted={isAuctionStarted}
         productData={productData}
+        ownerUid={ownerUid}
       />
     </S.DetailPageLayout>
   );
