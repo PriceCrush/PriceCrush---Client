@@ -54,5 +54,4 @@ export const userPrivateDataState = atom<usetPrivateDataType>({
     address: '',
     phone: '',
   },
-  effects_UNSTABLE: [userDataPersist],
 });

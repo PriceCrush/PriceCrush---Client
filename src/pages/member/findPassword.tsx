@@ -5,8 +5,12 @@ import useValidation from '@/hooks/useValidation';
 import Router from 'next/router';
 import { useModal } from '@/hooks/useModal';
 import CommonMessage from '@/components/modals/member/CommonMessage';
+import { Api } from '@/utils/commonApi';
+import { findEmailApiCode } from '@/components/member/apiCodeMessage';
 
 const FindPassword = () => {
+  const serverBaseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
@@ -32,31 +36,49 @@ const FindPassword = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // axios의 get요청의 경우 body에 담아서 내용을 보낼 수 가 없음
-    //버튼 이름에 맞춰서 로직이 달라짐
-    if (buttonRef.current?.name === 'findPWBtn') {
-      axios
-        .post('/api/member/findPassWordApi', { userInfo })
-        .then(function (response) {
-          console.log(response);
-          const title = '임시 비밀번호 발급';
-          const message = response.data.message;
-          openModal({
-            content: (
-              <>
-                <CommonMessage title={title}>{message}</CommonMessage>
-              </>
-            ),
-          });
-          setSendPassword(true);
-          setTimeout(() => {
-            closeModal(), Router.push(`${LOGIN_URL}`);
-            // sendPasswordSuccess; //왜 적용이 안되지?
-          }, 10000);
-        })
-        .catch(function (error) {
-          console.log(error);
+    if (buttonRef.current?.name === 'newPWBtn') {
+      try {
+        const result = await Api.post('users/reset/pw', userInfo);
+        console.log(result);
+        const { code } = result.status;
+        const { title, message } = findEmailApiCode(code);
+        openModal({
+          content: (
+            <>
+              <CommonMessage title={title}>{message}</CommonMessage>
+            </>
+          ),
         });
+        setSendPassword(true);
+      } catch (error: any) {
+        const code = error.response.status;
+        const { title, message } = findEmailApiCode(code);
+
+        openModal({
+          content: (
+            <>
+              <CommonMessage title={title}>{message}</CommonMessage>
+            </>
+          ),
+        });
+
+        // setTimeout(() => {
+        //   closeModal(), Router.push(`${LOGIN_URL}`);
+        //   // sendPasswordSuccess; //왜 적용이 안되지?
+        // }, 10000);
+      }
+
+      // axios
+      //   .post(`${GET_NEWPW_API_URL}`, userInfo)
+      //   .then(function (response) {
+      //     // setTimeout(() => {
+      //     //   closeModal(), Router.push(`${LOGIN_URL}`);
+      //     //   // sendPasswordSuccess; //왜 적용이 안되지?
+      //     // }, 10000);
+      //   })
+      //   .catch(function (error) {
+
+      //   });
     } else if (buttonRef.current?.name === 'goLoginPageBtn') {
       Router.push(`${LOGIN_URL}`);
     }
@@ -127,7 +149,7 @@ const FindPassword = () => {
         ) : (
           <S.FormButton
             type="submit"
-            name="findPWBtn"
+            name="newPWBtn"
             ref={buttonRef}
             disabled={showButton}
           >

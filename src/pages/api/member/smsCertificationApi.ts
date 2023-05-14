@@ -7,11 +7,12 @@ const smsCertificationApi = async (
 ) => {
   // res.status(200).json({ message: '확인' });
   const serverBaseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
-  const SMS_CERTIFICATION_API_URL = `${serverBaseURL}auth/certification`;
+  const SMS_CERTIFICATION_API_URL = `${serverBaseURL}auth/sms/certification`;
   const phoneNumAndCode = req.body;
 
-  // res.status(200).json({ code: '1111' });
-  res.status(409).json({ message: '유효한 인증코드가 존재하지 않습니다' });
+  res.status(200).json({ message: 'success' });
+  // 인증번호가 틀렷을때랑 시간이 지났을때랑 다른건가>?
+  // res.status(409).json({ message: '유효한 인증코드가 존재하지 않습니다' });
 
   // {
   //   "statusCode": 409,

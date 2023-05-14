@@ -11,11 +11,8 @@ import {
   userPrivateDataState,
 } from '@/atoms/isLoggedInState';
 import { useModal } from '@/hooks/useModal';
-import { loginErrorCode } from '@/components/member/ErrorCodeMessage';
 import CommonMessage from '@/components/modals/member/CommonMessage';
-
-//추가사항
-// 로그인 상태시 뒤로가기로 loginpage로 접속 시 main화면으로 가도록
+import { loginErrorCode } from '@/components/member/apiCodeMessage';
 
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -50,7 +47,6 @@ const LoginForm = () => {
         const { data } = response;
         const { user } = data;
         setIsLoggedInAtom(true);
-        console.log(user);
         setUserCommonDataAtom({
           email: user.email,
           name: user.name,
@@ -65,7 +61,6 @@ const LoginForm = () => {
         router.back();
       })
       .catch(function (error) {
-        // 에러 처리하는거만 쬐가 해보자구
         const { title, message } = loginErrorCode(error.response.status);
         openModal({
           content: (
