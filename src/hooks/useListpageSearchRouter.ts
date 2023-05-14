@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 
-//TODO: 동작하게 만들어야 함
-
 interface ListpageSearchRouterProps {
   searchTerm?: string;
   categoryId?: string;

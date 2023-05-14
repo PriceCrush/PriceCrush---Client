@@ -98,9 +98,9 @@ const MyPage = () => {
         let myAuctionItems;
         const [sellingBids, biddingBids, soldBids, endedBids] =
           await Promise.all([
-            Api.get('auction/user/selling'),
+            Api.get('product/user/selling'),
             Api.get('auction/user/bidding'),
-            Api.get('auction/user/sold'),
+            Api.get('product/user/sold'),
             Api.get('auction/user/endedBid'),
           ]);
 
@@ -208,17 +208,20 @@ const MyPage = () => {
        */}
       <S.CardWrapper>
         {filteredMyAuctionItems.length !== 0 ? (
-          filteredMyAuctionItems.map((item, index) => (
-            <AuctionCardItem
-              key={item.id}
-              isSelling={
-                progressFilterValue === '진행중' &&
-                sellingBiddingFilterValue === '판매 상품'
-              }
-              item={item}
-              reloadTrigger={setReloadTrigger}
-            />
-          ))
+          filteredMyAuctionItems.map((item, index) => {
+            console.log(item);
+            return (
+              <AuctionCardItem
+                key={item.id}
+                isSelling={
+                  progressFilterValue === '진행중' &&
+                  sellingBiddingFilterValue === '판매 상품'
+                }
+                item={item}
+                reloadTrigger={setReloadTrigger}
+              />
+            );
+          })
         ) : (
           <S.NoItemBox>
             <div>아이템 없음</div>
