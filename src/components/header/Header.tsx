@@ -11,10 +11,10 @@ import { BsSearch } from 'react-icons/bs';
 import HeaderGuard from './HeaderGuard';
 import useScrollDirection from './../../hooks/useScrollDirection';
 import { useRecoilValue } from 'recoil';
-
 import Logout from '@/components/member/loginPage/Logout';
 import { isLoggedInState } from '@/atoms/isLoggedInState';
 import { useRouter } from 'next/router';
+import { userCommonDataState } from '@/atoms/isLoggedInState';
 
 const Header = () => {
   const isScrollDown = useScrollDirection();
@@ -22,6 +22,7 @@ const Header = () => {
   const [isLoginIn, setIsLoginIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
+  const { uid } = useRecoilValue(userCommonDataState);
 
   // functions
   const handleOnChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +101,7 @@ const Header = () => {
             </S.HeaderNavItem>
 
             <S.HeaderNavItem>
-              <Link href={'/mypage/132'}>MY</Link>
+              <Link href={`/mypage/${uid}`}>MY</Link>
             </S.HeaderNavItem>
 
             <S.HeaderNavItem>
