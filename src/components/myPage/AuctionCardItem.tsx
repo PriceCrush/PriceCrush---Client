@@ -23,27 +23,31 @@ const AuctionCardItem = ({
   const { openModal } = useModal();
   const router = useRouter();
 
+  const itemIsSelling = 'user' in item!;
   //funtions
   /**
    * @description 현재 가격으로 판매자가 경매를 종료하는 경우
    */
   const handleEndAuction = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    openModal({
-      content: (
-        <EndAuction
-          auctionId={String(item?.id)}
-          currentPrice={Number(item?.price)}
-          reloadTrigger={reloadTrigger}
-        />
-      ),
-    });
+    if ('user' in item!) {
+      openModal({
+        content: (
+          <EndAuction
+            auctionId={String(item?.id)}
+            currentPrice={Number(item?.start_price)}
+            reloadTrigger={reloadTrigger}
+          />
+        ),
+      });
+    }
   };
 
   /**
    * @description 경매자체를 취소하는 경우
    */
-  const handleCancelAuction = () => {
+  const handleCancelAuction = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     openModal({
       content: (
         <CancelAuction
@@ -60,8 +64,11 @@ const AuctionCardItem = ({
 
   const handleCardClick = (e: MouseEvent<HTMLDivElement>) => {
     if (item) {
-      console.log(item!.id);
-      router.push(`/auction/${item!.product.id}`);
+      if ('user' in item) {
+        router.push(`/auction/${item!.id}`);
+      } else {
+        router.push(`/auction/${item!.product.id}`);
+      }
     }
   };
 
@@ -81,11 +88,21 @@ const AuctionCardItem = ({
       </S.CardImageBox>
       <S.CardInfoBox>
         <S.CardInfoRow>
-          <S.CardTitle>{item?.product.name}</S.CardTitle>
+          <S.CardTitle>
+            {'user' in item! ? item.name : item!.product.name}
+          </S.CardTitle>
         </S.CardInfoRow>
         <S.CardInfoRow>
-          <S.CardPrice>{translatePriceToKoreanWon(item?.price!)}</S.CardPrice>
-          <S.CardDate>{`${item?.product.start_date} ~ ${item?.product.end_date}`}</S.CardDate>
+          <S.CardPrice>
+            {itemIsSelling
+              ? translatePriceToKoreanWon(item.start_price)
+              : translatePriceToKoreanWon(item!.price)}
+          </S.CardPrice>
+          <S.CardDate>
+            {itemIsSelling
+              ? `${item.start_date} ~ ${item.end_date}`
+              : `${item?.product.start_date} ~ ${item?.product.end_date}`}
+          </S.CardDate>
         </S.CardInfoRow>
       </S.CardInfoBox>
       <S.CardStatusBox>
