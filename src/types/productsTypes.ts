@@ -60,6 +60,7 @@ export type ProductFromApi = {
   desc: 'string';
   start_date: string;
   end_date: string;
+  minBidPrice: string;
   deletedAt: string | null;
   productCategory: productCategoryType;
   productImage: ProductImageProps[];
@@ -78,4 +79,36 @@ export interface CurrentProductStateProps {
   handleCustomBidPriceInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isAuctionStarted: boolean | null;
   available: boolean | null;
+}
+
+export interface ProductImagesAPI {
+  id: string;
+  url: string;
+  is_main: boolean;
+  product: Product;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  start_price: number;
+  desc: string;
+  start_date: Date;
+  end_date: Date;
+  minBidPrice: string;
+  deletedAt: null;
+  user: User;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  password: string;
+  phone: string;
+  nickname: string;
+  address: string;
+  name: string;
+  agreement_use: boolean;
+  agreement_mkt: boolean;
+  favorites: string;
 }
