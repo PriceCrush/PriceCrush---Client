@@ -5,7 +5,7 @@ import axios from 'axios';
 import AddressForm from '@/components/member/joinPage/AddressForm';
 import TermForm from '@/components/member/joinPage/TermForm';
 import CategorySelector from '@/components/member/joinPage/CategorySelector';
-import ButtonBase from './../../buttons/ButtonBase';
+import PhoneNumberVerification from './PhoneNumberVerification';
 
 //LoinForm type
 interface UserInfoErrProps {
@@ -41,6 +41,7 @@ const JoinForm = () => {
    */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     axios
       .post('/api/member/users', userInfo)
       .then(function (response) {
@@ -106,18 +107,11 @@ const JoinForm = () => {
       >
         이름
       </MemberInputForm>
-
-      <MemberInputForm
-        type="text"
-        name="phone"
+      {/* 핸드폰 */}
+      <PhoneNumberVerification
         handleUserInfo={handleUserInfo}
         passOrNot={passOrNot}
-      >
-        핸드폰
-      </MemberInputForm>
-      <ButtonBase name="open" size="sm">
-        {' '}
-      </ButtonBase>
+      />
 
       <MemberInputForm
         type="email"

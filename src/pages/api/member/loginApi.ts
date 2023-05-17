@@ -7,7 +7,8 @@ const setExpireTime = (hour: number) => {
 };
 
 const LoginApi = async (req: NextApiRequest, res: NextApiResponse) => {
-  const LOGIN_API_URL = `http://ec2-13-124-196-195.ap-northeast-2.compute.amazonaws.com:3000/auth`;
+  const serverBaseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+  const LOGIN_API_URL = `${serverBaseURL}auth`;
   const loginData = req.body;
 
   axios
@@ -16,7 +17,9 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse) => {
       const { user, accessToken } = response.data;
       const accessTotkenExpireTime = setExpireTime(1);
       res.setHeader('Set-Cookie', [
-        `accessToken=${accessToken}; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
+        // HttpOnly 테스트를 위해서 임시 삭제
+        // `accessToken=${accessToken}; HttpOnly; path=/;  expires=${accessTotkenExpireTime};`,
+        `accessToken=${accessToken}; path=/;  expires=${accessTotkenExpireTime};`,
       ]);
       res.status(200).json({ user });
     })

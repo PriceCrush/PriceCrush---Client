@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useModal } from '@/hooks/useModal';
 import styled from 'styled-components';
-import { CgClose } from 'react-icons/cg';
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -14,7 +13,7 @@ const ModalBackground = styled.div`
 `;
 
 const ModalContent = styled.div`
-  height: 65%;
+  height: fit-content;
   width: 75%;
   border-radius: 1.5rem;
   background-color: white;
@@ -29,29 +28,6 @@ const ModalContent = styled.div`
   }
 `;
 
-const ModalHeader = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ModalTitle = styled.h2`
-  font-size: 1rem;
-  font-weight: 600;
-`;
-
-const CloseButton = styled.button`
-  color: #4b5563;
-  transition: color 150ms;
-
-  &:hover,
-  &:focus {
-    color: #1f2937;
-    outline: none;
-  }
-`;
-
 const ModalRealContent = styled.div`
   width: 100%;
   height: 100%;
@@ -59,7 +35,7 @@ const ModalRealContent = styled.div`
 
 const ModalBase = () => {
   const {
-    modalDataState: { isOpen, title, content },
+    modalDataState: { isOpen, content },
     closeModal,
   } = useModal();
 
@@ -71,10 +47,14 @@ const ModalBase = () => {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.classList.add('modal-open');
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.classList.remove('modal-open');
+      document.body.style.overflow = 'unset';
     }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isOpen]);
 
   if (!isOpen) {
@@ -84,12 +64,6 @@ const ModalBase = () => {
   return (
     <ModalBackground onClick={handleBackgroundClick}>
       <ModalContent>
-        <ModalHeader>
-          <ModalTitle>{title}</ModalTitle>
-          <CloseButton onClick={closeModal}>
-            <CgClose />
-          </CloseButton>
-        </ModalHeader>
         <ModalRealContent>{content}</ModalRealContent>
       </ModalContent>
     </ModalBackground>

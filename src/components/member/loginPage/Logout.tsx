@@ -22,10 +22,12 @@ const Logout = () => {
         console.log(res);
       });
       setIsLoggedIn(false);
+
       setUserCommonDataAtom({
         email: '',
         name: '',
         nickname: '',
+        uid: '',
       });
       setUserPrivateDataAtom({
         address: '',

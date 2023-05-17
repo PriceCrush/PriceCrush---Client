@@ -102,4 +102,5 @@ export const HeaderGuard = styled.div`
 export const LogoTitle = styled.h1`
   font-size: 4rem;
   font-family: 'Ubuntu', sans-serif;
+  position: absolute;
 `;

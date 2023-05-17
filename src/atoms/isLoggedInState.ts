@@ -1,10 +1,14 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
+//1. api로 유저정보 가져올 시 로컬을 이용해서 저장
+//2. api로 유저정보를 가져오지 않을 시 세션스토리지에 저장
+
 interface userCommonDataType {
   email: string;
   name: string;
   nickname: string;
+  uid: string;
 }
 
 interface usetPrivateDataType {
@@ -26,11 +30,6 @@ const { persistAtom: userDataPersist } = recoilPersist({
   storage,
 });
 
-const { persistAtom: accessTokenPersist } = recoilPersist({
-  key: 'accessToken',
-  storage,
-});
-
 export const isLoggedInState = atom({
   key: 'isLoggedInState',
   default: false,
@@ -43,10 +42,12 @@ export const userCommonDataState = atom<userCommonDataType>({
     email: '',
     name: '',
     nickname: '',
+    uid: '',
   },
   effects_UNSTABLE: [userDataPersist],
 });
 
+// api요청으로 유저 정보 가져올 시 session에 저장x
 export const userPrivateDataState = atom<usetPrivateDataType>({
   key: 'userPrivateData',
   default: {

@@ -39,6 +39,19 @@ export class Api {
     }
   };
 
+  static patch = async <T = any>(
+    url: string,
+    body?: any,
+    config?: AxiosRequestConfig
+  ) => {
+    try {
+      const response = await instance.patch<T>(url, body, { ...config });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   static delete = async <T = any>(url: string, config?: AxiosRequestConfig) => {
     try {
       const response = await instance.delete<T>(url, { ...config });

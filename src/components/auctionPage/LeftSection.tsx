@@ -1,25 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import { useTimeDiff } from '@/hooks/useTimeDiff';
 import AuctionDetailCarousel from '../carousel/AuctionDetailCarousel';
-import { ProductDetailsProps, ProductFromApi } from '@/types/productsTypes';
 import { currentProductState } from '@/atoms/currentProductState';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
+import { ProductFromApi } from '@/types/productsTypes';
 
 const LeftSection = () => {
-  const [currentProductAtom, setCurrentProductAtom] =
-    useRecoilState(currentProductState);
+  const currentProduct = useRecoilValue(currentProductState);
+  const timeDiff = useTimeDiff(String(currentProduct.productData!.end_date));
 
-  const timeDiff = useTimeDiff(
-    String(currentProductAtom.productData!.end_date)
-  );
   return (
     <S.DetailLeftSection>
-      <AuctionDetailCarousel images={currentProductAtom.tempData!.images} />
+      <AuctionDetailCarousel
+        images={
+          currentProduct.productData!.productImage.length > 0
+            ? currentProduct.productData?.productImage
+            : null
+        }
+      />
       <S.DetailLeftSectionRow>
         <S.TimeDiffBox>
-          <h3>남은 시간</h3>
-          <span className="timeRemain">{timeDiff}</span>
+          {currentProduct.available ? (
+            <>
+              {' '}
+              <h3>남은 시간</h3>
+              <span className="timeRemain">{timeDiff}</span>
+            </>
+          ) : (
+            <S.NotAvailableBox>
+              <span>현재 경매가 진행중이 아닙니다.</span>
+            </S.NotAvailableBox>
+          )}
         </S.TimeDiffBox>
       </S.DetailLeftSectionRow>
     </S.DetailLeftSection>

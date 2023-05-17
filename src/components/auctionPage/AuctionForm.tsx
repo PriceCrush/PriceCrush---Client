@@ -3,11 +3,11 @@ import * as S from '@/components/stylecomponents/productDetail.style';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
 import { currentProductState } from '@/atoms/currentProductState';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 const AuctionForm = () => {
-  const [currentProductAtom, setCurrentProductAtom] =
-    useRecoilState(currentProductState);
+  const currentProductAtom = useRecoilValue(currentProductState);
+
   return (
     <S.AuctionFormLayout>
       {currentProductAtom!.available && (
@@ -38,8 +38,13 @@ const AuctionForm = () => {
       {!currentProductAtom!.available && (
         <S.NotAvailableBox>
           <span>
-            {currentProductAtom.productData!.start_date.substring(0, 10)} 부터
-            참여할 수 있습니다.
+            {`${currentProductAtom.productData!.start_date.substring(
+              0,
+              10
+            )} 부터 ${currentProductAtom.productData!.end_date.substring(
+              0,
+              10
+            )} 까지 참여할 수 있습니다.`}
           </span>
         </S.NotAvailableBox>
       )}

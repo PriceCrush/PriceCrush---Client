@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import styled from 'styled-components';
 import { useModal } from '@/hooks/useModal';
-import FindAddressConfirm from '@/components/modals/joinpage/FindAddressConfirm';
+import FindAddressConfirm from '@/components/modals/member/FindAddressConfirm';
 import { userInfoAndCheckProps } from '@/types/memberTypes';
 // import TestApi from '../modals/joinpage/testApi';
 import ButtonBase from '../../buttons/ButtonBase';
@@ -32,8 +32,8 @@ const AddressForm = (props: userInfoAndCheckProps) => {
    * @description 주소 api와 연결된 모달 open
    */
   const handleBidButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     openModal({
-      title: '주소검색',
       content: <FindAddressConfirm handlepost={handlepost} />,
     });
   };

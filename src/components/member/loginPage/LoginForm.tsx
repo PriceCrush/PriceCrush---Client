@@ -1,15 +1,18 @@
 import axios from 'axios';
-import Router from 'next/router';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import * as S from '@/components/stylecomponents/memberControl.styles';
 import Link from 'next/link';
-import MemberInputForm from '../../inputs/MemberInputForm';
+import MemberInputForm from '@/components/inputs/MemberInputForm';
 import { useRecoilState } from 'recoil';
 import {
   isLoggedInState,
   userCommonDataState,
   userPrivateDataState,
 } from '@/atoms/isLoggedInState';
+import { useModal } from '@/hooks/useModal';
+import CommonMessage from '@/components/modals/member/CommonMessage';
+import { loginErrorCode } from '@/components/member/apiCodeMessage';
 
 const LoginForm = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -28,8 +31,8 @@ const LoginForm = () => {
   const [userPrivateDataAtom, setUserPrivateDataAtom] =
     useRecoilState(userPrivateDataState);
 
-  const LOGIN_URL = '/'; //성공할때의 주소
-
+  const router = useRouter();
+  const { openModal } = useModal();
   /**
    * @description 로그인 axios요청
    * @param e submitEvent
@@ -37,31 +40,36 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     axios
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
         const { data } = response;
         const { user } = data;
         setIsLoggedInAtom(true);
-
         setUserCommonDataAtom({
           email: user.email,
           name: user.name,
           nickname: user.nickname,
+          uid: user.id,
         });
         setUserPrivateDataAtom({
           address: user.address,
           phone: user.phone,
         });
-
-        Router.push(`${LOGIN_URL}`);
+        //로그인 이전 페이지로 이동
+        router.back();
       })
       .catch(function (error) {
-        if (error.response.status === 422) {
-          console.log(error.response.data.message);
-        } else {
-          console.log(error);
-        }
+        const { title, message } = loginErrorCode(error.response.status);
+        openModal({
+          content: (
+            <>
+              <CommonMessage title={title}>{message}</CommonMessage>
+            </>
+          ),
+        });
+        console.log(error.response.data.message);
       });
   };
 

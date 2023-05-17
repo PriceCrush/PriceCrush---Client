@@ -7,8 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { categoriesState as categoriesAtom } from '@/atoms/categoriesState';
 import { productCategoriesType, ProductFromApi } from '@/types/productsTypes';
 import { Api } from '@/utils/commonApi';
-import db from '@/temp/db.json';
-import { userCommonDataState, userDataState } from '@/atoms/isLoggedInState';
+
 interface ServerSideProps {
   categories: productCategoriesType;
   data: ProductFromApi[];
@@ -21,7 +20,6 @@ export default function Home({ categories, data, jsondata }: ServerSideProps) {
   useEffect(() => {
     if (categories && categories.length > 0) {
       setCategoriesState(categories);
-      //TODO: Recoil 과 LocalStorage 동기화
     }
   }, [categories, setCategoriesState]);
 
@@ -37,8 +35,6 @@ export default function Home({ categories, data, jsondata }: ServerSideProps) {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const categories = await Api.get('/product-category');
-  //FIXME: JSON-SERVER 데이터를 서버 데이터로 교체해야함
-  const jsondata = db.products;
 
   //FIXME: 입찰에 참여한 수에 따라 인기상품 10개를 넘겨줘야함, 현재 테스트용으로 모든 상품 불러오는 중
   const data = await Api.get('/product');
@@ -47,7 +43,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       categories,
       data,
-      jsondata,
     },
   };
 };

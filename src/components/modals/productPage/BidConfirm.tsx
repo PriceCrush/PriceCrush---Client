@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from '@/components/stylecomponents/modals/productDetails/bidConfirm.style';
 import { translatePriceToKoreanWon } from '@/utils/translatePriceToKoreanWon';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import { useModal } from '@/hooks/useModal';
+import { useRecoilValue } from 'recoil';
+import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
+import Router from 'next/router';
 
 interface BidConfirmProps {
   bidPrice: number;
@@ -11,6 +14,16 @@ interface BidConfirmProps {
 
 const BidConfirm = ({ bidPrice, bidFunction }: BidConfirmProps) => {
   const { closeModal } = useModal();
+  const isLoginInValue = useRecoilValue(isLoggedInState);
+
+  useEffect(() => {
+    //로그인이 필요한 서비스 입니다. 로그인 페이지로 이동합니다.라는 모달을 추가해야하나?
+    if (!isLoginInValue) {
+      const LOGIN_URL = '/member/login';
+      closeModal();
+      Router.push(LOGIN_URL);
+    }
+  }, [isLoginInValue, closeModal]);
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     type ButtonName = 'confirm' | 'cancel';
@@ -27,10 +40,12 @@ const BidConfirm = ({ bidPrice, bidFunction }: BidConfirmProps) => {
     }
   };
 
+  const userCommonDataStateAtom = useRecoilValue(userCommonDataState);
+
   return (
     <S.BidConfirmLayout>
       <S.TextBox>
-        <S.Title>닉네임님이 입력하신 금액은</S.Title>
+        <S.Title>{userCommonDataStateAtom.name}님이 입력하신 금액은</S.Title>
         <S.Price>
           <strong>{translatePriceToKoreanWon(bidPrice, true)}</strong>원 입니다
         </S.Price>
