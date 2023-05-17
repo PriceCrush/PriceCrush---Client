@@ -29,7 +29,6 @@ commonInstance.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${TOKEN}`;
     }
   }
-
   return config;
 });
 

@@ -6,34 +6,40 @@ import Router from 'next/router';
 import { useModal } from '@/hooks/useModal';
 import CommonMessage from '@/components/modals/member/CommonMessage';
 import { Api } from '@/utils/commonApi';
-import { findEmailApiCode } from '@/components/member/apiCodeMessage';
+import { temporaryPasswordApiCode } from '@/components/member/apiCodeMessage';
 
 const FindPassword = () => {
-  const serverBaseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
-
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
     phone: '',
   });
+
   const [sendPassword, setSendPassword] = useState(false);
 
   const { openModal, closeModal } = useModal();
-
+  /**
+   * @description 버튼의 name에 따라 접근하기 위함
+   */
   const buttonRef = useRef<HTMLButtonElement>(null);
-
   const LOGIN_URL = '/member/login';
+
   const handleUserInfo = (e: any) => {
     setUserInfo((prev: any) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
-
+  /**
+   * @description 임시 비밀번호가 정상적으로 발급될경우, 모달을 나가고 loginPage로 이동
+   */
   const sendPasswordSuccess = () => {
     closeModal(), Router.push(`${LOGIN_URL}`);
   };
 
+  /**
+   * @description 임시비밀번호 발급, axios 요청
+   */
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (buttonRef.current?.name === 'newPWBtn') {
@@ -41,7 +47,7 @@ const FindPassword = () => {
         const result = await Api.post('users/reset/pw', userInfo);
         console.log(result);
         const { code } = result.status;
-        const { title, message } = findEmailApiCode(code);
+        const { title, message } = temporaryPasswordApiCode(code);
         openModal({
           content: (
             <>
@@ -52,8 +58,7 @@ const FindPassword = () => {
         setSendPassword(true);
       } catch (error: any) {
         const code = error.response.status;
-        const { title, message } = findEmailApiCode(code);
-
+        const { title, message } = temporaryPasswordApiCode(code);
         openModal({
           content: (
             <>
@@ -61,31 +66,17 @@ const FindPassword = () => {
             </>
           ),
         });
-
-        // setTimeout(() => {
-        //   closeModal(), Router.push(`${LOGIN_URL}`);
-        //   // sendPasswordSuccess; //왜 적용이 안되지?
-        // }, 10000);
       }
-
-      // axios
-      //   .post(`${GET_NEWPW_API_URL}`, userInfo)
-      //   .then(function (response) {
-      //     // setTimeout(() => {
-      //     //   closeModal(), Router.push(`${LOGIN_URL}`);
-      //     //   // sendPasswordSuccess; //왜 적용이 안되지?
-      //     // }, 10000);
-      //   })
-      //   .catch(function (error) {
-
-      //   });
     } else if (buttonRef.current?.name === 'goLoginPageBtn') {
       Router.push(`${LOGIN_URL}`);
     }
   };
 
-  // memverinputForm 의존성 낮춰서 리팩토링할 예정
+  /**
+   * @description 이메일 form 유효성검사
+   */
   const { emailForm } = useValidation(userInfo.email);
+
   const showButton =
     !emailForm || !userInfo.name.length || userInfo.phone.length < 11;
 

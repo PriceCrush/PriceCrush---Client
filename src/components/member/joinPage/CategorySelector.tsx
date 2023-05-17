@@ -38,8 +38,8 @@ const CategorySelector = (props: CategorySelector) => {
   }, [selectedItems]);
 
   useEffect(() => {
-    const ss: string[] = categoriesState.map((category) => category.name);
-    setSelectList(ss);
+    // const ss: string[] = categoriesState.map((category) => category.name);
+    setSelectList(categoriesState.map((category) => category.name));
   }, [categoriesState]);
 
   return (

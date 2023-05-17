@@ -48,7 +48,9 @@ export const Form = styled.form`
   gap: 100px;
 `;
 
-export const LeftSide = styled.div``;
+export const LeftSide = styled.div`
+  min-width: 300px;
+`;
 export const ImageUpload = styled.div`
   width: 300px;
   height: 300px;

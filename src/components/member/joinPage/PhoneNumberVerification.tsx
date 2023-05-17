@@ -49,32 +49,6 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
       }
       console.log(error);
     }
-    // axios
-    //   // .post(`/api/member/smsApi`, { phone: phoneNum })
-    //   .post(`${SMS_API_URL}`, { phone: phoneNum })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     setShowCodeInput(true);
-    //     setPhonecode('');
-    //   })
-    //   .catch(function (error) {
-    //     const { status, data } = error.response;
-    //     if (status === 500) {
-    //       alert(data.error.errorMessage);
-    //     }
-    //     console.log(error);
-    //   });
-
-    // 여기부분 어떻게 다뤄야할지는 쬐까 나중에
-    // const VerificationRequest = Api.post(`/api/member/smsApi`, {
-    //   phone: phoneNum,
-    // })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (e) {
-    //     console.log(e);
-    //   });
   };
   /**
    * @descript 전송한 인증번호 검증
