@@ -5,6 +5,8 @@ import { useModal } from '@/hooks/useModal';
 import CommonInput from '../../../components/inputs/CommonInput';
 import produce from 'immer';
 import { Api } from '@/utils/commonApi';
+import axios from 'axios';
+import { FormDataApi } from '@/utils/formDataApi';
 
 interface State {
   initialPrice: {
@@ -122,17 +124,47 @@ const Create = () => {
     mainPreviewUrl: null,
     subPreviewUrl: [],
   });
+  const [tempImageFiles, setTempImageFiles] = useState<File[]>([]);
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const mainFile = imageFiles.main ? [imageFiles.main] : [];
+    const subFiles = imageFiles.sub ? imageFiles.sub : [];
+    const newTempImageFiles = [...mainFile, ...subFiles];
+    setTempImageFiles(newTempImageFiles);
+  }, [imageFiles]);
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    formData.append('mainImg', imageFiles.main as File);
-    imageFiles.sub.forEach((file) => {
-      formData.append('subImg', file);
+    console.log(formData); // {}
+    const createproductRequest = JSON.stringify({
+      name: 'My Cloth 0518',
+      start_price: 100000,
+      desc: 'Clothes',
+      start_date: '2023-05-10',
+      end_date: '2023-06-20',
+      minBidPrice: '0.3',
+      productCategory: 'f8ae854a-d8ae-486a-a9c4-d2b166c4a4d7',
     });
+    formData.append('createproductRequest', createproductRequest);
+    // useEffect에서 Files 관리
+    formData.append('files', tempImageFiles as any);
+    console.log(tempImageFiles);
 
-    const data = Object.fromEntries(formData);
-    console.log(data);
+    try {
+      const response = await FormDataApi.post('/product', formData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // formData.append('mainImg', imageFiles.main as File);
+    // imageFiles.sub.forEach((file) => {
+    //   formData.append('subImg', file);
+    // });
+
+    // const data = Object.fromEntries(formData);
+    // console.log(data);
   };
 
   const onClickFileUpload = () => {
@@ -175,7 +207,7 @@ const Create = () => {
   return (
     <S.CreateFormContainer>
       <h2>상품 등록</h2>
-      <S.Form onSubmit={onSubmit}>
+      <S.Form onSubmit={onSubmit} encType="multipart/form-data" method="post">
         <S.LeftSide>
           <S.ImageUpload onClick={onClickFileUpload}>
             {!imageFiles.mainPreviewUrl ? (
