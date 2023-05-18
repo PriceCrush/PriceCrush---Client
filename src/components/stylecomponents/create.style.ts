@@ -1,8 +1,13 @@
 import styled from 'styled-components';
 
+type SubImageItemProps = {
+  isOdd: boolean;
+};
+
 export const CreateFormContainer = styled.div`
   width: 100%;
   height: 100%;
+  margin-top: 20px;
   padding: 0 18vw;
   font-size: 1.6rem;
   input,
@@ -11,7 +16,7 @@ export const CreateFormContainer = styled.div`
     margin-top: 10px;
   }
   h2 {
-    font-size: 2.7rem;
+    font-size: ${({ theme }) => theme.fontSize.pageTitle};
     font-weight: 700;
     line-height: 1.6;
   }
@@ -39,16 +44,22 @@ export const CreateFormContainer = styled.div`
     }
   }
 `;
+export const ContentBox = styled.div`
+  height: 600px;
+`;
 
 export const Form = styled.form`
   display: flex;
   width: 100%;
-  margin: 0 auto;
+  margin: 40px auto 0 auto;
   justify-content: center;
   gap: 100px;
 `;
 
-export const LeftSide = styled.div``;
+export const LeftSide = styled.div`
+  max-width: 300px;
+  min-height: 700px;
+`;
 export const ImageUpload = styled.div`
   width: 300px;
   height: 300px;
@@ -80,12 +91,17 @@ export const ImageUpload = styled.div`
   }
 `;
 
-export const SubImageBox = styled.div`
+export const SubImageBox = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 10px;
   margin-top: 10px;
+`;
+
+export const SubImageItem = styled.li<SubImageItemProps>`
+  display: flex;
+  justify-content: ${({ isOdd }) => (isOdd ? 'start' : 'end')};
   img {
     border-radius: 4px;
     width: 125px;
@@ -93,10 +109,38 @@ export const SubImageBox = styled.div`
   }
 `;
 
+export const UploadPictureButtonBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+`;
+export const UploadPictureButton = styled.input`
+  width: 100%;
+  height: 50px;
+  margin-top: 0px;
+  border: none;
+  border-radius: 4px;
+  background-color: #000;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    background-color: #333;
+  }
+`;
+
 export const RightSide = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 700px;
+  label,
+  p {
+    font-weight: 550;
+  }
+
   button {
     width: 100%;
     height: 50px;
@@ -106,7 +150,7 @@ export const RightSide = styled.div`
     color: #fff;
     font-size: 1.6rem;
     font-weight: 700;
-    margin-top: 20px;
+    margin-top: 10px;
     transition: all 0.2s ease-in-out;
     &:hover {
       cursor: pointer;

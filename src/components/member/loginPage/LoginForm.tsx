@@ -44,6 +44,7 @@ const LoginForm = () => {
     axios
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
+        console.log(response);
         const { data } = response;
         const { user } = data;
         setIsLoggedInAtom(true);
@@ -57,10 +58,10 @@ const LoginForm = () => {
           address: user.address,
           phone: user.phone,
         });
-        //로그인 이전 페이지로 이동
         router.back();
       })
       .catch(function (error) {
+        console.log(error);
         const { title, message } = loginErrorCode(error.response.status);
         openModal({
           content: (

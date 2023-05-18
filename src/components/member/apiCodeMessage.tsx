@@ -32,7 +32,7 @@ export const loginErrorCode = (code: number) => {
   return { title, message };
 };
 
-export const findEmailApiCode = (code: number) => {
+export const temporaryPasswordApiCode = (code: number) => {
   let title = '';
   let message;
 
@@ -67,6 +67,32 @@ export const findEmailApiCode = (code: number) => {
   return { title, message };
 };
 
+export const findEmailApiCode = (code: number) => {
+  let title = '';
+  let message;
+
+  switch (code) {
+    case 422:
+      (title = '가입된 이메일 없음'),
+        (message = (
+          <>
+            <p>해당 이름과 핸드폰으로 가입된 이메일이 존재하지 않습니다.</p>
+          </>
+        ));
+      break;
+
+    default:
+      (title = '알수없는 오류'),
+        (message = (
+          <>
+            <p>현재 알 수 없는 오류로 요청이 거부되었습니다.</p>
+            <p>불편을 드려 죄송합니다.</p>
+          </>
+        ));
+  }
+
+  return { title, message };
+};
 export const resetPasswordApiCode = (code: number) => {
   let title = '';
   let message;
