@@ -59,42 +59,20 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
     e.preventDefault();
 
     const verificationData = { phone: phoneNum, code: phoneCode };
-    const SMS_CERTIFICATION_API_URL = `${serverBaseURL}auth/sms/certification`;
 
-    // try {
-    //   const result = Api.post('auth/sms/certification', verificationData);
-    //   console.log(result);
-    //   // setPassCode(true);
-    //   // setShowCodeInput(false);
-    //   // setInputCheck(true);
-    //   // alert('인증번호 확인 완료');
-    // } catch (error: any) {
-    //   console.log(error);
-    //   // if (error.response.status === 409) {
-    //   //   alert(error.response.data.message);
-    //   // }
-    // }
-
-    //return값이 제대로 올경우
-    axios
-      // .post(`/api/member/smsCertificationApi`, verificationData)
-      .post(`${SMS_CERTIFICATION_API_URL}`, verificationData)
-      .then(function (response) {
-        console.log(response);
-        setPassCode(true);
-        setShowCodeInput(false);
-        setInputCheck(true);
-        alert('인증번호 확인 완료');
-      })
-      .catch(function (error) {
-        console.log(error);
-        if (error.response.status === 409) {
-          alert(error.response.data.message);
-        }
-
-        // setPhonecode('');
-        // setShowCodeInput(false);
-      });
+    try {
+      const result = await Api.post('auth/sms/certification', verificationData);
+      console.log(result);
+      setPassCode(true);
+      setShowCodeInput(false);
+      setInputCheck(true);
+      alert('인증번호 확인 완료');
+    } catch (error: any) {
+      console.log(error);
+      if (error.response.status === 409) {
+        alert(error.response.data.message);
+      }
+    }
   };
 
   const showErrorMessage = useCallback(() => {
@@ -128,7 +106,6 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
         핸드폰
       </S.FormItemTitle>
       <PhoneNumBox>
-        {/* 에러 시 하단바 색깔변화 확인 */}
         <PhoneNumInputItem
           type="text"
           name="zonecode"
@@ -145,13 +122,15 @@ const PhoneNumberVerification = (props: userInfoAndCheckProps) => {
             재인증
           </CodeReqBtn>
         ) : (
-          <CodeReqBtn
-            size="sm"
-            onClick={handleRequsetcode}
-            disabled={!inputChcek || passCode}
-          >
-            인증
-          </CodeReqBtn>
+          <>
+            <CodeReqBtn
+              size="sm"
+              onClick={handleRequsetcode}
+              disabled={!inputChcek || passCode}
+            >
+              인증
+            </CodeReqBtn>
+          </>
         )}
       </PhoneNumBox>
       {phoneNum !== '' && <span>{errorMessage}</span>}
@@ -203,6 +182,11 @@ const CodeReqBtn = styled(S.LoginButton)`
   border-radius: 6px;
   font-weight: 600;
   letter-spacing: 2px;
+
+  :disabled {
+    color: ${({ theme }) => theme.color.WHITE};
+    cursor: auto;
+  }
 `;
 
 const PhoneNumInputItem = styled(S.FormItem)`

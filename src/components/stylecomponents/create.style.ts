@@ -16,7 +16,7 @@ export const CreateFormContainer = styled.div`
     margin-top: 10px;
   }
   h2 {
-    font-size: ${({ theme }) => theme.fontSize.xl};
+    font-size: ${({ theme }) => theme.fontSize.pageTitle};
     font-weight: 700;
     line-height: 1.6;
   }
