@@ -103,13 +103,15 @@ const Header = () => {
             </S.HeaderNavItem>
 
             <S.HeaderNavItem>
-              <Link href={isLoginIn ? `/mypage/${uid}` : '/member/login'}>
+              <Link
+                href={isLoginIn && uid ? `/mypage/${uid}` : '/member/login'}
+              >
                 MY
               </Link>
             </S.HeaderNavItem>
 
             <S.HeaderNavItem>
-              {isLoginIn ? (
+              {isLoginIn && uid ? (
                 <Logout />
               ) : (
                 <Link href={'/member/login'}>로그인</Link>

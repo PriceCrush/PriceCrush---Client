@@ -49,10 +49,6 @@ const LoginForm = () => {
           nickname: user.nickname,
           uid: user.id,
         });
-        // setUserPrivateDataAtom({
-        //   address: user.address,
-        //   phone: user.phone,
-        // });
         router.back();
       })
       .catch(function (error) {

@@ -126,6 +126,7 @@ const onAccessTokenFetched = (token: any) => {
 const logout = () => {
   removeCookies('accessToken');
   removeCookies('myRefreshKey');
+  window.localStorage.clear();
 };
 
 export default commonInstance;
