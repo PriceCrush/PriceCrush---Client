@@ -6,6 +6,7 @@ import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
 import Router from 'next/router';
 import { Api } from '@/utils/commonApi';
 import { MyAuctionItem } from '@/types/myAuctionItemsTypes';
+import { GetServerSidePropsContext } from 'next';
 
 const MyPage = () => {
   // 필터링 버튼의 상태
@@ -32,7 +33,9 @@ const MyPage = () => {
     nickname: '',
   });
   const userCommonDataValue = useRecoilValue(userCommonDataState);
-  const { nickname } = userCommonData;
+  // const { nickname } = userCommonData;
+
+  const { uid, nickname } = useRecoilValue(userCommonDataState);
 
   /**
    * @description 유저 로그인 여부
@@ -85,10 +88,10 @@ const MyPage = () => {
    * @description 살짝 딜레이 있긴함 차후 수정
    */
   useEffect(() => {
-    if (!isLoginInValue) {
+    if (!uid || !isLoginInValue) {
       Router.push('/');
     }
-  }, [isLoginInValue]);
+  }, [uid, isLoginInValue]);
 
   /**
    * @description 내 경매 상품 불러오기
@@ -148,10 +151,10 @@ const MyPage = () => {
     setUserCommonData(userCommonDataValue);
   }, [userCommonDataValue]);
 
-  useEffect(() => {
-    console.log('myAuctionItems', myAuctionItems);
-    console.log('filteredMyAuctionItems', filteredMyAuctionItems);
-  }, [filteredMyAuctionItems, myAuctionItems]);
+  // useEffect(() => {
+  //   console.log('myAuctionItems', myAuctionItems);
+  //   console.log('filteredMyAuctionItems', filteredMyAuctionItems);
+  // }, [filteredMyAuctionItems, myAuctionItems]);
 
   return (
     <S.MyPageLayout>
@@ -231,6 +234,30 @@ const MyPage = () => {
       </S.CardWrapper>
     </S.MyPageLayout>
   );
+};
+
+/**
+ * @param 로그인 안되어있을 시 {}반환
+ * @returns
+ */
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  /**
+   * @description 로그아웃상태에서 접근 메인 페이지로 이동
+   */
+  const { accessToken } = context.req.cookies;
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {}, // 빈 객체 반환
+  };
 };
 
 export default MyPage;

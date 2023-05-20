@@ -5,11 +5,7 @@ import * as S from '@/components/stylecomponents/memberControl.styles';
 import Link from 'next/link';
 import MemberInputForm from '@/components/inputs/MemberInputForm';
 import { useRecoilState } from 'recoil';
-import {
-  isLoggedInState,
-  userCommonDataState,
-  userPrivateDataState,
-} from '@/atoms/isLoggedInState';
+import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
 import { useModal } from '@/hooks/useModal';
 import CommonMessage from '@/components/modals/member/CommonMessage';
 import { loginErrorCode } from '@/components/member/apiCodeMessage';
@@ -28,8 +24,6 @@ const LoginForm = () => {
     useRecoilState(isLoggedInState);
   const [userCommonDataAtom, setUserCommonDataAtom] =
     useRecoilState(userCommonDataState);
-  const [userPrivateDataAtom, setUserPrivateDataAtom] =
-    useRecoilState(userPrivateDataState);
 
   const router = useRouter();
   const { openModal } = useModal();
@@ -41,6 +35,7 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    //기존
     axios
       .post('/api/member/loginApi', loginInfo)
       .then(function (response) {
@@ -53,10 +48,6 @@ const LoginForm = () => {
           name: user.name,
           nickname: user.nickname,
           uid: user.id,
-        });
-        setUserPrivateDataAtom({
-          address: user.address,
-          phone: user.phone,
         });
         router.back();
       })
