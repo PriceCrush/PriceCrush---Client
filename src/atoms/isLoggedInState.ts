@@ -18,7 +18,8 @@ interface usetPrivateDataType {
 // 해당 코드로 인하여 새로고침 시
 //Error: Hydration failed because the initial UI does not match what was rendered on the server.오류발생
 const isClient = typeof window !== 'undefined' && window.sessionStorage;
-const storage = isClient ? window.sessionStorage : undefined;
+// const storage = isClient ? window.sessionStorage : undefined;
+const storage = isClient ? window.localStorage : undefined;
 
 const { persistAtom: isLoggedInStatePersist } = recoilPersist({
   key: 'isLoggedIn',
@@ -45,13 +46,4 @@ export const userCommonDataState = atom<userCommonDataType>({
     uid: '',
   },
   effects_UNSTABLE: [userDataPersist],
-});
-
-// api요청으로 유저 정보 가져올 시 session에 저장x
-export const userPrivateDataState = atom<usetPrivateDataType>({
-  key: 'userPrivateData',
-  default: {
-    address: '',
-    phone: '',
-  },
 });

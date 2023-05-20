@@ -6,6 +6,7 @@ import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
 import Router from 'next/router';
 import { Api } from '@/utils/commonApi';
 import { MyAuctionItem } from '@/types/myAuctionItemsTypes';
+import { GetServerSidePropsContext } from 'next';
 
 const MyPage = () => {
   // 필터링 버튼의 상태
@@ -85,6 +86,7 @@ const MyPage = () => {
    * @description 살짝 딜레이 있긴함 차후 수정
    */
   useEffect(() => {
+    //잠깐의 텀이 있음
     if (!isLoginInValue) {
       Router.push('/');
     }
@@ -231,6 +233,30 @@ const MyPage = () => {
       </S.CardWrapper>
     </S.MyPageLayout>
   );
+};
+
+/**
+ * @param 로그인 안되어있을 시 {}반환
+ * @returns
+ */
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  /**
+   * @description 로그인상태에서 접근 메인 페이지로 이동
+   */
+  const { accessToken } = context.req.cookies;
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {}, // 빈 객체 반환
+  };
 };
 
 export default MyPage;
