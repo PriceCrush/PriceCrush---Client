@@ -31,3 +31,7 @@ transports: ['websocket'] 옵션을 설정하면, Socket.IO는 WebSocket 연결�
 이 방식이 문제를 해결하는 이유는, HTTPS를 사용하는 클라이언트에서 HTTP를 사용하는 서버에 요청을 보내는 것이 문제이기 때문입니다. WebSocket 연결만 사용하도록 강제하면, HTTP를 사용하는 Long Polling 요청이 발생하지 않으므로 이 문제를 피할 수 있습니다.
 
 ## 배포 0514
+
+## 배포 0521
+
+BASEURL 변경 (SSL 인증서 등륵)

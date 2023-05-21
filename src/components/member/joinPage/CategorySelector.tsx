@@ -6,6 +6,7 @@ import * as S from '@/components/stylecomponents/categorySelector.styles';
 import { AiOutlineClose } from 'react-icons/ai';
 import styled from 'styled-components';
 
+
 interface CategorySelector {
   handleUserInfo: Function;
 }
