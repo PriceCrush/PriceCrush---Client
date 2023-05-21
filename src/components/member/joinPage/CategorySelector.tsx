@@ -6,6 +6,8 @@ import * as S from '@/components/stylecomponents/categorySelector.styles';
 import { AiOutlineClose } from 'react-icons/ai';
 import styled from 'styled-components';
 
+// 해당부분 숨기기 기능 추가해서 하는걸로
+// 아직 작업중
 
 interface CategorySelector {
   handleUserInfo: Function;

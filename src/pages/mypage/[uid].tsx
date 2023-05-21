@@ -33,7 +33,9 @@ const MyPage = () => {
     nickname: '',
   });
   const userCommonDataValue = useRecoilValue(userCommonDataState);
-  const { nickname } = userCommonData;
+  // const { nickname } = userCommonData;
+
+  const { uid, nickname } = useRecoilValue(userCommonDataState);
 
   const { uid } = useRecoilValue(userCommonDataState);
 

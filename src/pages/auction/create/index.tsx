@@ -212,7 +212,6 @@ const Create = () => {
 
     productData.append('createproductRequest', createproductRequest);
     productData.append('files', newTempImageFiles as any);
-
     openModal({
       content: <RegistrationConfirmation productData={productData} />,
     });
