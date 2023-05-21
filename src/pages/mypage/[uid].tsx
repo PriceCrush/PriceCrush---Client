@@ -37,8 +37,6 @@ const MyPage = () => {
 
   const { uid, nickname } = useRecoilValue(userCommonDataState);
 
-  const { uid } = useRecoilValue(userCommonDataState);
-
   /**
    * @description 유저 로그인 여부
    */
