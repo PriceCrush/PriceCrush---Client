@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as S from '@/components/stylecomponents/productDetail.style';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
@@ -7,6 +7,10 @@ import { useRecoilValue } from 'recoil';
 
 const AuctionForm = () => {
   const currentProductAtom = useRecoilValue(currentProductState);
+
+  useEffect(() => {
+    console.log(currentProductAtom);
+  }, [currentProductAtom]);
 
   return (
     <S.AuctionFormLayout>
@@ -31,7 +35,7 @@ const AuctionForm = () => {
             onClick={currentProductAtom!.handleBidButtonClick}
             name="staticPriceBid"
           >
-            +?%
+            +{Number(currentProductAtom.productData?.minBidPrice) * 100}%
           </ButtonBase>
         </>
       )}
