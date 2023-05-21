@@ -17,12 +17,15 @@ type TabItemProps = {
 
 // 2. styledComponent
 const StyledTabItem = styled.li<{ active: boolean }>`
-  padding-right: 27px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* padding-right: 27px; */
   font-weight: ${({ active }) => (active ? '700' : '400')};
 
-  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-size: ${({ theme }) => theme.fontSize.xl};
   cursor: pointer;
-  // 여기 부분은 너무 긴밀해지니까 수정해야할듯?
+
   > a {
     border-bottom: ${({ active }) => (active ? '2px solid #222' : 'none')};
   }
@@ -69,7 +72,7 @@ const SliderNav = ({ category }: SliderNavProps) => {
                 },
               }}
             >
-              {item.name}
+              <span>{item.name}</span>
             </TabLink>
           </TabItem>
         ))}
