@@ -66,6 +66,7 @@ export const PrevArrow = styled(IoIosArrowBack).attrs<PickSizeColorProps>(
 )<PickSizeColorProps>``;
 
 export const MainPageSlider = styled(Slider)`
+  margin-bottom: 40px;
   .slick-slide {
     text-align: center;
   }

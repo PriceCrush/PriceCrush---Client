@@ -25,6 +25,7 @@ export const ProductSection = styled.section`
 `;
 //
 export const ListPageWapper = styled.div`
+  margin: 40px auto;
   width: 100%;
 `;
 

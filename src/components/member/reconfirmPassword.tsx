@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { getCookie } from 'cookies-next';
 import { Api } from '@/utils/commonApi';
 import { resetPasswordApiCode } from '@/components/member/apiCodeMessage';
+import axios from 'axios';
 
 interface ReconfirmPasswordPorps {
   newPassword: string;
@@ -25,8 +26,10 @@ const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
 
     if (name === 'confirm') {
       const newPw = { password: `${newPassword}` };
+
       try {
         const result = await Api.patch(`users/reset/pw`, newPw);
+
         Router.push(`${MAIN_URL}`);
         console.log(result);
       } catch (error: any) {
