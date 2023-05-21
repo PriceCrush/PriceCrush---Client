@@ -1,12 +1,34 @@
-import React, { useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
+
+
 import * as S from '@/components/stylecomponents/productDetail.style';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
 import { currentProductState } from '@/atoms/currentProductState';
 import { useRecoilValue } from 'recoil';
+import { isLoggedInState, userCommonDataState } from '@/atoms/isLoggedInState';
+import { Router, useRouter } from 'next/router';
 
 const AuctionForm = () => {
   const currentProductAtom = useRecoilValue(currentProductState);
+  const isLoginInValue = useRecoilValue(isLoggedInState);
+  const [isLoginIn, setIsLoginIn] = useState(false);
+  const { uid } = useRecoilValue(userCommonDataState);
+  const router = useRouter();
+
+  const handleAuctionBtn = () => {
+    return (
+      isLoginIn && uid
+        ? currentProductAtom!.handleBidButtonClick
+        : alert('로그인 필요한 서비스입니다.'),
+      router.push('/member/login')
+    );
+  };
+
+  useEffect(() => {
+    setIsLoginIn(isLoginInValue);
+  }, [isLoginInValue]);
 
   useEffect(() => {
     console.log(currentProductAtom);
@@ -24,7 +46,7 @@ const AuctionForm = () => {
           <ButtonBase
             variant="warning"
             size="md"
-            onClick={currentProductAtom!.handleBidButtonClick}
+            onClick={handleAuctionBtn}
             name="customPriceBid"
           >
             입찰
@@ -32,7 +54,7 @@ const AuctionForm = () => {
           <ButtonBase
             variant="error"
             size="md"
-            onClick={currentProductAtom!.handleBidButtonClick}
+            onClick={handleAuctionBtn}
             name="staticPriceBid"
           >
             +{Number(currentProductAtom.productData?.minBidPrice) * 100}%

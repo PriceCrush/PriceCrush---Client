@@ -20,7 +20,9 @@ const StyledTabItem = styled.li<{ active: boolean }>`
   width: 100%;
   display: flex;
   justify-content: center;
-  /* padding-right: 27px; */
+  white-space: nowrap;
+  /* padding : 10px 5px */
+  padding-right: 27px;
   font-weight: ${({ active }) => (active ? '700' : '400')};
 
   font-size: ${({ theme }) => theme.fontSize.xl};
@@ -83,8 +85,6 @@ const SliderNav = ({ category }: SliderNavProps) => {
 
 //폰트
 const SliderNavLayOut = styled.div`
-  width: 100%;
-  max-width: 1280px;
   display: flex;
   justify-content: center;
   border-bottom: 1px solid ${({ theme }) => theme.color.GRAY};
@@ -93,6 +93,9 @@ const SliderNavLayOut = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+  }
+  li:last-child {
+    padding-right: 0px;
   }
 `;
 
