@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       productId: productid,
     },
   });
-  const ownerUid = productImages[0].product.user.id;
+  const ownerUid = productImages[0] ? productImages[0].product.user.id : '';
 
   console.log(ownerUid);
 
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       // blurDataURL: base64,
       productData,
-      ownerUid,
+      ownerUid: ownerUid || '',
     },
   };
 };
