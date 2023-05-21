@@ -1,4 +1,7 @@
+
 import React, { useEffect, useState } from 'react';
+
+
 import * as S from '@/components/stylecomponents/productDetail.style';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import InputBase from '@/components/inputs/InputBase';
@@ -27,6 +30,10 @@ const AuctionForm = () => {
     setIsLoginIn(isLoginInValue);
   }, [isLoginInValue]);
 
+  useEffect(() => {
+    console.log(currentProductAtom);
+  }, [currentProductAtom]);
+
   return (
     <S.AuctionFormLayout>
       {currentProductAtom!.available && (
@@ -50,7 +57,7 @@ const AuctionForm = () => {
             onClick={handleAuctionBtn}
             name="staticPriceBid"
           >
-            +?%
+            +{Number(currentProductAtom.productData?.minBidPrice) * 100}%
           </ButtonBase>
         </>
       )}
