@@ -6,6 +6,9 @@ import AddressForm from '@/components/member/joinPage/AddressForm';
 import TermForm from '@/components/member/joinPage/TermForm';
 import CategorySelector from '@/components/member/joinPage/CategorySelector';
 import PhoneNumberVerification from './PhoneNumberVerification';
+import CommonMessage from '@/components/modals/member/CommonMessage';
+import { useRouter } from 'next/router';
+import { useModal } from '@/hooks/useModal';
 
 //LoinForm type
 interface UserInfoErrProps {
@@ -35,6 +38,10 @@ const JoinForm = () => {
     agreement_use: false,
   });
 
+  const LOGIN_URL = '/memeber/login';
+  const router = useRouter();
+  const { openModal } = useModal();
+
   /**
    *
    * @description 회원가입 axios요청
@@ -43,14 +50,25 @@ const JoinForm = () => {
     e.preventDefault();
 
     console.log(userInfo);
-    // axios
-    //   .post('/api/member/users', userInfo)
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    axios
+      .post('/api/member/loginApi', userInfo)
+      .then(function (response) {
+        console.log(response);
+        router.push(LOGIN_URL);
+      })
+      .catch(function (error) {
+        console.log(error);
+        // const { title, message } = loginErrorCode(error.response.status);
+        const title = '회원가입 실패';
+        const message = '회원가입에 실패하였습니다. 불편을 드려서 죄송합니다. ';
+        openModal({
+          content: (
+            <>
+              <CommonMessage title={title}>{message}</CommonMessage>
+            </>
+          ),
+        });
+      });
   };
 
   /**
