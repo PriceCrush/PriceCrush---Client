@@ -21,8 +21,10 @@ const getFabSize = (size: Size) => {
 
 export const FabLayout = styled.button<FabProps>`
   position: fixed;
-  right: ${({ theme }) => theme.position.fabRight};
-  bottom: ${({ theme }) => theme.position.fabBottom};
+  /* right: ${({ theme }) => theme.position.fabRight};
+  bottom: ${({ theme }) => theme.position.fabBottom}; */
+  right: 2vw;
+  bottom: 5vh;
   width: ${({ size }) => getFabSize(size)};
   height: ${({ size }) => getFabSize(size)};
   border-radius: 50%;

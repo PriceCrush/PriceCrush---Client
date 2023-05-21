@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 export const MainPageLayout = styled.div`
   width: 90%;
-  min-height: ${({ theme }) => theme.height.vh100};
-  margin: ${({ theme }) => theme.margin.center};
+  /* min-height: ${({ theme }) => theme.height.vh100}; */
+  /* margin: ${({ theme }) => theme.margin.center}; */
+  margin: 40px auto 0 auto;
 `;
 
 export const CategoryRow = styled.div`

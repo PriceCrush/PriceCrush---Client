@@ -92,8 +92,6 @@ const Create = () => {
     subPreviewUrl: [],
   });
 
-  // const [tempImageFiles, setTempImageFiles] = useState<File[]>([]);
-
   const minPriceRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -212,13 +210,12 @@ const Create = () => {
     productData.append('files', newTempImageFiles as any);
 
     // return은 받음 하지만
-    // try {
-    //   const response = await FormDataApi.post('/product', productData);
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    console.log('사진 올리기 버튼 눌림');
+    try {
+      const response = await FormDataApi.post('/product', productData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -246,13 +243,6 @@ const Create = () => {
       })
     );
   }, [priceState.initialPrice.value, priceState.minPricePer.value]);
-
-  // useEffect(() => {
-  //   const mainFile = imageFiles.main ? [imageFiles.main] : [];
-  //   const subFiles = imageFiles.sub ? imageFiles.sub : [];
-  //   const newTempImageFiles = [...mainFile, ...subFiles];
-  //   setTempImageFiles(newTempImageFiles);
-  // }, [imageFiles]);
 
   return (
     <S.CreateFormContainer>
