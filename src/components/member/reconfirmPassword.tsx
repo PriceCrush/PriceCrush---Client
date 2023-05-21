@@ -16,7 +16,9 @@ const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
   const { newPassword } = props;
   const { closeModal } = useModal();
   const MAIN_URL = '/';
-
+  /**
+   * @description 비밀번호 변경, axios요청
+   */
   const handleButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     type ButtonName = 'confirm' | 'cancel';
     const name = e.currentTarget.name as ButtonName;
@@ -29,12 +31,9 @@ const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
         console.log(result);
       } catch (error: any) {
         const { code } = error.response.status;
-        const { title, message } = resetPasswordApiCode(code);
+        const { message } = resetPasswordApiCode(code);
         console.log(error);
         alert(message);
-        // 우선은 alert를 사용하고 차 후 모달은 쓰는 방법으로
-        // 현재 컴포넌트가 모달안에 존재하기 때문에 부모 컴포넌트의 구조를 바꾼 후 해야하기때문에
-        // 이곳에서 다시 모달을 띄울경우 오류발생
       }
       closeModal();
     } else if (name === 'cancel') {

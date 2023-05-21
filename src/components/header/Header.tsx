@@ -15,6 +15,8 @@ import Logout from '@/components/member/loginPage/Logout';
 import { isLoggedInState } from '@/atoms/isLoggedInState';
 import { useRouter } from 'next/router';
 import { userCommonDataState } from '@/atoms/isLoggedInState';
+import { getCookie } from 'cookies-next';
+import { GetServerSidePropsContext } from 'next';
 
 const Header = () => {
   const isScrollDown = useScrollDirection();
@@ -101,11 +103,15 @@ const Header = () => {
             </S.HeaderNavItem>
 
             <S.HeaderNavItem>
-              <Link href={`/mypage/${uid}`}>MY</Link>
+              <Link
+                href={isLoginIn && uid ? `/mypage/${uid}` : '/member/login'}
+              >
+                MY
+              </Link>
             </S.HeaderNavItem>
 
             <S.HeaderNavItem>
-              {isLoginIn ? (
+              {isLoginIn && uid ? (
                 <Logout />
               ) : (
                 <Link href={'/member/login'}>로그인</Link>

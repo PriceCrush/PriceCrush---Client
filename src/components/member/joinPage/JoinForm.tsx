@@ -42,14 +42,15 @@ const JoinForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    axios
-      .post('/api/member/users', userInfo)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    console.log(userInfo);
+    // axios
+    //   .post('/api/member/users', userInfo)
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
 
   /**
@@ -107,6 +108,7 @@ const JoinForm = () => {
       >
         이름
       </MemberInputForm>
+
       {/* 핸드폰 */}
       <PhoneNumberVerification
         handleUserInfo={handleUserInfo}
@@ -125,10 +127,9 @@ const JoinForm = () => {
       {/* 주소 */}
       <AddressForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />
 
+      <CategorySelector handleUserInfo={handleUserInfo} />
       {/* 약관 */}
       <TermForm handleUserInfo={handleUserInfo} passOrNot={passOrNot} />
-
-      <CategorySelector handleUserInfo={handleUserInfo} />
 
       <S.LoginButton type="submit" disabled={showButton()}>
         동의하고 가입하기

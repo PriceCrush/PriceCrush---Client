@@ -19,21 +19,27 @@ const FindEmail = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
   const LOGIN_URL = '/member/login';
 
   const { openModal, closeModal } = useModal();
-
+  /**
+   * @description 버튼의 name에 따라 접근하기 위함
+   */
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const sendPasswordSuccess = () => {
+  /**
+   * @description 이메일이 정상적으로 보내질 경우 , 모달을 나가고 loginPage로 이동
+   */
+  const findEmailSuccess = () => {
     closeModal(), Router.push(`${LOGIN_URL}`);
   };
+
   const showButton = !userInfo.name.length || userInfo.phone.length < 11;
 
-  // 우선 보류
-  // 메인페이지 이동 시 Error: Abort fetching component for route: "/member/login" 이런 오류발생
-  // 메인 페이지 이동 시 Error: Loading initial props cancelled  이런 오류 발생
-
+  /**
+   * @description 이메일 찾기, axios요청
+   */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (buttonRef.current?.name === 'findEmailBtn') {
@@ -50,7 +56,7 @@ const FindEmail = () => {
         });
         setSendEmail(true);
         setTimeout(() => {
-          closeModal(), Router.push(`${LOGIN_URL}`);
+          findEmailSuccess();
         }, 10000);
       } catch (error: any) {
         const { title, message } = findEmailApiCode(error.response.status);
@@ -108,7 +114,7 @@ const FindEmail = () => {
             type="submit"
             name="goLoginPageBtn"
             ref={buttonRef}
-            onClick={sendPasswordSuccess}
+            onClick={findEmailSuccess}
           >
             로그인 페이지 이동
           </S.FormButton>

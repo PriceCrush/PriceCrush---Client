@@ -19,6 +19,9 @@ const ResetPassword = () => {
     setPasswordError(e);
   };
 
+  /**
+   * @description 비밀번호 변경 확인 모달
+   */
   const handleResetPassword = (e: any) => {
     e.preventDefault();
     openModal({
