@@ -17,7 +17,7 @@ import {
   productFromServerState,
 } from '@/atoms/productsFromServerState';
 import { GetServerSideProps } from 'next';
-import { ProductFromApi } from '@/types/productsTypes';
+import { productCategoryType, ProductFromApi } from '@/types/productsTypes';
 
 export const getServerSideProps: GetServerSideProps<{
   data: ProductFromApi[];
@@ -48,7 +48,11 @@ const ListPage = ({ data, searchTerm, categoryId }: ListPageProps) => {
 
   // states
   const [currentPage, setCurrentPage] = useState(1);
-  const productCategories = useRecoilValue(categoriesState);
+  const productCategoriesValue = useRecoilValue(categoriesState);
+  const [productCategories, setProductCategories] = useState<
+    productCategoryType[]
+  >(productCategoriesValue);
+
   const [categoryAndSearchTerm, setCategroyAndSearchTerm] = useRecoilState(
     searchAndCategoriesState
   );
@@ -91,6 +95,10 @@ const ListPage = ({ data, searchTerm, categoryId }: ListPageProps) => {
     setWholeProductFromServer(data);
   }, [wholeProductFromServer, data, setWholeProductFromServer]);
 
+  useEffect(() => {
+    setProductCategories(productCategoriesValue);
+  }, [productCategoriesValue]);
+
   return (
     <S.ListPageWapper>
       {searchTerm && (
@@ -103,6 +111,8 @@ const ListPage = ({ data, searchTerm, categoryId }: ListPageProps) => {
       <S.SliderSection>
         <SliderNav category={productCategories} />
         <Searchslider category={productCategories} />
+        {/* <SliderNav category={productCategoriesValue} />
+        <Searchslider category={productCategoriesValue} /> */}
       </S.SliderSection>
       <S.ProductSection>
         <ProductList column={4} data={filteredProducts.result} />
