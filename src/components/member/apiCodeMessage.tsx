@@ -32,6 +32,43 @@ export const loginErrorCode = (code: number) => {
   return { title, message };
 };
 
+export const JoginErrorCode = (code: number) => {
+  let title = '';
+  let message;
+
+  switch (code) {
+    case 409:
+      (title = '이메일 중복'),
+        (message = (
+          <>
+            <p>
+              해당 메일로 가입된 아이디가 있습니다. 아이디찾기를 사용해 주시기
+              바랍니다.
+            </p>
+          </>
+        ));
+      break;
+    case 404:
+      (title = '시스템 오류'),
+        (message = (
+          <>
+            <p>현재 시스템장애로 인하여 회원가입이 불가능합니다.</p>
+            <p>불편을 드려 죄송합니다.</p>
+          </>
+        ));
+    default:
+      (title = '알수없는 오류'),
+        (message = (
+          <>
+            <p>현재 알 수 없는 오류로 인하여 회원가입이 불가능합니다.</p>
+            <p>불편을 드려 죄송합니다.</p>
+          </>
+        ));
+  }
+
+  return { title, message };
+};
+
 export const temporaryPasswordApiCode = (code: number) => {
   let title = '';
   let message;
