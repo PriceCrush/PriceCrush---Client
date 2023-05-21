@@ -13,6 +13,7 @@ import { productCategoryType } from '@/types/productsTypes';
 import ButtonBase from '@/components/buttons/ButtonBase';
 import ImageUploadForm from '@/components/auctionPage/create/ImageUploadForm';
 import styled from 'styled-components';
+import RegistrationConfirmation from '@/components/auctionPage/create/RegistrationConfirmation';
 
 interface State {
   initialPrice: {
@@ -81,6 +82,7 @@ const Create = () => {
   const [categoriesList, setCategoriesList] = useState<productCategoryType[]>(
     []
   );
+
   useEffect(() => {
     setCategoriesList(categoriesState);
   }, [categoriesState]);
@@ -94,6 +96,8 @@ const Create = () => {
 
   const minPriceRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { openModal } = useModal();
 
   const onChangeInitialPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (numCheck(e.target.value) === false) {
@@ -209,13 +213,9 @@ const Create = () => {
     productData.append('createproductRequest', createproductRequest);
     productData.append('files', newTempImageFiles as any);
 
-    // return은 받음 하지만
-    try {
-      const response = await FormDataApi.post('/product', productData);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    openModal({
+      content: <RegistrationConfirmation productData={productData} />,
+    });
   };
 
   useEffect(() => {
@@ -302,8 +302,6 @@ const Create = () => {
                     {categoryObject.name}
                   </option>
                 ))}
-              {/* <option value="신발">신발</option>
-            <option value="의류">의류</option> */}
             </select>
             <CommonInput
               type="text"
