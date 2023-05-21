@@ -45,7 +45,7 @@ const RightSection = ({ currentPrice, ownerUid }: RightSectionProps) => {
           ~
         </S.PriceText>
 
-        {ownerUid === uid ? <MyAuction /> : <AuctionForm />}
+        {ownerUid === uid && uid !== '' ? <MyAuction /> : <AuctionForm />}
       </S.PriceBox>
       <S.DetailDescBox>
         <S.NameText>상품 설명</S.NameText>

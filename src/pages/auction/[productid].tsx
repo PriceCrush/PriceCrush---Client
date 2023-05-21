@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       productId: productid,
     },
   });
-  const ownerUid = productImages[0].product.user.id;
+  const ownerUid = productImages[0] ? productImages[0].product.user.id : '';
 
   console.log(ownerUid);
 
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       // blurDataURL: base64,
       productData,
-      ownerUid,
+      ownerUid: ownerUid || '',
     },
   };
 };
@@ -101,12 +101,32 @@ const ProductDetail = ({ productData, ownerUid }: ServerSideReturn) => {
         ),
       });
     } else if (name === 'staticPriceBid') {
+      const bidPrice =
+        Number(currentProductAtom.productData?.start_price) +
+        Number(
+          currentPrice * Number(currentProductAtom.productData?.minBidPrice)
+        );
       openModal({
-        content: <BidConfirm bidPrice={inputBidPrice + 1000} />,
+        content: (
+          <BidConfirm
+            bidPrice={bidPrice}
+            bidFunction={() => handleStaticSocketButtonClick(bidPrice)}
+          />
+        ),
       });
     } else {
       throw new Error('버튼 이름이 잘못되었습니다.');
     }
+  };
+
+  const handleStaticSocketButtonClick = (price: number) => {
+    const bidData = {
+      price,
+      user: uid,
+      product: productData.id,
+    };
+
+    socket.emit('bid', bidData);
   };
 
   const handleSocketButtonClick = () => {

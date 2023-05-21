@@ -8,15 +8,19 @@ import { getCookie } from 'cookies-next';
 import { Api } from '@/utils/commonApi';
 import { resetPasswordApiCode } from '@/components/member/apiCodeMessage';
 import axios from 'axios';
+import { FormDataApi } from '@/utils/formDataApi';
+import { useRecoilValue } from 'recoil';
+import { userCommonDataState } from '@/atoms/isLoggedInState';
 
 interface ReconfirmPasswordPorps {
-  newPassword: string;
+  productData: any;
 }
 
-const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
-  const { newPassword } = props;
+const RegistrationConfirmation = (props: ReconfirmPasswordPorps) => {
+  const { productData } = props;
   const { closeModal } = useModal();
-  const MAIN_URL = '/';
+  const { uid } = useRecoilValue(userCommonDataState);
+  const MY_URL = `/mypage/${uid}`;
   /**
    * @description 비밀번호 변경, axios요청
    */
@@ -25,18 +29,16 @@ const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
     const name = e.currentTarget.name as ButtonName;
 
     if (name === 'confirm') {
-      const newPw = { password: `${newPassword}` };
-
       try {
-        const result = await Api.patch(`users/reset/pw`, newPw);
+        const response = await FormDataApi.post('/product', productData);
+        Router.push(`${MY_URL}`);
 
-        Router.push(`${MAIN_URL}`);
-        console.log(result);
+        console.log(response);
       } catch (error: any) {
-        const { code } = error.response.status;
-        const { message } = resetPasswordApiCode(code);
+        // const { code } = error.response.status;
+        // const { message } = resetPasswordApiCode(code);
         console.log(error);
-        alert(message);
+        // alert(message);
       }
       closeModal();
     } else if (name === 'cancel') {
@@ -49,10 +51,7 @@ const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
   return (
     <S.BidConfirmLayout>
       <TextBox>
-        <S.Title>
-          새로 바꾸신 비밀번호는 <Highligt>{newPassword}</Highligt>입니다.
-        </S.Title>
-        <S.Title>정말로 비밀번호를 바꾸시겠습니까?</S.Title>
+        <S.Title>현재 상품을 등록하시겠습니까??</S.Title>
       </TextBox>
       <S.ButtonBox>
         <ButtonBase
@@ -60,7 +59,7 @@ const ReconfirmPassword = (props: ReconfirmPasswordPorps) => {
           variant="positive"
           onClick={handleButtonClick}
         >
-          확인
+          등록
         </ButtonBase>
         <ButtonBase
           name="cancel"
@@ -86,4 +85,4 @@ const TextBox = styled(S.TextBox)`
   }
 `;
 
-export default ReconfirmPassword;
+export default RegistrationConfirmation;

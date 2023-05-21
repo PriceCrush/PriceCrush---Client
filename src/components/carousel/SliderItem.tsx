@@ -28,7 +28,7 @@ const SliderItem = ({
     >
       <S.SliderImageWrapper>
         <Image
-          src={product.productCategory.imgurl}
+          src={product?.productImage[0]?.url}
           alt={product.name}
           fill
           sizes="300px"
